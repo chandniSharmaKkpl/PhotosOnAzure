@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>OnlineFamilyVault</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>We require this permission to upload the media</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We require this to upload picture </string>
+	<key>NSContactsUsageDescription</key>
+	<string>We require this permission to use contact list</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App uses location for photos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>this app requires microphone access to record your greeting.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please grant access to upload the picture </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please grant access to upload the picture </string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>this app requires microphone access to record your greeting.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MuseoSlab-100.ttf</string>
+		<string>MuseoSlab-300.ttf</string>
+		<string>MuseoSlab-500Italic.ttf</string>
+		<string>MuseoSlab-700.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>MuseoSlab-100Italic.ttf</string>
+		<string>MuseoSlab-300Italic.ttf</string>
+		<string>MuseoSlab-500.ttf</string>
+		<string>MuseoSlab-700Italic.ttf</string>
+		<string>MuseoSlab-900.ttf</string>
+		<string>MuseoSlab-900Italic.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>
