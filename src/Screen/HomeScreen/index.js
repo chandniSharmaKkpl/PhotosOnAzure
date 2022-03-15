@@ -76,9 +76,7 @@ import {
 } from "@react-navigation/native";
 import { notifyMessage } from "../../Component/AlertView";
 
-
 export function HomeScreen(props) {
-
   var countPickerSelectedImage = 0; // How many images selected by image picker in 1 time open picker
   var countImgUploadAzure = 0; // Image uploaded or failed increase count so that call server api after azure operations.
   var countImgFailedToUpload = 0; // Only count failed images so that we can show fail images counting to user.
@@ -132,7 +130,6 @@ export function HomeScreen(props) {
   const dispatch = useDispatch(); // Calling api
 
   const flatListRef = useRef(); // Create ref to scroll flatlist top once new data added from picker
-
 
   React.useEffect(() => {
     if (user && user.conf_key) {
@@ -297,9 +294,7 @@ export function HomeScreen(props) {
       type: "Upload",
     });
     setLoading(true);
-    Upload.addListener("progress", res.uploadId, (data) => {
-
-    });
+    Upload.addListener("progress", res.uploadId, (data) => {});
     Upload.addListener("cancelled", res.uploadId, (data) => {
       countImgUploadAzure = countImgUploadAzure + 1;
     });
@@ -347,8 +342,8 @@ export function HomeScreen(props) {
         file_type: assest.mime.includes("image")
           ? "image"
           : assest.mime.includes("video")
-            ? "video"
-            : assest.mime,
+          ? "video"
+          : assest.mime,
         is_success: true,
         size: assest.size,
         created_date: created_date,
@@ -416,7 +411,7 @@ export function HomeScreen(props) {
       if (
         userOwnSpace.own_space_total_bytes &&
         userOwnSpace.own_space_total_bytes >=
-        userOwnSpace.own_space_used_total_bytes
+          userOwnSpace.own_space_used_total_bytes
       ) {
         return true;
       } else {
@@ -430,7 +425,7 @@ export function HomeScreen(props) {
         (data.HomeReducer.library.errorCode ===
           AppConstants.constant.SUBSCRIPTION_EXPIRED ||
           data.HomeReducer.library.errorCode ===
-          AppConstants.constant.SUBSCRIPTION_INVALID)
+            AppConstants.constant.SUBSCRIPTION_INVALID)
       ) {
         showUpgradeAlert();
         return false;
@@ -446,7 +441,7 @@ export function HomeScreen(props) {
           if (
             userOwnSpace.own_space_total_bytes &&
             userOwnSpace.own_space_total_bytes >=
-            userOwnSpace.own_space_used_total_bytes
+              userOwnSpace.own_space_used_total_bytes
           ) {
             return true;
           } else {
@@ -532,7 +527,6 @@ export function HomeScreen(props) {
               return;
             }
             countPickerSelectedImage = response.length;
-
           }
           // Upload Staging api and integration
 
@@ -544,7 +538,7 @@ export function HomeScreen(props) {
               size: data1.size,
               type: data1.mime,
             };
-            tempIMG.push(source)
+            tempIMG.push(source);
             tempMediaspce = tempMediaspce + data1.size;
             let userOwnSpace = {};
             // adding selected image size in the already used space of the user and find out actual used space \\
@@ -574,7 +568,7 @@ export function HomeScreen(props) {
             }
           });
           // Upload Staging api and integration
-          gotoUploadImage(tempIMG)
+          gotoUploadImage(tempIMG);
           if (uploadMediaVar) {
           } else {
             showUpgradeAlert();
@@ -587,8 +581,8 @@ export function HomeScreen(props) {
   };
   // Upload Staging api and integration
   const gotoUploadImage = (data) => {
-    callAPItoUploadImage(data)
-  }
+    callAPItoUploadImage(data);
+  };
   const onClickOwnAlbum = () => {
     setIsSharedAlbum(false), callApiToGetOwnAlbumData();
   };
@@ -617,8 +611,7 @@ export function HomeScreen(props) {
     return stringToRead;
   };
 
-  const onKeyEventPress = (event) => {
-  };
+  const onKeyEventPress = (event) => {};
 
   const renderHeader = () => {
     return (
@@ -754,7 +747,6 @@ export function HomeScreen(props) {
                           <View style={styles.viewDropDownCell}>
                             <TouchableOpacity
                               onPress={() => {
-
                                 setIsAlbumDropDownOpen(false),
                                   setIsLibrary(false),
                                   isClearSearchText
@@ -815,13 +807,6 @@ export function HomeScreen(props) {
   const renderFooter = () => {
     return (
       <View style={styles.viewLoader}>
-        {/* {loading ? (
-          <ActivityIndicator
-            color={AppColor.colors.THEME_BLUE}
-            size={"large"}
-            style={styles.activityIndicator}
-          />
-        ) : null} */}
         <Pressable
           onPress={isLibrary ? selectImage : moveToAddAlbum}
           style={styles.footerContainerView}
@@ -922,7 +907,7 @@ export function HomeScreen(props) {
   };
 
   const renderLibraryList = ({ item, index }) => {
-    console.warn("i am in renderLibraryList===>", item)
+    console.warn("i am in renderLibraryList===>", item);
     if (item.file_name) {
       let containerName =
         user && user.user_detail ? user.user_detail.container_name : "";
@@ -950,23 +935,24 @@ export function HomeScreen(props) {
           isVideoFullScreen={isVideoFullScreen}
         />
       );
-    } else {
-      return (
-        <Pressable
-          onPress={isLibrary ? selectImage : moveToAddAlbum}
-          style={styles.footerContainerView}
-        >
-          <Image
-            resizeMode="contain"
-            style={styles.addView}
-            source={require("../../assets/icons/plus.png")}
-          />
-          <Text style={styles.textBottom}>
-            {"Select Photos/Videos"}
-          </Text>
-        </Pressable>
-      );
     }
+    // else {
+    //   return (
+    //     <Pressable
+    //       onPress={isLibrary ? selectImage : moveToAddAlbum}
+    //       style={styles.footerContainerView}
+    //     >
+    //       <Image
+    //         resizeMode="contain"
+    //         style={styles.addView}
+    //         source={require("../../assets/icons/plus.png")}
+    //       />
+    //       <Text style={styles.textBottom}>
+    //         {"Select Photos/Videos"}
+    //       </Text>
+    //     </Pressable>
+    //   );
+    // }
   };
 
   const moveToAlbumDetail = (item) => {
@@ -1023,10 +1009,7 @@ export function HomeScreen(props) {
       );
     } else {
       return (
-        <Pressable
-          onPress={moveToAddAlbum}
-          style={styles.footerContainerView}
-        >
+        <Pressable onPress={moveToAddAlbum} style={styles.footerContainerView}>
           <Image
             resizeMode="contain"
             style={styles.addView}
@@ -1034,7 +1017,6 @@ export function HomeScreen(props) {
           />
           <Text style={styles.textBottom}>{"New Album"}</Text>
         </Pressable>
-
       );
     }
   };
@@ -1147,12 +1129,11 @@ export function HomeScreen(props) {
   const onClickRedButtonSearch = () => {
     if (isLibrary) {
       notifyMessage(AppConstants.constant.ONLY_ALBUM_CAN_SEARCH_BY_NAME);
-      return
+      return;
     }
     onClickSearch();
-  }
+  };
   const onClickSearch = () => {
-
     if (isLibrary) {
       onChangeText("");
       setIsClearSearchText(true);
@@ -1312,19 +1293,18 @@ export function HomeScreen(props) {
     // params.append("name", "name");
     item.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
-    })
-    dispatch(
-      uploadImg(params)
-    );
-    console.warn("i am in home new reducer==>",)
-    console.warn("i am print after upload api=>", data.HomeReducer.library.data.uploadImages.data)
-    setArrayLibrary(
-      arrayLibrary.concat(data.HomeReducer.library.data.uploadImages.data)
-    );
+    });
+    dispatch(uploadImg(params));
+    console.warn("i am in home new reducer==>", JSON.stringify(params));
+    setData();
+    // setArrayLibrary(
+    //   arrayLibrary.concat(data.HomeReducer.library.data.uploadImages.data)
+    // );
+    // callApiToGetLibraryData()
     flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
 
-    console.warn("i am in set array lib==>", arrayLibrary)
-  }
+    // console.warn("i am in set array lib==>", arrayLibrary)
+  };
   const getOwnAlbumData = (isLoadMore) => {
     {
       // This is the first time when own album is empty and we need to call api
@@ -1333,6 +1313,10 @@ export function HomeScreen(props) {
   };
 
   const listAllMediaSuccessApiCall = () => {
+    console.warn(
+      "i am in list all media success api call==>",
+      data.HomeReducer
+    );
     let dict = data.HomeReducer;
     dict.library = {};
     dispatch(listAllMediaSuccess(dict));
@@ -1374,6 +1358,7 @@ export function HomeScreen(props) {
           })
         );
       } else {
+        console.warn("i am in else ==== >");
         dispatch(
           listAllMedia({
             sessid: user.sessid ? user.sessid : "",
@@ -1390,7 +1375,6 @@ export function HomeScreen(props) {
   // For pagination
   const loadMoreData = () => {
     if (isLibrary) {
-
       let dataToset = pageCountLibrary + 1;
       setPageCountLibrary(dataToset);
       if (libraryResponse && libraryResponse.data) {
@@ -1434,33 +1418,27 @@ export function HomeScreen(props) {
   //* Update array according to api response  *//
 
   const setData = () => {
-    console.warn("i am in set data calling...")
+    console.warn("i am in set data calling...");
     if (isLibrary) {
-      console.warn("i am in is data.HomeReducer.library ===>", data.HomeReducer.library)
-      console.warn("i am in is data.HomeReducer.library.responseCode", data.HomeReducer.library.responseCode)
-      console.warn("i am in is AppConstants.constant.SUCCESS", AppConstants.constant.SUCCESS)
-
-      console.warn("i am in is data.HomeReducer.library.data ===>", data.HomeReducer.library.data)
-      // console.warn("i am in is data.HomeReducer.library.data.data ===>", data.HomeReducer.library.data.data)
-
+      console.warn("i am in is if (isLibrary)");
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
         data.HomeReducer.library.responseCode ===
-        AppConstants.constant.SUCCESS &&
+          AppConstants.constant.SUCCESS &&
         data.HomeReducer.library.data &&
         data.HomeReducer.library.data.data
       ) {
-        console.warn("i am in isLibrary==>")
+        console.warn("i am in isLibrary==>");
         if (isApiCall) {
           setIsApiCall(false);
 
           if (arrayLibrary) {
-            console.warn("i am in arrayLibrary isLibrary==>")
+            console.warn("i am in arrayLibrary isLibrary==>");
 
             if (arrayLibrary.length > 0) {
               //paging case need to append data in existing array
-              console.warn("i am in array length=>", arrayLibrary.length)
+              console.warn("i am in array length=>", arrayLibrary.length);
               setArrayLibrary(
                 arrayLibrary.concat(data.HomeReducer.library.data.data)
               );
@@ -1476,12 +1454,14 @@ export function HomeScreen(props) {
         listAllMediaSuccessApiCall();
       }
     } else {
+      console.warn("i am in new api else if====>");
+
       if (isSharedAlbum) {
         if (
           data.HomeReducer.sharedAlbums &&
           data.HomeReducer.sharedAlbums.responseCode &&
           data.HomeReducer.sharedAlbums.responseCode ===
-          AppConstants.constant.SUCCESS
+            AppConstants.constant.SUCCESS
         ) {
           if (isApiCall) {
             setIsApiCall(false);
@@ -1512,11 +1492,12 @@ export function HomeScreen(props) {
           listSharedAlbumSuccessApiCall();
         }
       } else {
+        console.warn("i am in new api else====>");
         if (
           data.HomeReducer.ownAlbums &&
           data.HomeReducer.ownAlbums.responseCode &&
           data.HomeReducer.ownAlbums.responseCode ===
-          AppConstants.constant.SUCCESS
+            AppConstants.constant.SUCCESS
         ) {
           if (isApiCall) {
             setIsApiCall(false);
@@ -1603,12 +1584,11 @@ export function HomeScreen(props) {
       data.HomeReducer.library.errorCode &&
       isApiCall
     ) {
-
       if (
         data.HomeReducer.library.errorCode ===
-        AppConstants.constant.SUBSCRIPTION_EXPIRED ||
+          AppConstants.constant.SUBSCRIPTION_EXPIRED ||
         data.HomeReducer.library.errorCode ===
-        AppConstants.constant.SUBSCRIPTION_INVALID
+          AppConstants.constant.SUBSCRIPTION_INVALID
       ) {
         setIsApiCall(false);
         showUpgradeAlert();
@@ -1678,7 +1658,6 @@ export function HomeScreen(props) {
 
     // For library, Own Album and shared album
     if (isLibrary) {
-
       response = data.HomeReducer.library;
       //if (response.errorCode)
       {
@@ -1755,12 +1734,12 @@ export function HomeScreen(props) {
   };
 
   const distictLibraryArray = (data) => {
-    console.warn("i am in distictLibraryArray=>", data)
+    console.warn("i am in distictLibraryArray=>", data);
     const distinctArray = [
       ...new Map(data.map((x) => [x["user_media_id"], x])).values(),
     ];
     //** Pushing an empty item so i can show add button in the place of it.  */
-    distinctArray.push({})
+    distinctArray.push({});
     return distinctArray;
   };
 
@@ -1768,7 +1747,7 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-    distinctArray.push({})
+    distinctArray.push({});
     return distinctArray;
   };
 
@@ -1776,7 +1755,7 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-    distinctArray.push({})
+    distinctArray.push({});
     return distinctArray;
   };
 
@@ -1844,23 +1823,23 @@ export function HomeScreen(props) {
               ref={flatListRef}
               data={
                 isLibrary
-                  ? distictLibraryArray(arrayLibrary)
+                  ? arrayLibrary // distictLibraryArray(arrayLibrary)
                   : isSharedAlbum
-                    ? distictShareAlbumArray(arrayAlbumShared)
-                    : distictOwnAlbumArray(arrayAlbumOwn)
+                  ? distictShareAlbumArray(arrayAlbumShared)
+                  : distictOwnAlbumArray(arrayAlbumOwn)
               }
               numColumns={2}
               renderItem={isLibrary ? renderLibraryList : renderAlbumList}
               ListHeaderComponent={renderHeader()}
-              // ListFooterComponent={renderFooter()}
+              ListFooterComponent={renderFooter()}
               extraData={
                 isLibrary
-                  ? distictLibraryArray(arrayLibrary)
+                  ? arrayLibrary // distictLibraryArray(arrayLibrary)
                   : isSharedAlbum
-                    ? distictShareAlbumArray(arrayAlbumShared)
-                    : distictOwnAlbumArray(arrayAlbumOwn)
+                  ? distictShareAlbumArray(arrayAlbumShared)
+                  : distictOwnAlbumArray(arrayAlbumOwn)
               }
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ padding: 20 }}
               onEndReachedThreshold={0.01}
@@ -1871,8 +1850,8 @@ export function HomeScreen(props) {
                 isLibrary
                   ? item.user_media_id
                   : isSharedAlbum
-                    ? index
-                    : item.album_id
+                  ? index
+                  : item.album_id
               }
             />
 

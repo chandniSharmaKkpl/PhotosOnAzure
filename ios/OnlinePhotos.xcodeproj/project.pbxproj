@@ -43,7 +43,6 @@
 		98D10F8585AC4CD5918F1DAD /* Password.png in Resources */ = {isa = PBXBuildFile; fileRef = A0989698B6E1446BBA8A4BDD /* Password.png */; };
 		A2E0F43CAEBC8F0D402EC83A /* libPods-OnlinePhotos-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED857B074F9686BAC6C131AF /* libPods-OnlinePhotos-tvOSTests.a */; };
 		A84A7659B45B418396747991 /* MuseoSlab-100.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14EBA72CB3844FC3A712990C /* MuseoSlab-100.ttf */; };
-		A9B17B1427B517BA00023AB0 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A9B17B1327B517BA00023AB0 /* main.jsbundle */; };
 		A9E0260026F9D127005F7126 /* MuseoSlab-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9E025FF26F9D127005F7126 /* MuseoSlab-500.ttf */; };
 		A9E0260626F9D13C005F7126 /* MuseoSlab-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9E0260526F9D13C005F7126 /* MuseoSlab-900.ttf */; };
 		A9EA0E082747DEA700255039 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9EA0E072747DEA700255039 /* GoogleService-Info.plist */; };
@@ -137,7 +136,6 @@
 		A0989698B6E1446BBA8A4BDD /* Password.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Password.png; path = ../src/assets/images/Password.png; sourceTree = "<group>"; };
 		A1011C8E45D13853A710F422 /* libPods-OnlinePhotos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OnlinePhotos.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6A0F25E087F4C6BBB8E36E5 /* Swipe.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Swipe.png; path = ../src/assets/Swipe.png; sourceTree = "<group>"; };
-		A9B17B1327B517BA00023AB0 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A9D31D3B266A543B0084FA3D /* OnlinePhotos.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OnlinePhotos.entitlements; path = OnlinePhotos/OnlinePhotos.entitlements; sourceTree = "<group>"; };
 		A9E025FF26F9D127005F7126 /* MuseoSlab-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSlab-500.ttf"; path = "../src/assets/fonts/MuseoSlab-500.ttf"; sourceTree = "<group>"; };
 		A9E0260526F9D13C005F7126 /* MuseoSlab-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSlab-900.ttf"; path = "../src/assets/fonts/MuseoSlab-900.ttf"; sourceTree = "<group>"; };
@@ -323,7 +321,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				A9B17B1327B517BA00023AB0 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* OnlinePhotos */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* OnlinePhotosTests */,
@@ -528,7 +525,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9B17B1427B517BA00023AB0 /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				C71CCD767F9A449C996FFBE3 /* Background Dark_High Res.png in Resources */,

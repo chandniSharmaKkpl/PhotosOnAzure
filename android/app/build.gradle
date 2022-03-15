@@ -125,8 +125,8 @@ android {
 
     dexOptions {
         javaMaxHeapSize "4g"
+        incremental true
     }
-
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -142,6 +142,7 @@ android {
         versionCode 4
         versionName "1.0"
         missingDimensionStrategy ('store', 'play')
+        minSdkVersion 21
         multiDexEnabled true
 
     }

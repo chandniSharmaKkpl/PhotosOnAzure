@@ -809,6 +809,7 @@ const HomeReducer = (state = initialState, action) => {
       return {
         ...state,
         uploadImages: action.payload,
+        // uploadMedia: action.payload,
         isRequesting: false,
         error: {},
       };

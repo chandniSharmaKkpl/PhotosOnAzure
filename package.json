@@ -13,7 +13,7 @@
     "clean:ios": "cd ios && xcodebuild clean && cd ..",
     "debug:android": "cd android/ && ./gradlew assembleDebug && cd ..",
     "release:android": "cd android/ && ./gradlew assembleRelease && cd ..",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/EPH/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/OnlinePhotos/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "cleanCache:android": "cd android; ./gradlew cleanBuildCache; cd .."
   },
