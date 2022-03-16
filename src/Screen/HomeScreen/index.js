@@ -152,7 +152,7 @@ export function HomeScreen(props) {
       removeEditMode();
       setSearchAlbumName("");
       setIsAlbumDropDownOpen(false);
-      // setIsLibrary(true);
+      setIsLibrary(true);
       if (isLibrary) {
         // Calling api to get library data.
         setPageCountLibrary(1);
@@ -375,7 +375,6 @@ export function HomeScreen(props) {
           );
         }
       }
-
       setLoading(false);
     });
     Upload.addListener("error", res.uploadId, (err) => {
@@ -1335,6 +1334,7 @@ export function HomeScreen(props) {
       console.warn("i am in api res ==>error", error)
     });
   };
+  
   const getOwnAlbumData = (isLoadMore) => {
     {
       // This is the first time when own album is empty and we need to call api
@@ -1450,7 +1450,13 @@ export function HomeScreen(props) {
   const setData = () => {
     console.warn("i am in set data calling...");
     if (isLibrary) {
-      console.warn("i am in is if (isLibrary)", data.HomeReducer.library.data);
+      // console.warn("i am in is data.HomeReducer.library ===>", data.HomeReducer.library)
+      // console.warn("i am in is data.HomeReducer.library.responseCode", data.HomeReducer.library.responseCode)
+      // console.warn("i am in is AppConstants.constant.SUCCESS", AppConstants.constant.SUCCESS)
+
+      // console.warn("i am in is data.HomeReducer.library.data ===>", data.HomeReducer.library.data)
+      // console.warn("i am in is data.HomeReducer.library.data.data ===>", data.HomeReducer.library.data.data)
+
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
@@ -1764,11 +1770,13 @@ export function HomeScreen(props) {
   };
 
   const distictLibraryArray = (data) => {
+   
     const distinctArray = [
-      ...new Map(data.map((x) => [x["user_media_id"], x])).values(),
+      ...new Map(data.map((x) => [x?.user_media_id, x])).values(),
     ];
-    //** Pushing an empty item so i can show add button in the place of it.  */
-    distinctArray.push({});
+
+   // ** Pushing an empty item so i can show add button in the place of it.  */
+   distinctArray.push({})
     return distinctArray;
   };
 
