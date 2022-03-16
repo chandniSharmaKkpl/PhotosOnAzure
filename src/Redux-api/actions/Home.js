@@ -131,9 +131,7 @@ export const subscribeSuccess = (data) => ({
 });
 
 
-export const listAllMediaSuccess = (data) => (
-  console.warn("i am in list all media success==>",data),
-  {
+export const listAllMediaSuccess = (data) => ({
   type: LIST_ALL_MEDIA_SUCCESS,
   payload: {
     data: data,
@@ -176,19 +174,6 @@ export const deleteUserMediaFail = (data) => ({
   },
 });
 
-export const uploadImageSuccess = (data) => ({
-  type: UPLOAD_IMAGE_SUCCESS,
-  payload: {
-    data: data,
-  },
-});
-
-export const uploadImageFail = (data) => ({
-  type: UPLOAD_IMAGE_FAILURE,
-  payload: {
-    data: data,
-  },
-});
 
 export const deleteUserMediaAlbumDetailSuccess = (data) => ({
   type: DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS,
@@ -382,7 +367,6 @@ export const uploadImg = (param) => (dispatch) => {
 
 //* Getting library Data  *//
 export const listAllMedia = (data) => (dispatch) => {
-  console.warn("i am in list all param==>",data)
   // if (globals.isInternetConnected == true)
   {
     dispatch({ type: LIST_ALL_MEDIA_REQUEST, payload: {} });
@@ -397,7 +381,6 @@ export const listAllMedia = (data) => (dispatch) => {
       data: data,
     })
       .then((response) => {
-        console.warn("i am in responce =>",JSON.stringify(response.data))
         dispatch({ type: LIST_ALL_MEDIA_SUCCESS, payload: response.data });
       })
       .catch((error) => {

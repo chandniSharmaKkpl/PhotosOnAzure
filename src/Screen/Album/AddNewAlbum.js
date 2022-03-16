@@ -419,7 +419,7 @@ const AddNewAlbum = (props) => {
     dispatch(
       uploadImg(params)
     );
-    props.navigation.navigate('Home');
+    // props.navigation.navigate('Home');
 
   }
 
@@ -624,7 +624,8 @@ const AddNewAlbum = (props) => {
         data.HomeReducer &&
         data.HomeReducer.checkAlbumNameData &&
         data.HomeReducer.checkAlbumNameData.errorCode
-      ) {
+     
+        ) {
         setLoading(false);
         setIsApiCall(false);
 

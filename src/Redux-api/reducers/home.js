@@ -333,6 +333,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case LIST_ALL_MEDIA_SUCCESS: {
+      console.log("list all meida success -",action.payload)
       return {
         ...state,
         userSpace: action.payload.data.userSpace,
@@ -805,11 +806,11 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case UPLOAD_IMAGE_SUCCESS: {
+      console.log("UPLOAD_IMAGE_SUCCESS success -",action.payload)
 
       return {
         ...state,
         uploadImages: action.payload,
-        // uploadMedia: action.payload,
         isRequesting: false,
         error: {},
       };

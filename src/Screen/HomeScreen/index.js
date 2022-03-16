@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
+import axios from "axios";
 import {
   StatusBar,
   FlatList,
@@ -151,6 +152,7 @@ export function HomeScreen(props) {
       removeEditMode();
       setSearchAlbumName("");
       setIsAlbumDropDownOpen(false);
+      // setIsLibrary(true);
       if (isLibrary) {
         // Calling api to get library data.
         setPageCountLibrary(1);
@@ -262,8 +264,12 @@ export function HomeScreen(props) {
   }, [pageCountOwnAlbum]);
 
   const refreshAlbumList = () => {
+    console.warn("i am in refreshAlbumList==>");
     setpageCountOwnAlbum(1);
   };
+  // React.useEffect(() => {
+  //   callApiToGetLibraryData();
+  // }, [arrayLibrary]);
 
   const uploadAzure = async (assest) => {
     let assetObject = {};
@@ -935,24 +941,21 @@ export function HomeScreen(props) {
           isVideoFullScreen={isVideoFullScreen}
         />
       );
+    } else {
+      return (
+        <Pressable
+          onPress={isLibrary ? selectImage : moveToAddAlbum}
+          style={styles.footerContainerView}
+        >
+          <Image
+            resizeMode="contain"
+            style={styles.addView}
+            source={require("../../assets/icons/plus.png")}
+          />
+          <Text style={styles.textBottom}>{"Select Photos/Videos"}</Text>
+        </Pressable>
+      );
     }
-    // else {
-    //   return (
-    //     <Pressable
-    //       onPress={isLibrary ? selectImage : moveToAddAlbum}
-    //       style={styles.footerContainerView}
-    //     >
-    //       <Image
-    //         resizeMode="contain"
-    //         style={styles.addView}
-    //         source={require("../../assets/icons/plus.png")}
-    //       />
-    //       <Text style={styles.textBottom}>
-    //         {"Select Photos/Videos"}
-    //       </Text>
-    //     </Pressable>
-    //   );
-    // }
   };
 
   const moveToAlbumDetail = (item) => {
@@ -1294,16 +1297,43 @@ export function HomeScreen(props) {
     item.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
-    dispatch(uploadImg(params));
-    console.warn("i am in home new reducer==>", JSON.stringify(params));
-    setData();
-    // setArrayLibrary(
-    //   arrayLibrary.concat(data.HomeReducer.library.data.uploadImages.data)
-    // );
-    // callApiToGetLibraryData()
-    flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
+    // dispatch(uploadImg(params));
+    // if (arrayLibrary) {
+    //   console.warn("i am in arrayLibrary====>",arrayLibrary)
+    //   if (arrayLibrary.length > 0) {
+    //     arrayLibrary.splice(
+    //       0,
+    //       0,
+    //       data.HomeReducer.uploadImages.data.userMedia[0]
+    //     );
+    //   } else {
+    //     arrayLibrary.push(data.HomeReducer.uploadImages.data.userMedia[0]);
+    //   }
+    // }
 
-    // console.warn("i am in set array lib==>", arrayLibrary)
+   flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
+
+    // NEW__
+    axios.post(
+      "https://staging.2excel.com.au/onlinephoto/api/v3.0/updateusermedia",
+      params,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          mimeType: "multipart/form-data",
+        },
+      }
+    ) .then((response) => {
+      console.warn("i am in api res ==>response data", JSON.stringify(response.data.data.userMedia))
+      console.warn("i am in arrayLibrary==>", arrayLibrary);
+      const tempArr = [].concat(response.data.data.userMedia, arrayLibrary);
+      setArrayLibrary(tempArr);
+      console.warn("i am in set array lib==>", tempArr);
+    })
+    .catch((error) => {
+      console.warn("i am in api res ==>error", error)
+    });
   };
   const getOwnAlbumData = (isLoadMore) => {
     {
@@ -1420,7 +1450,7 @@ export function HomeScreen(props) {
   const setData = () => {
     console.warn("i am in set data calling...");
     if (isLibrary) {
-      console.warn("i am in is if (isLibrary)");
+      console.warn("i am in is if (isLibrary)", data.HomeReducer.library.data);
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
@@ -1734,7 +1764,6 @@ export function HomeScreen(props) {
   };
 
   const distictLibraryArray = (data) => {
-    console.warn("i am in distictLibraryArray=>", data);
     const distinctArray = [
       ...new Map(data.map((x) => [x["user_media_id"], x])).values(),
     ];
@@ -1823,7 +1852,7 @@ export function HomeScreen(props) {
               ref={flatListRef}
               data={
                 isLibrary
-                  ? arrayLibrary // distictLibraryArray(arrayLibrary)
+                  ? distictLibraryArray(arrayLibrary)
                   : isSharedAlbum
                   ? distictShareAlbumArray(arrayAlbumShared)
                   : distictOwnAlbumArray(arrayAlbumOwn)
@@ -1831,10 +1860,10 @@ export function HomeScreen(props) {
               numColumns={2}
               renderItem={isLibrary ? renderLibraryList : renderAlbumList}
               ListHeaderComponent={renderHeader()}
-              ListFooterComponent={renderFooter()}
+              // ListFooterComponent={renderFooter()}
               extraData={
                 isLibrary
-                  ? arrayLibrary // distictLibraryArray(arrayLibrary)
+                  ? distictLibraryArray(arrayLibrary)
                   : isSharedAlbum
                   ? distictShareAlbumArray(arrayAlbumShared)
                   : distictOwnAlbumArray(arrayAlbumOwn)
