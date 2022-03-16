@@ -340,6 +340,7 @@ export const notificationStatusApiCall = (param) => (dispatch) => {
 
 export const uploadImg = (param) => (dispatch) => {
   {
+    console.log(" param in uploadimg ", param);
 
     dispatch({ type: UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {

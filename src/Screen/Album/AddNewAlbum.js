@@ -99,7 +99,7 @@ const AddNewAlbum = (props) => {
   const [isVideoFullScreen, setIsVideoFullScreen] = useState(false); //On click make video on fullscreen.
   const [titleError, setTitleError] = React.useState("");
   const [emptyMediaError, setEmptyMediaError] = React.useState("");
-  const [imageUpload, setImageUpload] = React.useState([])
+  const [imageUpload, setImageUpload] = React.useState([]);
   const inputAlbumNameRef = useRef(null);
 
   var countBack = 0;
@@ -149,7 +149,7 @@ const AddNewAlbum = (props) => {
         [
           {
             text: AppConstants.constant.CANCEL,
-            onPress: () => countBack = 0,
+            onPress: () => (countBack = 0),
             style: "cancel",
           },
           {
@@ -209,7 +209,6 @@ const AddNewAlbum = (props) => {
 
     console.log(" Assest object 207 ", assetObject);
 
-
     //  alert(`uploadAzure asset objectpassing to library- ${JSON.stringify(assetObject)}`);
 
     const res = await azureblobfetch({
@@ -228,18 +227,17 @@ const AddNewAlbum = (props) => {
       // alert(`uploading progress ${JSON.stringify(data)}`)
     });
     Upload.addListener("cancelled", res.uploadId, (data) => {
-
       // alert(`uploading cancelled ${JSON.stringify(data)}`)
 
       countImgUploadAzure = countImgUploadAzure + 1;
     });
     Upload.addListener("completed", res.uploadId, (data) => {
-      console.warn("i am in Upload completed in Add New Album =>", data)
+      console.warn("i am in Upload completed in Add New Album =>", data);
 
       // alert(`uploading completed ${JSON.stringify(data)}`)
 
       countImgUploadAzure = countImgUploadAzure + 1;
-      // console.log("225 completed ===>","dictImageToSend",countImgUploadAzure, data); 
+      // console.log("225 completed ===>","dictImageToSend",countImgUploadAzure, data);
 
       // In api we don't need to pass uri in the image object.
       let created_date = CurrentDate();
@@ -248,16 +246,20 @@ const AddNewAlbum = (props) => {
         file_type: assest.file_type.includes("image")
           ? "image"
           : assest.file_type.includes("video")
-            ? "video"
-            : assest.file_type,
+          ? "video"
+          : assest.file_type,
         is_success: true,
         size: assest.size,
         created_date: created_date,
         album_id: 0,
       };
 
-      console.log("242 completed === ", "dictImageToSend", countImgUploadAzure, dictImageToSend);
-
+      console.log(
+        "242 completed === ",
+        "dictImageToSend",
+        countImgUploadAzure,
+        dictImageToSend
+      );
 
       arrayLibraryLocalData.push(dictImageToSend);
 
@@ -270,7 +272,12 @@ const AddNewAlbum = (props) => {
           data: arrayLibraryLocalData,
         };
 
-        console.log("completed === ", "countImgUploadAzure", countImgUploadAzure, data);
+        console.log(
+          "completed === ",
+          "countImgUploadAzure",
+          countImgUploadAzure,
+          data
+        );
 
         setIsApiCall(true);
         dispatch(uploadMedia(param));
@@ -279,7 +286,6 @@ const AddNewAlbum = (props) => {
       //setLoading(false);
     });
     Upload.addListener("error", res.uploadId, (err) => {
-
       countImgUploadAzure = countImgUploadAzure + 1;
       countImgFailedToUpload = countImgFailedToUpload + 1;
       setCountFailState(countImgFailedToUpload);
@@ -296,7 +302,6 @@ const AddNewAlbum = (props) => {
       }
     });
   };
-
 
   // In Android file name is not getting by library so we are generating the random string to show the
   const generateRandomFileName = () => {
@@ -317,7 +322,7 @@ const AddNewAlbum = (props) => {
       ImagePicker.openPicker({
         multiple: true,
         maxFiles: 5,
-        forceJpg: true  // For ios only will remove in android
+        forceJpg: true, // For ios only will remove in android
       })
         .then((response) => {
           if (
@@ -342,7 +347,7 @@ const AddNewAlbum = (props) => {
               size: data1.size,
               type: data1.mime,
             };
-            tempIMG.push(source)
+            tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
             if (Platform.OS === "ios") {
@@ -356,23 +361,28 @@ const AddNewAlbum = (props) => {
               is_success: true,
               size: data1.size,
               album_id: 0,
-              sourceURL: Platform.OS === "android" ? data1.path : data1.sourceURL,
+              sourceURL:
+                Platform.OS === "android" ? data1.path : data1.sourceURL,
               uri: data1.path,
               user_media_id: Math.random(), // We are distincting array elements based on user_media id so we generate it unique
-              pathString: Platform.OS === "android" ? data1.path : ""
+              pathString: Platform.OS === "android" ? data1.path : "",
             };
             tempMediaspce = tempMediaspce + data1.size;
-            let userOwnSpace = {}
+            let userOwnSpace = {};
             // adding selected image size in the already used space of the user and find out actual used space \\
 
             if (data.HomeReducer && data.HomeReducer.userSpace) {
               userOwnSpace = data.HomeReducer.userSpace;
-            } else if (data.HomeReducer && data.HomeReducer.library && data.HomeReducer.library.data && data.HomeReducer.library.data.userSpace) {
+            } else if (
+              data.HomeReducer &&
+              data.HomeReducer.library &&
+              data.HomeReducer.library.data &&
+              data.HomeReducer.library.data.userSpace
+            ) {
               userOwnSpace = data.HomeReducer.library.data.userSpace;
             }
             var currentTotalUsedBytes =
-              userOwnSpace.own_space.own_space_used_total_bytes +
-              tempMediaspce;
+              userOwnSpace.own_space.own_space_used_total_bytes + tempMediaspce;
             if (
               currentTotalUsedBytes <
               userOwnSpace.own_space.own_space_total_bytes
@@ -385,7 +395,7 @@ const AddNewAlbum = (props) => {
           });
           // Upload Staging api and integration
           // gotoUploadImage(tempIMG)
-          setImageUpload(tempIMG)
+          setImageUpload(tempIMG);
           if (uploadMediaVar === true) {
             setEmptyMediaError("");
             if (arrayLibrary.length > 0) {
@@ -398,8 +408,7 @@ const AddNewAlbum = (props) => {
             showUpgradeAlert();
           }
         })
-        .catch((e) => {
-        });
+        .catch((e) => {});
     }
   };
 
@@ -407,21 +416,23 @@ const AddNewAlbum = (props) => {
   const callAPItoUploadImage = (data) => {
     const params = new FormData();
     let getfinalTitle = getTimeStemp(title);
-
-    console.warn("i am in callAPItoUploadImage=>", data)
     params.append("sessid", user.sessid);
     params.append("name", title);
     params.append("code_name", getfinalTitle);
-    data.map((data1, index) => {
-      params.append("album_media[" + index + "]", data1);
-    })
-    console.warn("i am in api param==>", params)
-    dispatch(
-      uploadImg(params)
-    );
-    // props.navigation.navigate('Home');
 
-  }
+    data.map((data1, index) => {
+      const source = {
+        uri: data1.path,
+        name: data1.file_name,
+        size: data1.size,
+        type: data1.file_type,
+      };
+      params.append("album_media[" + index + "]", source);
+    });
+
+    console.log("i am in api param==>", params);
+    dispatch(uploadImg(params));
+  };
 
   // Initialy check
   const checkUserAvailableSpace = () => {
@@ -435,7 +446,7 @@ const AddNewAlbum = (props) => {
       if (
         userOwnSpace.own_space_total_bytes &&
         userOwnSpace.own_space_total_bytes >=
-        userOwnSpace.own_space_used_total_bytes
+          userOwnSpace.own_space_used_total_bytes
       ) {
         return true;
       } else {
@@ -446,20 +457,26 @@ const AddNewAlbum = (props) => {
       if (
         data.HomeReducer &&
         data.HomeReducer.library &&
-        ((data.HomeReducer.library.errorCode ===
-          AppConstants.constant.SUBSCRIPTION_EXPIRED) || (data.HomeReducer.library.errorCode === AppConstants.constant.SUBSCRIPTION_INVALID))
+        (data.HomeReducer.library.errorCode ===
+          AppConstants.constant.SUBSCRIPTION_EXPIRED ||
+          data.HomeReducer.library.errorCode ===
+            AppConstants.constant.SUBSCRIPTION_INVALID)
       ) {
         showUpgradeAlert();
         return false;
       } else {
-        if (data.HomeReducer && data.HomeReducer.library && data.HomeReducer.library.data
-          && data.HomeReducer.library.data.userSpace && data.HomeReducer.library.data.userSpace.own_space) {
-
+        if (
+          data.HomeReducer &&
+          data.HomeReducer.library &&
+          data.HomeReducer.library.data &&
+          data.HomeReducer.library.data.userSpace &&
+          data.HomeReducer.library.data.userSpace.own_space
+        ) {
           userOwnSpace = data.HomeReducer.library.data.userSpace.own_space;
           if (
             userOwnSpace.own_space_total_bytes &&
             userOwnSpace.own_space_total_bytes >=
-            userOwnSpace.own_space_used_total_bytes
+              userOwnSpace.own_space_used_total_bytes
           ) {
             return true;
           } else {
@@ -469,8 +486,6 @@ const AddNewAlbum = (props) => {
         }
       }
     }
-
-
   };
   const showUpgradeAlert = () => {
     Alert.alert(
@@ -515,7 +530,6 @@ const AddNewAlbum = (props) => {
   };
 
   const renderLibraryList = ({ item, index }) => {
-
     let containerName =
       user && user.user_detail ? user.user_detail.container_name : "";
     let imageUrl = AZURE_BASE_URL + containerName + "/" + item.file_name;
@@ -542,19 +556,15 @@ const AddNewAlbum = (props) => {
         isVideoFullScreen={isVideoFullScreen}
       />
     );
-  }
-
+  };
 
   const distinctLibraryArray = (data) => {
-
-    if (Platform.OS === 'android') {
-
+    if (Platform.OS === "android") {
       const distinctArray = [
         ...new Map(data.map((x) => [x["pathString"], x])).values(),
       ];
       return distinctArray;
     } else {
-
       // const distinctArray = [
       //   ...new Map(data.map((x) => [x["fileName"], x])).values(),
       // ];
@@ -565,10 +575,9 @@ const AddNewAlbum = (props) => {
       ];
       return distinctArray;
     }
-
   };
 
-  const callbackFunction = (childData) => { };
+  const callbackFunction = (childData) => {};
 
   const moveBack = () => {
     //route.params.onReturn("Chandni ");
@@ -618,14 +627,12 @@ const AddNewAlbum = (props) => {
   };
 
   const checkResponseCode = () => {
-
     if (isApiCall) {
       if (
         data.HomeReducer &&
         data.HomeReducer.checkAlbumNameData &&
         data.HomeReducer.checkAlbumNameData.errorCode
-     
-        ) {
+      ) {
         setLoading(false);
         setIsApiCall(false);
 
@@ -646,42 +653,102 @@ const AddNewAlbum = (props) => {
         if (
           data.HomeReducer.checkAlbumNameData &&
           data.HomeReducer.checkAlbumNameData.errorCode ===
-          AppConstants.constant.NOT_AUTHORIZED
+            AppConstants.constant.NOT_AUTHORIZED
         ) {
           setLoading(false);
           setIsApiCall(false);
           alertWithMessage(true, data.HomeReducer.checkAlbumNameData.message);
           return;
         } else {
-
-          if (data.HomeReducer.checkAlbumNameData &&
+          if (
+            data.HomeReducer.checkAlbumNameData &&
             data.HomeReducer.checkAlbumNameData.errorCode ===
-            AppConstants.constant.ALBUM_NOT_EXIST) {
+              AppConstants.constant.ALBUM_NOT_EXIST
+          ) {
             setLoading(false);
             setIsApiCall(false);
             data.HomeReducer.checkAlbumNameData.errorCode = "";
             successApi();
             saveAlbumData();
           } else {
-            Alert.alert(AppConstants.constant.ALERT, data.HomeReducer.checkAlbumNameData.message, [
-              {
-                text: AppConstants.constant.CHANGE_NAME,
-                onPress: () => {
-                  data.HomeReducer.checkAlbumNameData.errorCode = "";
-                  inputAlbumNameRef.current.focus();
-                  successApi();
+            Alert.alert(
+              AppConstants.constant.ALERT,
+              data.HomeReducer.checkAlbumNameData.message,
+              [
+                {
+                  text: AppConstants.constant.CHANGE_NAME,
+                  onPress: () => {
+                    data.HomeReducer.checkAlbumNameData.errorCode = "";
+                    inputAlbumNameRef.current.focus();
+                    successApi();
+                  },
                 },
-              },
-              {
-                text: AppConstants.constant.ADD_TO_EXISTING,
-                onPress: () => {
-                  data.HomeReducer.checkAlbumNameData.errorCode = "";
-                  successApi();
-                  saveAlbumData();
+                {
+                  text: AppConstants.constant.ADD_TO_EXISTING,
+                  onPress: () => {
+                    data.HomeReducer.checkAlbumNameData.errorCode = "";
+                    successApi();
+                    saveAlbumData();
+                  },
                 },
-              },
-            ]);
+              ]
+            );
           }
+        }
+      }
+      
+      if (
+        data.HomeReducer &&
+        data.HomeReducer.uploadImages &&
+        data.HomeReducer.uploadImages.errorCode
+      ) {
+        if (
+          data.HomeReducer.uploadImages.errorCode ===
+          AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
+        ) {
+          setLoading(false);
+          setIsApiCall(false);
+          return (
+            <SubscriptionError
+              comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
+              errorCode={data.HomeReducer.uploadImages.errorCode}
+              navigation={props.navigation}
+            />
+          );
+        }
+
+        if (
+          data.HomeReducer.uploadImages &&
+          data.HomeReducer.uploadImages.errorCode ===
+            AppConstants.constant.NOT_AUTHORIZED
+        ) {
+          setLoading(false);
+          setIsApiCall(false);
+          alertWithMessage(true, data.HomeReducer.uploadImages.message);
+        } else {
+          if (
+            data.HomeReducer.uploadImages &&
+            data.HomeReducer.uploadImages.responseCode &&
+            data.HomeReducer.uploadImages.responseCode ===
+              AppConstants.constant.SUCCESS &&
+            data.HomeReducer.uploadImages.errorCode ===
+              AppConstants.constant.INSERT_SUCCESS
+          ) {
+            setLoading(false);
+            setIsApiCall(false);
+            // To stop redundant execution
+            var alertMessage = data.HomeReducer.uploadImages.message;
+            // alert(`After saving -== ${alertMessage}`);
+            let dict = data.HomeReducer.uploadImages;
+            // Make empty after showing alert
+            dict.responseCode = "";
+            dict.errorCode = "";
+            data.HomeReducer.uploadImages = dict;
+            // dispatch(uploadImagesSuccess([]));
+            moveBack();
+          } else {
+          }
+          // props.navigation.goBack();
         }
       }
       if (
@@ -707,7 +774,7 @@ const AddNewAlbum = (props) => {
         if (
           data.HomeReducer.uploadMedia &&
           data.HomeReducer.uploadMedia.errorCode ===
-          AppConstants.constant.NOT_AUTHORIZED
+            AppConstants.constant.NOT_AUTHORIZED
         ) {
           setLoading(false);
           setIsApiCall(false);
@@ -717,15 +784,15 @@ const AddNewAlbum = (props) => {
             data.HomeReducer.uploadMedia &&
             data.HomeReducer.uploadMedia.responseCode &&
             data.HomeReducer.uploadMedia.responseCode ===
-            AppConstants.constant.SUCCESS &&
+              AppConstants.constant.SUCCESS &&
             data.HomeReducer.uploadMedia.errorCode ===
-            AppConstants.constant.INSERT_SUCCESS
+              AppConstants.constant.INSERT_SUCCESS
           ) {
             setLoading(false);
             setIsApiCall(false);
             // To stop redundant execution
             var alertMessage = data.HomeReducer.uploadMedia.message;
-            // alert(`After saving -== ${alertMessage}`); 
+            // alert(`After saving -== ${alertMessage}`);
             let dict = data.HomeReducer.uploadMedia;
             // Make empty after showing alert
             dict.responseCode = "";
@@ -750,17 +817,16 @@ const AddNewAlbum = (props) => {
   const saveAlbumData = () => {
     if (arrayLibrary.length > 0) {
       //** */ We are uploading all data which we select from gallery to Azure **/
-      arrayLibrary.forEach((element) => {
-        // uploadAzure(element);
-      });
+      setIsApiCall(true);
+      //callAPItoUploadImage(imageUpload)
+      console.log("saveAlbumData ", arrayLibrary);
+      callAPItoUploadImage(arrayLibrary);
     } else {
       //** create the empty album  */
-
-      setIsApiCall(true);
       // dispatch(uploadMedia(param));
-
+      //
     }
-  }
+  };
   const onClickSave = () => {
     let flagError = false;
     if (title.length !== 0) {
@@ -780,10 +846,8 @@ const AddNewAlbum = (props) => {
 
     if (!flagError) {
       setIsApiCall(true);
-      let param1 = { name: title, 'sessid': user.sessid ? user.sessid : "" };
+      let param1 = { name: title, sessid: user.sessid ? user.sessid : "" };
       dispatch(checkAlbumName(param1));
-      callAPItoUploadImage(imageUpload)
-
     }
   };
   const callApiToDelete = useCallback(
@@ -878,7 +942,7 @@ const AddNewAlbum = (props) => {
           rightViewLeftIcon={require("../../assets/images/Notification.png")}
           notificationsClick={() => {
             removeEditMode();
-            props.navigation.navigate("Notifications")
+            props.navigation.navigate("Notifications");
           }}
         />
 

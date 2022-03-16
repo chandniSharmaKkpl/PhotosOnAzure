@@ -152,7 +152,7 @@ export function HomeScreen(props) {
       removeEditMode();
       setSearchAlbumName("");
       setIsAlbumDropDownOpen(false);
-      setIsLibrary(true);
+      //setIsLibrary(true);
       if (isLibrary) {
         // Calling api to get library data.
         setPageCountLibrary(1);
