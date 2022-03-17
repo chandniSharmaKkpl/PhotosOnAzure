@@ -1297,43 +1297,9 @@ export function HomeScreen(props) {
       console.log(" data1 in lib", data1); 
       params.append("album_media[" + index + "]", data1);
     });
-    // dispatch(uploadImg(params));
-    // if (arrayLibrary) {
-    //   console.warn("i am in arrayLibrary====>",arrayLibrary)
-    //   if (arrayLibrary.length > 0) {
-    //     arrayLibrary.splice(
-    //       0,
-    //       0,
-    //       data.HomeReducer.uploadImages.data.userMedia[0]
-    //     );
-    //   } else {
-    //     arrayLibrary.push(data.HomeReducer.uploadImages.data.userMedia[0]);
-    //   }
-    // }
-
-   flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
-
-    // NEW__
-    axios.post(
-      "https://staging.2excel.com.au/onlinephoto/api/v3.0/updateusermedia",
-      params,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-          mimeType: "multipart/form-data",
-        },
-      }
-    ) .then((response) => {
-      console.warn("i am in api res ==>response data", JSON.stringify(response.data.data.userMedia))
-      console.warn("i am in arrayLibrary==>", arrayLibrary);
-      const tempArr = [].concat(response.data.data.userMedia, arrayLibrary);
-      setArrayLibrary(tempArr);
-      console.warn("i am in set array lib==>", tempArr);
-    })
-    .catch((error) => {
-      console.warn("i am in api res ==>error", error)
-    });
+     setIsApiCall(true);
+     dispatch(uploadImg(params));
+    
   };
   
   const getOwnAlbumData = (isLoadMore) => {
@@ -1698,6 +1664,7 @@ export function HomeScreen(props) {
       response = data.HomeReducer.library;
       //if (response.errorCode)
       {
+
         if (
           response &&
           response.errorCode &&
@@ -1722,6 +1689,34 @@ export function HomeScreen(props) {
         } else {
           setData();
         }
+        if (
+          data.HomeReducer.uploadImages &&
+          data.HomeReducer.uploadImages.errorCode ===
+            AppConstants.constant.NOT_AUTHORIZED
+        ) {
+         
+          setIsApiCall(false);
+          showNoMediaAlert(data.HomeReducer.uploadImages);
+         
+        } else {
+          if (
+            
+            data.HomeReducer.uploadImages && data.HomeReducer.uploadImages.errorCode &&
+            data.HomeReducer.uploadImages.errorCode ===
+              AppConstants.constant.INSERT_SUCCESS
+          ){
+
+            setArrayLibrary(
+              arrayLibrary.concat(data.HomeReducer.uploadImages.data.userMedia)
+            );
+            let dict = data.HomeReducer.uploadImages;
+            dict.errorCode = "";
+            data.HomeReducer.uploadImages = dict;
+      
+          } else {
+          }
+        }
+
       }
     } else {
       if (isSharedAlbum) {
