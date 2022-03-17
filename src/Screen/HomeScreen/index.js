@@ -1294,6 +1294,7 @@ export function HomeScreen(props) {
     params.append("sessid", user.sessid);
     // params.append("name", "name");
     item.map((data1, index) => {
+      console.log(" data1 in lib", data1); 
       params.append("album_media[" + index + "]", data1);
     });
     // dispatch(uploadImg(params));

@@ -420,12 +420,14 @@ const AddNewAlbum = (props) => {
     params.append("name", title);
     params.append("code_name", getfinalTitle);
 
+ 
     data.map((data1, index) => {
+      console.log(" data1 ", data1); 
       const source = {
-        uri: data1.path,
+        uri: data1.uri,
         name: data1.file_name,
         size: data1.size,
-        type: data1.file_type,
+        type: data1.file_type
       };
       params.append("album_media[" + index + "]", source);
     });

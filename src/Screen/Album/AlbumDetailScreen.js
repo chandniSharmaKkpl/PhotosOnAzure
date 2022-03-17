@@ -426,12 +426,12 @@ const AlbumDetailScreen = (props) => {
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
     const params = new FormData();
-    let getfinalTitle = getTimeStemp(title);
+  // let getfinalTitle = getTimeStemp(title);
 
     console.warn("i am in callAPItoUploadImage=>", data)
     params.append("sessid", user.sessid);
-    // params.append("name", title);
-    // params.append("code_name", getfinalTitle);
+     params.append("name", istitle);
+     params.append("code_name", route.params.albumdetail.code_name );
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     })
@@ -590,7 +590,6 @@ const AlbumDetailScreen = (props) => {
   const onClickUpdate = () => {
     // making empty no media or previous list so alert will not come again
     dispatch(getdMediaListByAlbumSuccess([]));
-    callAPItoUploadImage(imageUpload)
 
     if (arrayImages.length > 0) {
       // We are uploading all data which we select from gallery to Azure
@@ -604,8 +603,7 @@ const AlbumDetailScreen = (props) => {
           if (element1.status === AppConstants.constant.NEW_ADDED) {
             isNewElementAdded = true;
             // uploadAzure(element1);
-
-
+            callAPItoUploadImage(imageUpload)
           }
         });
       });
@@ -894,6 +892,114 @@ const AlbumDetailScreen = (props) => {
         alertLogout();
       } else {
         setData();
+      }
+    }
+
+    if (
+      data.HomeReducer &&
+      data.HomeReducer.uploadImages &&
+      data.HomeReducer.uploadImages.errorCode
+    ) {
+      if (
+        data.HomeReducer.uploadImages.errorCode ===
+        AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
+      ) {
+        setLoading(false);
+        setIsApiCall(false);
+        return (
+          <SubscriptionError
+            comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
+            errorCode={data.HomeReducer.uploadImages.errorCode}
+            navigation={props.navigation}
+          />
+        );
+      }
+
+      if (
+        data.HomeReducer.uploadImages &&
+        data.HomeReducer.uploadImages.errorCode ===
+          AppConstants.constant.NOT_AUTHORIZED
+      ) {
+        setLoading(false);
+        setIsApiCall(false);
+        alertWithMessage(true, data.HomeReducer.uploadImages.message);
+      } else {
+        if (
+          data.HomeReducer.uploadImages &&
+          data.HomeReducer.uploadImages.responseCode &&
+          data.HomeReducer.uploadImages.responseCode ===
+            AppConstants.constant.SUCCESS &&
+          data.HomeReducer.uploadImages.errorCode ===
+            AppConstants.constant.INSERT_SUCCESS
+        ) {
+          setLoading(false);
+          setIsApiCall(false);
+          // To stop redundant execution
+          var alertMessage = data.HomeReducer.uploadImages.message;
+          // alert(`After saving -== ${alertMessage}`);
+          let dict = data.HomeReducer.uploadImages;
+          // Make empty after showing alert
+          dict.responseCode = "";
+          dict.errorCode = "";
+          data.HomeReducer.uploadImages = dict;
+          // dispatch(uploadImagesSuccess([]));
+          moveBack();
+        } else {
+        }
+        // props.navigation.goBack();
+      }
+    }
+    if (
+      data.HomeReducer &&
+      data.HomeReducer.uploadMedia &&
+      data.HomeReducer.uploadMedia.errorCode
+    ) {
+      if (
+        data.HomeReducer.uploadMedia.errorCode ===
+        AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
+      ) {
+        setLoading(false);
+        setIsApiCall(false);
+        return (
+          <SubscriptionError
+            comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
+            errorCode={data.HomeReducer.uploadMedia.errorCode}
+            navigation={props.navigation}
+          />
+        );
+      }
+
+      if (
+        data.HomeReducer.uploadMedia &&
+        data.HomeReducer.uploadMedia.errorCode ===
+          AppConstants.constant.NOT_AUTHORIZED
+      ) {
+        setLoading(false);
+        setIsApiCall(false);
+        alertWithMessage(true, data.HomeReducer.uploadMedia.message);
+      } else {
+        if (
+          data.HomeReducer.uploadMedia &&
+          data.HomeReducer.uploadMedia.responseCode &&
+          data.HomeReducer.uploadMedia.responseCode ===
+            AppConstants.constant.SUCCESS &&
+          data.HomeReducer.uploadMedia.errorCode ===
+            AppConstants.constant.INSERT_SUCCESS
+        ) {
+          setLoading(false);
+          setIsApiCall(false);
+          // To stop redundant execution
+          var alertMessage = data.HomeReducer.uploadMedia.message;
+          // alert(`After saving -== ${alertMessage}`);
+          let dict = data.HomeReducer.uploadMedia;
+          // Make empty after showing alert
+          dict.responseCode = "";
+          dict.errorCode = "";
+          data.HomeReducer.uploadmedia = dict;
+          // dispatch(uploadMediaSuccess([]));
+          moveBack();
+        } else {
+        }
       }
     }
   };
