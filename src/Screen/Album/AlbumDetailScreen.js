@@ -53,6 +53,7 @@ import {
   uploadMediaSuccess,
   albumDetailSuccessLocalData,
   uploadImg,
+  updateAlbumImageUpload
 } from "../../Redux-api/actions/Home";
 
 import AuthContext from "../../context/AuthContext";
@@ -437,7 +438,7 @@ const AlbumDetailScreen = (props) => {
     })
     console.warn("i am in api param==>", params)
     dispatch(
-      uploadImg(params)
+      updateAlbumImageUpload(params)
     );
     props.navigation.navigate('Home');
 
@@ -897,11 +898,11 @@ const AlbumDetailScreen = (props) => {
 
     if (
       data.HomeReducer &&
-      data.HomeReducer.uploadImages &&
-      data.HomeReducer.uploadImages.errorCode
+      data.HomeReducer.updateAlbumUploadImg &&
+      data.HomeReducer.updateAlbumUploadImg.errorCode
     ) {
       if (
-        data.HomeReducer.uploadImages.errorCode ===
+        data.HomeReducer.updateAlbumUploadImg.errorCode ===
         AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
       ) {
         setLoading(false);
@@ -909,40 +910,39 @@ const AlbumDetailScreen = (props) => {
         return (
           <SubscriptionError
             comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
-            errorCode={data.HomeReducer.uploadImages.errorCode}
+            errorCode={data.HomeReducer.updateAlbumUploadImg.errorCode}
             navigation={props.navigation}
           />
         );
       }
 
       if (
-        data.HomeReducer.uploadImages &&
-        data.HomeReducer.uploadImages.errorCode ===
+        data.HomeReducer.updateAlbumUploadImg &&
+        data.HomeReducer.updateAlbumUploadImg.errorCode ===
           AppConstants.constant.NOT_AUTHORIZED
       ) {
         setLoading(false);
         setIsApiCall(false);
-        alertWithMessage(true, data.HomeReducer.uploadImages.message);
+        alertWithMessage(true, data.HomeReducer.updateAlbumUploadImg.message);
       } else {
         if (
-          data.HomeReducer.uploadImages &&
-          data.HomeReducer.uploadImages.responseCode &&
-          data.HomeReducer.uploadImages.responseCode ===
+          data.HomeReducer.updateAlbumUploadImg &&
+          data.HomeReducer.updateAlbumUploadImg.responseCode &&
+          data.HomeReducer.updateAlbumUploadImg.responseCode ===
             AppConstants.constant.SUCCESS &&
-          data.HomeReducer.uploadImages.errorCode ===
+          data.HomeReducer.updateAlbumUploadImg.errorCode ===
             AppConstants.constant.INSERT_SUCCESS
         ) {
           setLoading(false);
           setIsApiCall(false);
           // To stop redundant execution
-          var alertMessage = data.HomeReducer.uploadImages.message;
+          var alertMessage = data.HomeReducer.updateAlbumUploadImg.message;
           // alert(`After saving -== ${alertMessage}`);
-          let dict = data.HomeReducer.uploadImages;
+          let dict = data.HomeReducer.updateAlbumUploadImg;
           // Make empty after showing alert
           dict.responseCode = "";
           dict.errorCode = "";
-          data.HomeReducer.uploadImages = dict;
-          // dispatch(uploadImagesSuccess([]));
+          data.HomeReducer.updateAlbumUploadImg = dict;
           moveBack();
         } else {
         }

@@ -95,6 +95,15 @@ import {
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAILURE,
 
+  ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE,
+  ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS,
+  ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST,
+
+  UPDATE_ALB_UPLOAD_IMAGE_FAILURE,
+  UPDATE_ALB_UPLOAD_IMAGE_SUCCESS,
+  UPDATE_ALB_UPLOAD_IMAGE_REQUEST,
+  
+
   SAVE_ALBUM_ID,
 } from "../constant";
 
@@ -128,7 +137,9 @@ const initialState = {
   revokeShareAlbumData: {},
   checkAlbumNameData: {},
   // Upload Staging api and integration
-  uploadImages: {}
+  uploadImages: {},
+  uploadImagesAddNewAlbum: {},
+updateAlbumUploadImg:{}
 };
 const HomeReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -806,8 +817,6 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case UPLOAD_IMAGE_SUCCESS: {
-      console.log("UPLOAD_IMAGE_SUCCESS success -",action.payload)
-
       return {
         ...state,
         uploadImages: action.payload,
@@ -823,6 +832,61 @@ const HomeReducer = (state = initialState, action) => {
         error: {},
       };
     }
+
+    // Add new album 
+    case ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST: {
+      return {
+        ...state,
+        uploadImagesAddNewAlbum: {},
+        isRequesting: true,
+        error: {},
+      };
+    }
+    case ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS: {
+
+      return {
+        ...state,
+        uploadImagesAddNewAlbum: action.payload,
+        isRequesting: false,
+        error: {},
+      };
+    }
+    case ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE: {
+      return {
+        ...state,
+        uploadImagesAddNewAlbum: action.payload.error,
+        isRequesting: false,
+        error: {},
+      };
+    }
+
+     // update existing album 
+     case UPDATE_ALB_UPLOAD_IMAGE_REQUEST: {
+      return {
+        ...state,
+        updateAlbumUploadImg: {},
+        isRequesting: true,
+        error: {},
+      };
+    }
+    case UPDATE_ALB_UPLOAD_IMAGE_SUCCESS: {
+
+      return {
+        ...state,
+        updateAlbumUploadImg: action.payload,
+        isRequesting: false,
+        error: {},
+      };
+    }
+    case UPDATE_ALB_UPLOAD_IMAGE_FAILURE: {
+      return {
+        ...state,
+        updateAlbumUploadImg: action.payload.error,
+        isRequesting: false,
+        error: {},
+      };
+    }
+
     default:
       return state;
   }

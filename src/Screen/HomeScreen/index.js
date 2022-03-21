@@ -833,6 +833,8 @@ export function HomeScreen(props) {
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
 
+    console.log(" arrayDeleteItems", arrayDeleteItems); 
+
     if (isLibrary) {
       let param = {
         sessid: user.sessid ? user.sessid : "",
@@ -850,8 +852,10 @@ export function HomeScreen(props) {
 
   const onClickDelete = () => {
     var arrayDeleteItems = [];
+
     for (let index = 0; index < arrayCheckMarks.length; index++) {
       const element = arrayCheckMarks[index];
+    //  console.log(" element is --", element); 
 
       if (element.isCheck) {
         if (isLibrary) {
@@ -912,7 +916,6 @@ export function HomeScreen(props) {
   };
 
   const renderLibraryList = ({ item, index }) => {
-    console.warn("i am in renderLibraryList===>", item);
     if (item.file_name) {
       let containerName =
         user && user.user_detail ? user.user_detail.container_name : "";
@@ -1598,6 +1601,7 @@ export function HomeScreen(props) {
       }
     }
 
+   // console.log(" delete album check ", data.HomeReducer.deleteAlbum)
     // Delete Album
     if (
       data.HomeReducer.deleteAlbum &&

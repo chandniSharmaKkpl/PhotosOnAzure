@@ -14,6 +14,7 @@ import {
   uploadMedia,
   checkAlbumName,
   uploadImg,
+  uploadImgAddNewAlbum
 } from "../../Redux-api/actions/Home";
 import * as globals from "../../Utils/globals";
 import ZoomView from "../../Component/ZoomView";
@@ -415,9 +416,12 @@ const AddNewAlbum = (props) => {
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
     const params = new FormData();
-    let getfinalTitle = getTimeStemp(title);
+
+    console.log(" data and title", data, "Title ---", title); 
+
+    let getfinalTitle = getTimeStemp(title? title:'OFV');
     params.append("sessid", user.sessid);
-    params.append("name", title);
+    params.append("name", title? title:'OFV');
     params.append("code_name", getfinalTitle);
 
  
@@ -433,7 +437,7 @@ const AddNewAlbum = (props) => {
     });
 
     console.log("i am in api param==>", params);
-    dispatch(uploadImg(params));
+    dispatch(uploadImgAddNewAlbum(params));
   };
 
   // Initialy check
@@ -698,14 +702,14 @@ const AddNewAlbum = (props) => {
           }
         }
       }
-      
+
       if (
         data.HomeReducer &&
-        data.HomeReducer.uploadImages &&
-        data.HomeReducer.uploadImages.errorCode
+        data.HomeReducer.uploadImagesAddNewAlbum &&
+        data.HomeReducer.uploadImagesAddNewAlbum.errorCode
       ) {
         if (
-          data.HomeReducer.uploadImages.errorCode ===
+          data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
           AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
         ) {
           setLoading(false);
@@ -713,39 +717,42 @@ const AddNewAlbum = (props) => {
           return (
             <SubscriptionError
               comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
-              errorCode={data.HomeReducer.uploadImages.errorCode}
+              errorCode={data.HomeReducer.uploadImagesAddNewAlbum.errorCode}
               navigation={props.navigation}
             />
           );
         }
-
         if (
-          data.HomeReducer.uploadImages &&
-          data.HomeReducer.uploadImages.errorCode ===
+          data.HomeReducer.uploadImagesAddNewAlbum &&
+          data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
             AppConstants.constant.NOT_AUTHORIZED
         ) {
           setLoading(false);
           setIsApiCall(false);
-          alertWithMessage(true, data.HomeReducer.uploadImages.message);
+          alertWithMessage(true, data.HomeReducer.uploadImagesAddNewAlbum.message);
         } else {
+
+          console.log(" 333 data.HomeReducer",  data.HomeReducer.uploadImagesAddNewAlbum); 
+
           if (
-            data.HomeReducer.uploadImages &&
-            data.HomeReducer.uploadImages.responseCode &&
-            data.HomeReducer.uploadImages.responseCode ===
-              AppConstants.constant.SUCCESS &&
-            data.HomeReducer.uploadImages.errorCode ===
+            data.HomeReducer.uploadImagesAddNewAlbum &&
+            data.HomeReducer.uploadImagesAddNewAlbum.responseCode &&
+            data.HomeReducer.uploadImagesAddNewAlbum.responseCode ===
+              AppConstants.constant.SUCCESS
+               &&
+            data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
               AppConstants.constant.INSERT_SUCCESS
           ) {
             setLoading(false);
             setIsApiCall(false);
             // To stop redundant execution
-            var alertMessage = data.HomeReducer.uploadImages.message;
-            // alert(`After saving -== ${alertMessage}`);
-            let dict = data.HomeReducer.uploadImages;
-            // Make empty after showing alert
+            // var alertMessage = data.HomeReducer.uploadImagesAddNewAlbum.message;
+            // // alert(`After saving -== ${alertMessage}`);
+             let dict = data.HomeReducer.uploadImagesAddNewAlbum;
+            // // Make empty after showing alert
             dict.responseCode = "";
             dict.errorCode = "";
-            data.HomeReducer.uploadImages = dict;
+            data.HomeReducer.uploadImagesAddNewAlbum = dict;
             // dispatch(uploadImagesSuccess([]));
             moveBack();
           } else {

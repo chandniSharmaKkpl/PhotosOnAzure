@@ -89,7 +89,16 @@ import {
   SAVE_ALBUM_ID,
   UPLOAD_IMAGE_FAILURE,
   UPLOAD_IMAGE_SUCCESS,
-  UPLOAD_IMAGE_REQUEST
+  UPLOAD_IMAGE_REQUEST,
+
+  ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE,
+  ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS,
+  ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST,
+
+  UPDATE_ALB_UPLOAD_IMAGE_FAILURE,
+  UPDATE_ALB_UPLOAD_IMAGE_SUCCESS,
+  UPDATE_ALB_UPLOAD_IMAGE_REQUEST,
+  
 } from "../constant";
 import * as globals from "../../Utils/globals";
 
@@ -340,7 +349,7 @@ export const notificationStatusApiCall = (param) => (dispatch) => {
 
 export const uploadImg = (param) => (dispatch) => {
   {
-    console.log(" param in uploadimg ", param);
+    console.log(" libr param in uploadimg ", param);
 
     dispatch({ type: UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
@@ -355,16 +364,66 @@ export const uploadImg = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.warn("i am in api res ==>response data", JSON.stringify(response.data))
+        console.log("libr i am in api res ==>response data", response.data)
         dispatch({ type: UPLOAD_IMAGE_SUCCESS, payload: response.data });
       })
       .catch((error) => {
-        console.warn("i am in api res ==>error", error)
+        console.log("i am in api res ==>error", error)
         dispatch({ type: UPLOAD_IMAGE_FAILURE, payload: error });
       });
   }
 };
 
+//** Add new album  */
+export const uploadImgAddNewAlbum = (param) => (dispatch) => {
+  {
+    dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
+    const headerObj = {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+      mimeType: "multipart/form-data",
+    };
+    return axios({
+      method: "post",
+      url: UPLOAD_IMAGES,
+      headers: headerObj,
+      data: param,
+    })
+      .then((response) => {
+        dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
+      });
+  }
+};
+
+export const updateAlbumImageUpload = (param) => (dispatch) => {
+  {
+    console.log(" updatealbum param in uploadimg ", param);
+
+    dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
+    const headerObj = {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+      mimeType: "multipart/form-data",
+    };
+    return axios({
+      method: "post",
+      url: UPLOAD_IMAGES,
+      headers: headerObj,
+      data: param,
+    })
+      .then((response) => {
+        console.log("update alb i am in api res ==>response data", response.data)
+        dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
+      })
+      .catch((error) => {
+        console.log("uodate albi am in api res ==>error", error)
+        dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
+      });
+  }
+};
 
 //* Getting library Data  *//
 export const listAllMedia = (data) => (dispatch) => {
@@ -606,6 +665,8 @@ export const listsOwnAlbum = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("OWN_ALBUM_SUCCESS - ", response.data); 
+        
         dispatch({ type: OWN_ALBUM_SUCCESS, payload: response.data });
       })
       .catch((error) => {
