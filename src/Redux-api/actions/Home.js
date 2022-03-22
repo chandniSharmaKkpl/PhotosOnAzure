@@ -377,6 +377,7 @@ export const uploadImg = (param) => (dispatch) => {
 //** Add new album  */
 export const uploadImgAddNewAlbum = (param) => (dispatch) => {
   {
+    console.log(" add ne albm ", param); 
     dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
       Accept: "application/json",
@@ -390,9 +391,13 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("Add new album i am in api res ==>response data", response.data)
+
         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
       })
       .catch((error) => {
+        console.log("Add new album i am in api res ==>error", error)
+
         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
       });
   }

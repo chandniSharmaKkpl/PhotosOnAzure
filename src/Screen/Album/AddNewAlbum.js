@@ -419,9 +419,9 @@ const AddNewAlbum = (props) => {
 
     console.log(" data and title", data, "Title ---", title); 
 
-    let getfinalTitle = getTimeStemp(title? title:'OFV');
+    let getfinalTitle = getTimeStemp(title);
     params.append("sessid", user.sessid);
-    params.append("name", title? title:'OFV');
+    params.append("name", title);
     params.append("code_name", getfinalTitle);
 
  
