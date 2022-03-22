@@ -374,9 +374,11 @@ export const uploadImg = (param) => (dispatch) => {
   }
 };
 
-//** Add new album  */
+
 export const uploadImgAddNewAlbum = (param) => (dispatch) => {
   {
+    console.log(" libr param in uploadimg ", param);
+
     dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
       Accept: "application/json",
@@ -390,13 +392,41 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("libr i am in api res ==>response data", response.data)
         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
       })
       .catch((error) => {
+        console.log("i am in api res ==>error", error)
         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
       });
   }
 };
+
+//** Add new album  */
+// export const uploadImgAddNewAlbum = (param) => (dispatch) => {
+//   {
+//     dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
+//     const headerObj = {
+//       Accept: "application/json",
+//       "Content-Type": "multipart/form-data",
+//       mimeType: "multipart/form-data",
+//     };
+//     return axios({
+//       method: "post",
+//       url: UPLOAD_IMAGES,
+//       headers: headerObj,
+//       data: param,
+//     })
+//       .then((response) => {
+//         console.log("thinkkk: ", response.data)
+//         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
+//       })
+//       .catch((error) => {
+//         console.log("thinkkk catch: ", error)
+//         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
+//       });
+//   }
+// };
 
 export const updateAlbumImageUpload = (param) => (dispatch) => {
   {
