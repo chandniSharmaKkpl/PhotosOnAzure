@@ -14,6 +14,7 @@ import {
   uploadMedia,
   checkAlbumName,
   uploadImg,
+  uploadImgAddNewAlbum
 } from "../../Redux-api/actions/Home";
 import * as globals from "../../Utils/globals";
 import ZoomView from "../../Component/ZoomView";
@@ -183,6 +184,7 @@ const AddNewAlbum = (props) => {
     var splitStr = title.toLowerCase();
     var replacedStr = splitStr.split(" ").join("_");
     var finalTitle = replacedStr + "_" + date;
+    console.log("timeeee", finalTitle)
     return finalTitle;
   };
 
@@ -355,9 +357,10 @@ const AddNewAlbum = (props) => {
             } else {
               fileNameTemp = generateRandomFileName(); // Since picker is not providing name in android so we generate it
             }
+            console.log("data1::", data1, data1.mime.includes("image"))
             dictImageToShow = {
               file_name: fileNameTemp,
-              file_type: data1.mime.includes("image") ? "image" : data1.mime,
+              file_type: data1.mime.includes("image") ? data1.mime : "image/jpeg",
               is_success: true,
               size: data1.size,
               album_id: 0,
@@ -415,23 +418,29 @@ const AddNewAlbum = (props) => {
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
     const params = new FormData();
+
+    console.log(" data and title", data, "Title ---", title); 
+
     let getfinalTitle = getTimeStemp(title);
     params.append("sessid", user.sessid);
     params.append("name", title);
     params.append("code_name", getfinalTitle);
 
+ 
     data.map((data1, index) => {
+      // console.log(" data1 ", data1); 
       const source = {
-        uri: data1.path,
+        uri: data1.uri,
         name: data1.file_name,
         size: data1.size,
-        type: data1.file_type,
+        type: data1.file_type
+        // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
     });
 
     console.log("i am in api param==>", params);
-    dispatch(uploadImg(params));
+    dispatch(uploadImgAddNewAlbum(params));
   };
 
   // Initialy check
@@ -627,6 +636,7 @@ const AddNewAlbum = (props) => {
   };
 
   const checkResponseCode = () => {
+    // console.log("<Subscrip......11",  data.HomeReducer.checkAlbumNameData);
     if (isApiCall) {
       if (
         data.HomeReducer &&
@@ -696,54 +706,58 @@ const AddNewAlbum = (props) => {
           }
         }
       }
-      
+
       if (
         data.HomeReducer &&
-        data.HomeReducer.uploadImages &&
-        data.HomeReducer.uploadImages.errorCode
+        data.HomeReducer.uploadImagesAddNewAlbum &&
+        data.HomeReducer.uploadImagesAddNewAlbum.errorCode
       ) {
         if (
-          data.HomeReducer.uploadImages.errorCode ===
+          data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
           AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
         ) {
           setLoading(false);
           setIsApiCall(false);
+          console.log("<Subscrip......",  data.HomeReducer.uploadImagesAddNewAlbum);
           return (
             <SubscriptionError
               comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
-              errorCode={data.HomeReducer.uploadImages.errorCode}
+              errorCode={data.HomeReducer.uploadImagesAddNewAlbum.errorCode}
               navigation={props.navigation}
             />
           );
         }
-
         if (
-          data.HomeReducer.uploadImages &&
-          data.HomeReducer.uploadImages.errorCode ===
+          data.HomeReducer.uploadImagesAddNewAlbum &&
+          data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
             AppConstants.constant.NOT_AUTHORIZED
         ) {
           setLoading(false);
           setIsApiCall(false);
-          alertWithMessage(true, data.HomeReducer.uploadImages.message);
+          alertWithMessage(true, data.HomeReducer.uploadImagesAddNewAlbum.message);
         } else {
+
+          console.log(" 333 data.HomeReducer",  data.HomeReducer.uploadImagesAddNewAlbum); 
+
           if (
-            data.HomeReducer.uploadImages &&
-            data.HomeReducer.uploadImages.responseCode &&
-            data.HomeReducer.uploadImages.responseCode ===
-              AppConstants.constant.SUCCESS &&
-            data.HomeReducer.uploadImages.errorCode ===
+            data.HomeReducer.uploadImagesAddNewAlbum &&
+            data.HomeReducer.uploadImagesAddNewAlbum.responseCode &&
+            data.HomeReducer.uploadImagesAddNewAlbum.responseCode ===
+              AppConstants.constant.SUCCESS
+               &&
+            data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
               AppConstants.constant.INSERT_SUCCESS
           ) {
             setLoading(false);
             setIsApiCall(false);
             // To stop redundant execution
-            var alertMessage = data.HomeReducer.uploadImages.message;
-            // alert(`After saving -== ${alertMessage}`);
-            let dict = data.HomeReducer.uploadImages;
-            // Make empty after showing alert
+            // var alertMessage = data.HomeReducer.uploadImagesAddNewAlbum.message;
+            // // alert(`After saving -== ${alertMessage}`);
+             let dict = data.HomeReducer.uploadImagesAddNewAlbum;
+            // // Make empty after showing alert
             dict.responseCode = "";
             dict.errorCode = "";
-            data.HomeReducer.uploadImages = dict;
+            data.HomeReducer.uploadImagesAddNewAlbum = dict;
             // dispatch(uploadImagesSuccess([]));
             moveBack();
           } else {

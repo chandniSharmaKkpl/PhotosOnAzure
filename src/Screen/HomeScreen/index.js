@@ -264,7 +264,6 @@ export function HomeScreen(props) {
   }, [pageCountOwnAlbum]);
 
   const refreshAlbumList = () => {
-    console.warn("i am in refreshAlbumList==>");
     setpageCountOwnAlbum(1);
   };
   // React.useEffect(() => {
@@ -833,6 +832,8 @@ export function HomeScreen(props) {
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
 
+    console.log(" arrayDeleteItems", arrayDeleteItems); 
+
     if (isLibrary) {
       let param = {
         sessid: user.sessid ? user.sessid : "",
@@ -850,8 +851,10 @@ export function HomeScreen(props) {
 
   const onClickDelete = () => {
     var arrayDeleteItems = [];
+
     for (let index = 0; index < arrayCheckMarks.length; index++) {
       const element = arrayCheckMarks[index];
+    //  console.log(" element is --", element); 
 
       if (element.isCheck) {
         if (isLibrary) {
@@ -912,7 +915,6 @@ export function HomeScreen(props) {
   };
 
   const renderLibraryList = ({ item, index }) => {
-    console.warn("i am in renderLibraryList===>", item);
     if (item.file_name) {
       let containerName =
         user && user.user_detail ? user.user_detail.container_name : "";
@@ -1294,45 +1296,12 @@ export function HomeScreen(props) {
     params.append("sessid", user.sessid);
     // params.append("name", "name");
     item.map((data1, index) => {
+      console.log(" data1 in lib", data1); 
       params.append("album_media[" + index + "]", data1);
     });
-    // dispatch(uploadImg(params));
-    // if (arrayLibrary) {
-    //   console.warn("i am in arrayLibrary====>",arrayLibrary)
-    //   if (arrayLibrary.length > 0) {
-    //     arrayLibrary.splice(
-    //       0,
-    //       0,
-    //       data.HomeReducer.uploadImages.data.userMedia[0]
-    //     );
-    //   } else {
-    //     arrayLibrary.push(data.HomeReducer.uploadImages.data.userMedia[0]);
-    //   }
-    // }
-
-   flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
-
-    // NEW__
-    axios.post(
-      "https://staging.2excel.com.au/onlinephoto/api/v3.0/updateusermedia",
-      params,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-          mimeType: "multipart/form-data",
-        },
-      }
-    ) .then((response) => {
-      console.warn("i am in api res ==>response data", JSON.stringify(response.data.data.userMedia))
-      console.warn("i am in arrayLibrary==>", arrayLibrary);
-      const tempArr = [].concat(response.data.data.userMedia, arrayLibrary);
-      setArrayLibrary(tempArr);
-      console.warn("i am in set array lib==>", tempArr);
-    })
-    .catch((error) => {
-      console.warn("i am in api res ==>error", error)
-    });
+     setIsApiCall(true);
+     dispatch(uploadImg(params));
+    
   };
   
   const getOwnAlbumData = (isLoadMore) => {
@@ -1343,10 +1312,7 @@ export function HomeScreen(props) {
   };
 
   const listAllMediaSuccessApiCall = () => {
-    console.warn(
-      "i am in list all media success api call==>",
-      data.HomeReducer
-    );
+    
     let dict = data.HomeReducer;
     dict.library = {};
     dispatch(listAllMediaSuccess(dict));
@@ -1388,7 +1354,6 @@ export function HomeScreen(props) {
           })
         );
       } else {
-        console.warn("i am in else ==== >");
         dispatch(
           listAllMedia({
             sessid: user.sessid ? user.sessid : "",
@@ -1448,14 +1413,7 @@ export function HomeScreen(props) {
   //* Update array according to api response  *//
 
   const setData = () => {
-    console.warn("i am in set data calling...");
     if (isLibrary) {
-      // console.warn("i am in is data.HomeReducer.library ===>", data.HomeReducer.library)
-      // console.warn("i am in is data.HomeReducer.library.responseCode", data.HomeReducer.library.responseCode)
-      // console.warn("i am in is AppConstants.constant.SUCCESS", AppConstants.constant.SUCCESS)
-
-      // console.warn("i am in is data.HomeReducer.library.data ===>", data.HomeReducer.library.data)
-      // console.warn("i am in is data.HomeReducer.library.data.data ===>", data.HomeReducer.library.data.data)
 
       if (
         data.HomeReducer.library &&
@@ -1465,16 +1423,13 @@ export function HomeScreen(props) {
         data.HomeReducer.library.data &&
         data.HomeReducer.library.data.data
       ) {
-        console.warn("i am in isLibrary==>");
         if (isApiCall) {
           setIsApiCall(false);
 
           if (arrayLibrary) {
-            console.warn("i am in arrayLibrary isLibrary==>");
 
             if (arrayLibrary.length > 0) {
               //paging case need to append data in existing array
-              console.warn("i am in array length=>", arrayLibrary.length);
               setArrayLibrary(
                 arrayLibrary.concat(data.HomeReducer.library.data.data)
               );
@@ -1490,7 +1445,6 @@ export function HomeScreen(props) {
         listAllMediaSuccessApiCall();
       }
     } else {
-      console.warn("i am in new api else if====>");
 
       if (isSharedAlbum) {
         if (
@@ -1528,7 +1482,6 @@ export function HomeScreen(props) {
           listSharedAlbumSuccessApiCall();
         }
       } else {
-        console.warn("i am in new api else====>");
         if (
           data.HomeReducer.ownAlbums &&
           data.HomeReducer.ownAlbums.responseCode &&
@@ -1631,6 +1584,7 @@ export function HomeScreen(props) {
       }
     }
 
+   // console.log(" delete album check ", data.HomeReducer.deleteAlbum)
     // Delete Album
     if (
       data.HomeReducer.deleteAlbum &&
@@ -1697,6 +1651,7 @@ export function HomeScreen(props) {
       response = data.HomeReducer.library;
       //if (response.errorCode)
       {
+
         if (
           response &&
           response.errorCode &&
@@ -1721,6 +1676,34 @@ export function HomeScreen(props) {
         } else {
           setData();
         }
+        if (
+          data.HomeReducer.uploadImages &&
+          data.HomeReducer.uploadImages.errorCode ===
+            AppConstants.constant.NOT_AUTHORIZED
+        ) {
+         
+          setIsApiCall(false);
+          showNoMediaAlert(data.HomeReducer.uploadImages);
+         
+        } else {
+          if (
+            
+            data.HomeReducer.uploadImages && data.HomeReducer.uploadImages.errorCode &&
+            data.HomeReducer.uploadImages.errorCode ===
+              AppConstants.constant.INSERT_SUCCESS
+          ){
+
+            setArrayLibrary(
+              arrayLibrary.concat(data.HomeReducer.uploadImages.data.userMedia)
+            );
+            let dict = data.HomeReducer.uploadImages;
+            dict.errorCode = "";
+            data.HomeReducer.uploadImages = dict;
+      
+          } else {
+          }
+        }
+
       }
     } else {
       if (isSharedAlbum) {
@@ -1798,10 +1781,7 @@ export function HomeScreen(props) {
 
   return (
     <>
-      {
-        checkResponseCode()
-        //useBackHandler(backActionHandler)
-      }
+      {checkResponseCode()}
 
       {/* {isClickForSearch ? resetPageCountOnSearch() : null} */}
 
