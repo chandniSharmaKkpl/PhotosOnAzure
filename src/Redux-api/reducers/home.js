@@ -843,7 +843,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS: {
-
+      console.log("alb new:", action.payload);
       return {
         ...state,
         uploadImagesAddNewAlbum: action.payload,
@@ -852,6 +852,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE: {
+      console.log("failure:", action.payload);
       return {
         ...state,
         uploadImagesAddNewAlbum: action.payload.error,

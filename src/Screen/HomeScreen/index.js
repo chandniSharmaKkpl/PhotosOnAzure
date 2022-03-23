@@ -264,7 +264,6 @@ export function HomeScreen(props) {
   }, [pageCountOwnAlbum]);
 
   const refreshAlbumList = () => {
-    console.warn("i am in refreshAlbumList==>");
     setpageCountOwnAlbum(1);
   };
   // React.useEffect(() => {
@@ -1313,10 +1312,7 @@ export function HomeScreen(props) {
   };
 
   const listAllMediaSuccessApiCall = () => {
-    console.warn(
-      "i am in list all media success api call==>",
-      data.HomeReducer
-    );
+    
     let dict = data.HomeReducer;
     dict.library = {};
     dispatch(listAllMediaSuccess(dict));
@@ -1358,7 +1354,6 @@ export function HomeScreen(props) {
           })
         );
       } else {
-        console.warn("i am in else ==== >");
         dispatch(
           listAllMedia({
             sessid: user.sessid ? user.sessid : "",
@@ -1418,14 +1413,7 @@ export function HomeScreen(props) {
   //* Update array according to api response  *//
 
   const setData = () => {
-    console.warn("i am in set data calling...");
     if (isLibrary) {
-      // console.warn("i am in is data.HomeReducer.library ===>", data.HomeReducer.library)
-      // console.warn("i am in is data.HomeReducer.library.responseCode", data.HomeReducer.library.responseCode)
-      // console.warn("i am in is AppConstants.constant.SUCCESS", AppConstants.constant.SUCCESS)
-
-      // console.warn("i am in is data.HomeReducer.library.data ===>", data.HomeReducer.library.data)
-      // console.warn("i am in is data.HomeReducer.library.data.data ===>", data.HomeReducer.library.data.data)
 
       if (
         data.HomeReducer.library &&
@@ -1435,16 +1423,13 @@ export function HomeScreen(props) {
         data.HomeReducer.library.data &&
         data.HomeReducer.library.data.data
       ) {
-        console.warn("i am in isLibrary==>");
         if (isApiCall) {
           setIsApiCall(false);
 
           if (arrayLibrary) {
-            console.warn("i am in arrayLibrary isLibrary==>");
 
             if (arrayLibrary.length > 0) {
               //paging case need to append data in existing array
-              console.warn("i am in array length=>", arrayLibrary.length);
               setArrayLibrary(
                 arrayLibrary.concat(data.HomeReducer.library.data.data)
               );
@@ -1460,7 +1445,6 @@ export function HomeScreen(props) {
         listAllMediaSuccessApiCall();
       }
     } else {
-      console.warn("i am in new api else if====>");
 
       if (isSharedAlbum) {
         if (
@@ -1498,7 +1482,6 @@ export function HomeScreen(props) {
           listSharedAlbumSuccessApiCall();
         }
       } else {
-        console.warn("i am in new api else====>");
         if (
           data.HomeReducer.ownAlbums &&
           data.HomeReducer.ownAlbums.responseCode &&
@@ -1798,10 +1781,7 @@ export function HomeScreen(props) {
 
   return (
     <>
-      {
-        checkResponseCode()
-        //useBackHandler(backActionHandler)
-      }
+      {checkResponseCode()}
 
       {/* {isClickForSearch ? resetPageCountOnSearch() : null} */}
 

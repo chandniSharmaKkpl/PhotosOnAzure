@@ -184,6 +184,7 @@ const AddNewAlbum = (props) => {
     var splitStr = title.toLowerCase();
     var replacedStr = splitStr.split(" ").join("_");
     var finalTitle = replacedStr + "_" + date;
+    console.log("timeeee", finalTitle)
     return finalTitle;
   };
 
@@ -356,9 +357,10 @@ const AddNewAlbum = (props) => {
             } else {
               fileNameTemp = generateRandomFileName(); // Since picker is not providing name in android so we generate it
             }
+            console.log("data1::", data1, data1.mime.includes("image"))
             dictImageToShow = {
               file_name: fileNameTemp,
-              file_type: data1.mime.includes("image") ? "image" : data1.mime,
+              file_type: data1.mime.includes("image") ? data1.mime : "image/jpeg",
               is_success: true,
               size: data1.size,
               album_id: 0,
@@ -426,12 +428,13 @@ const AddNewAlbum = (props) => {
 
  
     data.map((data1, index) => {
-      console.log(" data1 ", data1); 
+      // console.log(" data1 ", data1); 
       const source = {
         uri: data1.uri,
         name: data1.file_name,
         size: data1.size,
         type: data1.file_type
+        // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
     });
@@ -633,6 +636,7 @@ const AddNewAlbum = (props) => {
   };
 
   const checkResponseCode = () => {
+    // console.log("<Subscrip......11",  data.HomeReducer.checkAlbumNameData);
     if (isApiCall) {
       if (
         data.HomeReducer &&
@@ -714,6 +718,7 @@ const AddNewAlbum = (props) => {
         ) {
           setLoading(false);
           setIsApiCall(false);
+          console.log("<Subscrip......",  data.HomeReducer.uploadImagesAddNewAlbum);
           return (
             <SubscriptionError
               comeFrom={AppConstants.constant.ADD_NEW_ALBUM}

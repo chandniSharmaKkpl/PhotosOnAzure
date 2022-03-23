@@ -148,6 +148,7 @@ export const LoginWithEmail = (props) => {
           device_type: deviceInfo.device_type ? deviceInfo.device_type : "",
           device_name: deviceInfo.device_name ? deviceInfo.device_name : "",
         };
+        console.log("param", dict);
         dispatch(loginUser(dict));
       } else {
         notifyMessage(globals.noInternet);
