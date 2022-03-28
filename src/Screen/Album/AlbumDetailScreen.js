@@ -53,7 +53,7 @@ import {
   uploadMediaSuccess,
   albumDetailSuccessLocalData,
   uploadImg,
-  updateAlbumImageUpload
+  updateAlbumImageUpload,
 } from "../../Redux-api/actions/Home";
 
 import AuthContext from "../../context/AuthContext";
@@ -116,7 +116,7 @@ const AlbumDetailScreen = (props) => {
   const [arrayLocalData, setArrayLocalData] = useState([]);
   const [countFailState, setCountFailState] = useState(0);
   const [searchAlbumName, setSearchAlbumName] = useState(""); // Search bar text
-  const [imageUpload, setImageUpload] = React.useState([])
+  const [imageUpload, setImageUpload] = React.useState([]);
   const [title, setTitle] = React.useState("");
 
   const { setUserData } = React.useContext(AuthContext);
@@ -259,8 +259,8 @@ const AlbumDetailScreen = (props) => {
           var key = a.pathString
             ? a.pathString
             : "" + "|" + a.file_name
-              ? a.file_name
-              : "";
+            ? a.file_name
+            : "";
           if (!this[key]) {
             this[key] = true;
             return true;
@@ -270,7 +270,6 @@ const AlbumDetailScreen = (props) => {
         return result;
       }
     } else {
-
       const distinctArray = [
         ...new Map(data.map((x) => [x["file_name"], x])).values(),
       ];
@@ -298,11 +297,14 @@ const AlbumDetailScreen = (props) => {
           response.map((data1) => {
             const source = {
               uri: Platform.OS === "android" ? data1.path : data1.path,
-              name: data1.filename ? data1.filename : "front.jpg",
+              name:
+                Platform.OS === "ios"
+                  ? data1.filename.split(".HEIC")[0] + ".jpg"
+                  : data1.filename,
               size: data1.size,
               type: data1.mime,
             };
-            tempIMG.push(source)
+            tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
             if (Platform.OS === "ios") {
@@ -319,11 +321,13 @@ const AlbumDetailScreen = (props) => {
               owner_id: user.user_detail.user_id,
               status: AppConstants.constant.NEW_ADDED, // So when uploading to azure only new marked data will be uploaded on azure.
               album_id: route.params.albumdetail.album_id,
-              sourceURL: Platform.OS === "android" ? data1.path : data1.sourceURL,
+              sourceURL:
+                Platform.OS === "android" ? data1.path : data1.sourceURL,
               uri: data1.path,
 
               user_media_id: Math.random(), // We are distincting array elements based on user_media id so we generate it unique
-              pathString: Platform.OS === "android" ? JSON.stringify(data1.path) : "",
+              pathString:
+                Platform.OS === "android" ? JSON.stringify(data1.path) : "",
             };
             tempMediaspce = tempMediaspce + data1.size;
 
@@ -354,7 +358,7 @@ const AlbumDetailScreen = (props) => {
             }
           });
           // Upload Staging api and integration
-          setImageUpload(tempIMG)
+          setImageUpload(tempIMG);
 
           if (uplodmedia == true) {
             if (arrayAllDates.length > 0) {
@@ -415,34 +419,31 @@ const AlbumDetailScreen = (props) => {
             showUpgradeAlert();
           }
         })
-        .catch((e) => { });
+        .catch((e) => {});
     }
   };
 
   // Upload Staging api and integration
   const gotoUploadImage = (data) => {
-    console.warn("i am in gotoUploadImage", data)
-    callAPItoUploadImage(data)
-  }
+    console.warn("i am in gotoUploadImage", data);
+    callAPItoUploadImage(data);
+  };
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
     const params = new FormData();
-  // let getfinalTitle = getTimeStemp(title);
+    // let getfinalTitle = getTimeStemp(title);
 
-    console.warn("i am in callAPItoUploadImage=>", data)
+    console.warn("i am in callAPItoUploadImage=>", data);
     params.append("sessid", user.sessid);
-     params.append("name", istitle);
-     params.append("code_name", route.params.albumdetail.code_name );
+    params.append("name", istitle);
+    params.append("code_name", route.params.albumdetail.code_name);
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
-    })
-    console.warn("i am in api param==>", params)
-    dispatch(
-      updateAlbumImageUpload(params)
-    );
-    props.navigation.navigate('Home');
-
-  }
+    });
+    console.warn("i am in api param==>", params);
+    dispatch(updateAlbumImageUpload(params));
+    props.navigation.navigate("Home");
+  };
 
   // Initialy check
   const checkUserAvailableSpace = () => {
@@ -504,7 +505,6 @@ const AlbumDetailScreen = (props) => {
       height: assest.height,
       type: assest.file_type,
       uri: assest.sourceURL,
-
     };
     const res = await azureblobfetch({
       assest: assetObject,
@@ -515,12 +515,15 @@ const AlbumDetailScreen = (props) => {
       type: "Upload",
     });
     setLoading(true);
-    Upload.addListener("progress", res.uploadId, (data) => { });
+    Upload.addListener("progress", res.uploadId, (data) => {});
     Upload.addListener("cancelled", res.uploadId, (data) => {
       countImgUploadAzure = countImgUploadAzure + 1;
     });
     Upload.addListener("completed", res.uploadId, (data) => {
-      console.warn("i am in Upload completed in Album Details screen ==>", data)
+      console.warn(
+        "i am in Upload completed in Album Details screen ==>",
+        data
+      );
 
       countImgUploadAzure = countImgUploadAzure + 1;
 
@@ -531,8 +534,8 @@ const AlbumDetailScreen = (props) => {
         file_type: assest.file_type.includes("image")
           ? "image"
           : assest.file_type.includes("video")
-            ? "video"
-            : assest.file_type,
+          ? "video"
+          : assest.file_type,
         is_success: true,
         size: assest.size,
         created_date: created_date,
@@ -604,7 +607,7 @@ const AlbumDetailScreen = (props) => {
           if (element1.status === AppConstants.constant.NEW_ADDED) {
             isNewElementAdded = true;
             // uploadAzure(element1);
-            callAPItoUploadImage(imageUpload)
+            callAPItoUploadImage(imageUpload);
           }
         });
       });
@@ -642,7 +645,7 @@ const AlbumDetailScreen = (props) => {
     return (
       <View
         key={index}
-      //style={{ height: 200 }}
+        //style={{ height: 200 }}
       >
         <Text style={styles.textDate}>{oneDate}</Text>
         {renderList(arrayData)}
@@ -659,7 +662,7 @@ const AlbumDetailScreen = (props) => {
     return (
       <View
         key={index}
-      //style={{ height: 200 }}
+        //style={{ height: 200 }}
       >
         <Text style={styles.textDate}>{oneDate}</Text>
         {arrayData && arrayData.length > 0 ? (
@@ -728,7 +731,7 @@ const AlbumDetailScreen = (props) => {
                   arrayCheckMarks={arrayCheckMarks}
                   isImageFullScreen={isImageFullScreen}
                   isVideoFullScreen={isVideoFullScreen}
-                // totalData={arrayLength}
+                  // totalData={arrayLength}
                 />
               </View>
             );
@@ -868,7 +871,7 @@ const AlbumDetailScreen = (props) => {
       data.HomeReducer.uploadMedia &&
       data.HomeReducer.uploadMedia.errorCode &&
       data.HomeReducer.uploadMedia.errorCode ===
-      AppConstants.constant.INSERT_SUCCESS
+        AppConstants.constant.INSERT_SUCCESS
     ) {
       var title = data.HomeReducer.uploadMedia.message;
 
@@ -1080,9 +1083,10 @@ const AlbumDetailScreen = (props) => {
         {
           text: AppConstants.constant.YES,
           onPress: () => {
-            let countDelete = countPickerSelectedImage - newAddedElementDeleteCount
-            setCountPickerSelectedImage(countDelete) // using this counter to know once all images are added on azure then call server api to upload them.  
-            callApiToDelete(arrayDeleteItems)
+            let countDelete =
+              countPickerSelectedImage - newAddedElementDeleteCount;
+            setCountPickerSelectedImage(countDelete); // using this counter to know once all images are added on azure then call server api to upload them.
+            callApiToDelete(arrayDeleteItems);
           },
         },
         {
@@ -1133,7 +1137,7 @@ const AlbumDetailScreen = (props) => {
     );
   };
 
-  const setApiCallBasedOnSelectedDate = (dateString) => { };
+  const setApiCallBasedOnSelectedDate = (dateString) => {};
 
   const distinctDateArray = (arrayInput) => {
     const arrayOutput = [...new Set(arrayInput)];
