@@ -538,7 +538,10 @@ export function HomeScreen(props) {
           response.map((data1) => {
             const source = {
               uri: Platform.OS === "android" ? data1.path : data1.path,
-              name: data1.filename ? data1.filename : "front.jpg",
+              name:
+                Platform.OS === "ios"
+                  ? data1.filename.split(".HEIC")[0] + ".jpg"
+                  : data1.filename,
               size: data1.size,
               type: data1.mime,
             };
@@ -832,7 +835,7 @@ export function HomeScreen(props) {
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
 
-    console.log(" arrayDeleteItems", arrayDeleteItems); 
+    console.log(" arrayDeleteItems", arrayDeleteItems);
 
     if (isLibrary) {
       let param = {
@@ -854,7 +857,7 @@ export function HomeScreen(props) {
 
     for (let index = 0; index < arrayCheckMarks.length; index++) {
       const element = arrayCheckMarks[index];
-    //  console.log(" element is --", element); 
+      //  console.log(" element is --", element);
 
       if (element.isCheck) {
         if (isLibrary) {
@@ -1296,14 +1299,13 @@ export function HomeScreen(props) {
     params.append("sessid", user.sessid);
     // params.append("name", "name");
     item.map((data1, index) => {
-      console.log(" data1 in lib", data1); 
+      console.log(" data1 in lib", data1);
       params.append("album_media[" + index + "]", data1);
     });
-     setIsApiCall(true);
-     dispatch(uploadImg(params));
-    
+    setIsApiCall(true);
+    dispatch(uploadImg(params));
   };
-  
+
   const getOwnAlbumData = (isLoadMore) => {
     {
       // This is the first time when own album is empty and we need to call api
@@ -1312,7 +1314,6 @@ export function HomeScreen(props) {
   };
 
   const listAllMediaSuccessApiCall = () => {
-    
     let dict = data.HomeReducer;
     dict.library = {};
     dispatch(listAllMediaSuccess(dict));
@@ -1414,7 +1415,6 @@ export function HomeScreen(props) {
 
   const setData = () => {
     if (isLibrary) {
-
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
@@ -1427,7 +1427,6 @@ export function HomeScreen(props) {
           setIsApiCall(false);
 
           if (arrayLibrary) {
-
             if (arrayLibrary.length > 0) {
               //paging case need to append data in existing array
               setArrayLibrary(
@@ -1445,7 +1444,6 @@ export function HomeScreen(props) {
         listAllMediaSuccessApiCall();
       }
     } else {
-
       if (isSharedAlbum) {
         if (
           data.HomeReducer.sharedAlbums &&
@@ -1584,7 +1582,7 @@ export function HomeScreen(props) {
       }
     }
 
-   // console.log(" delete album check ", data.HomeReducer.deleteAlbum)
+    // console.log(" delete album check ", data.HomeReducer.deleteAlbum)
     // Delete Album
     if (
       data.HomeReducer.deleteAlbum &&
@@ -1651,7 +1649,6 @@ export function HomeScreen(props) {
       response = data.HomeReducer.library;
       //if (response.errorCode)
       {
-
         if (
           response &&
           response.errorCode &&
@@ -1681,29 +1678,24 @@ export function HomeScreen(props) {
           data.HomeReducer.uploadImages.errorCode ===
             AppConstants.constant.NOT_AUTHORIZED
         ) {
-         
           setIsApiCall(false);
           showNoMediaAlert(data.HomeReducer.uploadImages);
-         
         } else {
           if (
-            
-            data.HomeReducer.uploadImages && data.HomeReducer.uploadImages.errorCode &&
+            data.HomeReducer.uploadImages &&
+            data.HomeReducer.uploadImages.errorCode &&
             data.HomeReducer.uploadImages.errorCode ===
               AppConstants.constant.INSERT_SUCCESS
-          ){
-
+          ) {
             setArrayLibrary(
               arrayLibrary.concat(data.HomeReducer.uploadImages.data.userMedia)
             );
             let dict = data.HomeReducer.uploadImages;
             dict.errorCode = "";
             data.HomeReducer.uploadImages = dict;
-      
           } else {
           }
         }
-
       }
     } else {
       if (isSharedAlbum) {
@@ -1753,13 +1745,12 @@ export function HomeScreen(props) {
   };
 
   const distictLibraryArray = (data) => {
-   
     const distinctArray = [
       ...new Map(data.map((x) => [x?.user_media_id, x])).values(),
     ];
 
-   // ** Pushing an empty item so i can show add button in the place of it.  */
-   distinctArray.push({})
+    // ** Pushing an empty item so i can show add button in the place of it.  */
+    distinctArray.push({});
     return distinctArray;
   };
 

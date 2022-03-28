@@ -14,7 +14,7 @@ import {
   uploadMedia,
   checkAlbumName,
   uploadImg,
-  uploadImgAddNewAlbum
+  uploadImgAddNewAlbum,
 } from "../../Redux-api/actions/Home";
 import * as globals from "../../Utils/globals";
 import ZoomView from "../../Component/ZoomView";
@@ -184,7 +184,7 @@ const AddNewAlbum = (props) => {
     var splitStr = title.toLowerCase();
     var replacedStr = splitStr.split(" ").join("_");
     var finalTitle = replacedStr + "_" + date;
-    console.log("timeeee", finalTitle)
+    console.log("timeeee", finalTitle);
     return finalTitle;
   };
 
@@ -345,7 +345,10 @@ const AddNewAlbum = (props) => {
           response.map((data1) => {
             const source = {
               uri: Platform.OS === "android" ? data1.path : data1.path,
-              name: data1.filename ? data1.filename : "front.jpg",
+              name:
+                Platform.OS === "ios"
+                  ? data1.filename.split(".HEIC")[0] + ".jpg"
+                  : data1.filename,
               size: data1.size,
               type: data1.mime,
             };
@@ -357,10 +360,12 @@ const AddNewAlbum = (props) => {
             } else {
               fileNameTemp = generateRandomFileName(); // Since picker is not providing name in android so we generate it
             }
-            console.log("data1::", data1, data1.mime.includes("image"))
+            console.log("data1::", data1, data1.mime.includes("image"));
             dictImageToShow = {
               file_name: fileNameTemp,
-              file_type: data1.mime.includes("image") ? data1.mime : "image/jpeg",
+              file_type: data1.mime.includes("image")
+                ? data1.mime
+                : "image/jpeg",
               is_success: true,
               size: data1.size,
               album_id: 0,
@@ -419,21 +424,20 @@ const AddNewAlbum = (props) => {
   const callAPItoUploadImage = (data) => {
     const params = new FormData();
 
-    console.log(" data and title", data, "Title ---", title); 
+    console.log(" data and title", data, "Title ---", title);
 
     let getfinalTitle = getTimeStemp(title);
     params.append("sessid", user.sessid);
     params.append("name", title);
     params.append("code_name", getfinalTitle);
 
- 
     data.map((data1, index) => {
-      // console.log(" data1 ", data1); 
+      // console.log(" data1 ", data1);
       const source = {
         uri: data1.uri,
         name: data1.file_name,
         size: data1.size,
-        type: data1.file_type
+        type: data1.file_type,
         // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
@@ -718,7 +722,10 @@ const AddNewAlbum = (props) => {
         ) {
           setLoading(false);
           setIsApiCall(false);
-          console.log("<Subscrip......",  data.HomeReducer.uploadImagesAddNewAlbum);
+          console.log(
+            "<Subscrip......",
+            data.HomeReducer.uploadImagesAddNewAlbum
+          );
           return (
             <SubscriptionError
               comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
@@ -734,17 +741,21 @@ const AddNewAlbum = (props) => {
         ) {
           setLoading(false);
           setIsApiCall(false);
-          alertWithMessage(true, data.HomeReducer.uploadImagesAddNewAlbum.message);
+          alertWithMessage(
+            true,
+            data.HomeReducer.uploadImagesAddNewAlbum.message
+          );
         } else {
-
-          console.log(" 333 data.HomeReducer",  data.HomeReducer.uploadImagesAddNewAlbum); 
+          console.log(
+            " 333 data.HomeReducer",
+            data.HomeReducer.uploadImagesAddNewAlbum
+          );
 
           if (
             data.HomeReducer.uploadImagesAddNewAlbum &&
             data.HomeReducer.uploadImagesAddNewAlbum.responseCode &&
             data.HomeReducer.uploadImagesAddNewAlbum.responseCode ===
-              AppConstants.constant.SUCCESS
-               &&
+              AppConstants.constant.SUCCESS &&
             data.HomeReducer.uploadImagesAddNewAlbum.errorCode ===
               AppConstants.constant.INSERT_SUCCESS
           ) {
@@ -753,7 +764,7 @@ const AddNewAlbum = (props) => {
             // To stop redundant execution
             // var alertMessage = data.HomeReducer.uploadImagesAddNewAlbum.message;
             // // alert(`After saving -== ${alertMessage}`);
-             let dict = data.HomeReducer.uploadImagesAddNewAlbum;
+            let dict = data.HomeReducer.uploadImagesAddNewAlbum;
             // // Make empty after showing alert
             dict.responseCode = "";
             dict.errorCode = "";
