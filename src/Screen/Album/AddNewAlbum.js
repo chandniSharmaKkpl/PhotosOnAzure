@@ -106,7 +106,7 @@ const AddNewAlbum = (props) => {
   var countBack = 0;
   React.useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-
+    console.log("arrayLibrary => ", arrayLibrary);
     if (route.params.uploadMediadatas) {
       setArrayLibrary(route.params.uploadMediadatas);
     }

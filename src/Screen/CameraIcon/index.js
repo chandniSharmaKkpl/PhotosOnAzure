@@ -305,6 +305,8 @@ export const CameraIcon = (props) => {
           fileName: fileNameTemp,
           type: response.mime,
           mediaType: "image",
+          pathString:
+          Platform.OS === "android" ? JSON.stringify(data1.path) : "",
         };
         let sendcaptureimgdatatoalbum = {
           file_name: fileNameTemp,
@@ -475,6 +477,9 @@ export const CameraIcon = (props) => {
           fileName: fileNameTemp,
           type: "video/mp4",
           mediaType: "video",
+          pathString:
+          Platform.OS === "android" ? response.path : response.sourceURL,
+
         };
         let sendcaptureviddata = response;
         let sendcaptureviddataAlbum = {
@@ -498,6 +503,7 @@ export const CameraIcon = (props) => {
 
   // RENDER FLATLIST OF MEDIA OPTION'S
   const renderMediaview = (item, index) => {
+    console.log("MEDIA OPTION'S =>", item);
     return (
       <View style={{ marginTop: globals.screenHeight * 0.002 }}>
         <TouchableWithoutFeedback
@@ -533,6 +539,7 @@ export const CameraIcon = (props) => {
 
   // RENDER FLATLIST OF SELECTED / CAPTURED MEDIA
   const renderList = ({ item, index }) => {
+    console.log("item.filepath =>", item.filePath);
     return (
       <View style={[styles.cellView, { backgroundColor: "#0E365D" }]}>
         {item.mediaType.includes("video") ? (
@@ -682,6 +689,7 @@ Promise.all(promises).then(() => {
   // SAVE MEDIA TO ALBUM BEFORE CHECK SELECTED / CAPTURED MEDIA LIST AND ADD LOADER
   const saveMediatoAlbum = () => {
     setLoading(true);
+    console.log(arrayLibraryLocalData.length);
     if (arrayLibraryLocalData.length > 0) {
       /// FOR ADD IMAGES TO LOCAL DEVICE
       setmediaonAlbum();
