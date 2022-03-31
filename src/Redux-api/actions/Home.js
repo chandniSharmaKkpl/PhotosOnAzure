@@ -1020,6 +1020,7 @@ export const checkAlbumName = (param) => (dispatch) => {
       'Content-Type': 'application/json',
     };
 
+    
     return axios({
       method: 'post',
       url: CHECK_ALBUM_NAME,

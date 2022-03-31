@@ -271,6 +271,7 @@ export const CameraIcon = (props) => {
       width: 300,
     })
       .then((response) => {
+        console.log("captureImage response => ", response);
         if (
           data.HomeReducer &&
           data.HomeReducer.userSpace &&
@@ -306,7 +307,7 @@ export const CameraIcon = (props) => {
           type: response.mime,
           mediaType: "image",
           pathString:
-          Platform.OS === "android" ? JSON.stringify(data1.path) : "",
+          Platform.OS === "android" ? response.path : response.sourceURL,
         };
         let sendcaptureimgdatatoalbum = {
           file_name: fileNameTemp,
@@ -317,6 +318,7 @@ export const CameraIcon = (props) => {
           uri: Platform.OS === "android" ? response.path : response.sourceURL,
           user_media_id: Math.random(),
         };
+        console.log("sendcaptureimgdatatoalbum push =>", sendcaptureimgdatatoalbum);
         let sendcaptureimgdata = response;
         sendcaptureimgdatatoalbumimgs.push(sendcaptureimgdatatoalbum);
         sendselectedCaptureimgs.push(sendcaptureimgdata);
@@ -368,8 +370,6 @@ export const CameraIcon = (props) => {
         let sendtempData = [];
         let sendtemDatatoAlbum = [];
         response.map((data1) => {
-
-         
           tempMediaspce = tempMediaspce + data1.size;
           // adding selected image size in the already used space of the user and find out actual used space \\
           let userOwnSpace = {};
@@ -478,8 +478,7 @@ export const CameraIcon = (props) => {
           type: "video/mp4",
           mediaType: "video",
           pathString:
-          Platform.OS === "android" ? response.path : response.sourceURL,
-
+            Platform.OS === "android" ? response.path : response.sourceURL,
         };
         let sendcaptureviddata = response;
         let sendcaptureviddataAlbum = {
@@ -503,7 +502,6 @@ export const CameraIcon = (props) => {
 
   // RENDER FLATLIST OF MEDIA OPTION'S
   const renderMediaview = (item, index) => {
-    console.log("MEDIA OPTION'S =>", item);
     return (
       <View style={{ marginTop: globals.screenHeight * 0.002 }}>
         <TouchableWithoutFeedback
@@ -511,7 +509,6 @@ export const CameraIcon = (props) => {
             if (!checkUserAvailableSpace()) {
               return;
             }
-
             onselectMedia(item);
           }}
         >
@@ -564,57 +561,55 @@ export const CameraIcon = (props) => {
 
   // YOU CAN SAVE MEDIA ON YOUR LOCAL DEVICE
   const setmediaonDevice = (meadiaUploadList) => {
-   
     var AttachmentLists = meadiaUploadList;
     let dataSaveFlag = [];
     let isImageSaveToCamera = false;
 
-    var promises = AttachmentLists.map((item,m) => new Promise((resolve, reject) => {
-      try {
-        var SelectedImg = AttachmentLists[m].filePath;
-        var SelectedImgName = AttachmentLists[m].fileName;
-        var isitImage = AttachmentLists[m].mediaType;
-        let albumName = globals.appName;
-      if (isitImage.includes("video")) {
-        albumName = albumName + "- video";
-      } else {
-        albumName = albumName + "- image";
-      }
-      CameraRoll.save(SelectedImg, {
-        type: "auto",
-        album: albumName,
-      })
-        .then(() => {
-          isImageSaveToCamera = true;
-          setLoading(false);
-          dataSaveFlag.push(1);
-          resolve(dataSaveFlag); 
-          
+    var promises = AttachmentLists.map(
+      (item, m) =>
+        new Promise((resolve, reject) => {
+          try {
+            var SelectedImg = AttachmentLists[m].filePath;
+            var SelectedImgName = AttachmentLists[m].fileName;
+            var isitImage = AttachmentLists[m].mediaType;
+            let albumName = globals.appName;
+            if (isitImage.includes("video")) {
+              albumName = albumName + "- video";
+            } else {
+              albumName = albumName + "- image";
+            }
+            CameraRoll.save(SelectedImg, {
+              type: "auto",
+              album: albumName,
+            })
+              .then(() => {
+                isImageSaveToCamera = true;
+                setLoading(false);
+                dataSaveFlag.push(1);
+                resolve(dataSaveFlag);
+              })
+              .catch((err) => {
+                setLoading(false);
+                resolve(null);
+              });
+          } catch (error) {
+            console.log(error);
+            resolve(null); // so one failure doesn't stop the whole process
+          }
         })
-        .catch((err) => {
-          setLoading(false);
-          resolve(null);
-          
-        });
-      }
-      catch (error) {
-        console.log(error)
-        resolve(null); // so one failure doesn't stop the whole process
-    }
-  }));
-//need to call this function after loop is done
-Promise.all(promises).then(() => {
-  if (dataSaveFlag.length === meadiaUploadList.length) {
-    Alert.alert(globals.appName, "Media stored successfully.", [
-      { text: "Ok", onPress: () => makeAPIcallofLib() },
-    ]);
-  } else {
-    Alert.alert(
-      "Something went wrong. Please check your storage permission."
     );
-  }
-});
-   
+    //need to call this function after loop is done
+    Promise.all(promises).then(() => {
+      if (dataSaveFlag.length === meadiaUploadList.length) {
+        Alert.alert(globals.appName, "Media stored successfully.", [
+          { text: "Ok", onPress: () => makeAPIcallofLib() },
+        ]);
+      } else {
+        Alert.alert(
+          "Something went wrong. Please check your storage permission."
+        );
+      }
+    });
   };
 
   const setmediaonDevice1 = (meadiaUploadList) => {
@@ -626,7 +621,6 @@ Promise.all(promises).then(() => {
       var SelectedImg = AttachmentLists[m].filePath;
       var SelectedImgName = AttachmentLists[m].fileName;
       var isitImage = AttachmentLists[m].mediaType;
-      
 
       let albumName = globals.appName;
       if (isitImage.includes("video")) {
@@ -654,7 +648,7 @@ Promise.all(promises).then(() => {
           );
         });
     }
-    //console.log(" data save flag ===", dataSaveFlag); 
+    //console.log(" data save flag ===", dataSaveFlag);
     // if (dataSaveFlag.length === meadiaUploadList.length) {
     //   Alert.alert(globals.appName, "Media stored successfully.", [
     //     { text: "Ok", onPress: () => makeAPIcallofLib() },
