@@ -311,7 +311,7 @@ export const CameraIcon = (props) => {
         };
         let sendcaptureimgdatatoalbum = {
           file_name: fileNameTemp,
-          file_type: response.mime.includes("image") ? "image" : data.mime,
+          file_type: response.mime,
           is_success: true,
           size: response.size,
           album_id: 0,
@@ -416,7 +416,7 @@ export const CameraIcon = (props) => {
           };
           dictImageToSendAlbum = {
             file_name: fileNameTemp,
-            file_type: data1.mime.includes("image") ? "image" : "video",
+            file_type: data1.mime,
             is_success: true,
             size: data1.size,
             album_id: 0,
@@ -454,6 +454,7 @@ export const CameraIcon = (props) => {
 
       let fileNameTemp = "";
       if (!response.didCancel && !response.error) {
+        console.log("captureVideo ==> ",JSON.stringify(response,null,4));
         var currentTotalUsedBytes =
           data.HomeReducer.userSpace.own_space.own_space_used_total_bytes +
           response.size;
@@ -483,11 +484,11 @@ export const CameraIcon = (props) => {
         let sendcaptureviddata = response;
         let sendcaptureviddataAlbum = {
           file_name: fileNameTemp,
-          file_type: "video",
+          file_type: "video/mp4",
           is_success: true,
-          size: response.size,
+          size: response?.size,
           album_id: 0,
-          uri: Platform.OS === "android" ? response.path : response.sourceURL,
+          uri: Platform.OS === "android" ? "file://" +response.path : response.sourceURL,
           user_media_id: Math.random(),
         };
         capturevideo.push(videodata);

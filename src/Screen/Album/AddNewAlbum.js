@@ -432,7 +432,7 @@ const AddNewAlbum = (props) => {
     params.append("code_name", getfinalTitle);
 
     data.map((data1, index) => {
-      // console.log(" data1 ", data1);
+      console.log(" data1 ", data1);
       const source = {
         uri: data1.uri,
         name: data1.file_name,
