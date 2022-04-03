@@ -115,7 +115,10 @@ export const MediaCard = (props) => {
             ]}
            
           >
-            <View style={styles.video}>
+            <View 
+            style={isLongPress? styles.videoDetailLong: styles.videoDetail}
+            
+            >
                <VideoCard
                 videoUrl={item.uri ? item.uri : imageUrl}
                 volume={0}
@@ -146,7 +149,7 @@ export const MediaCard = (props) => {
      
       {isLongPress ? (
         <TouchableOpacity
-        style={[styles.cellView, {  height:totalData>MEDIA_COUNT? randomBool? height*0.1:height*0.2: height * 0.16}
+        style={[styles.cellView, {  height:totalData>MEDIA_COUNT? randomBool? height*0.1:height*0.2: height * 0.16, top:-5, position:'absolute'}
         ]}
           onLongPress={() => {
             item.isCheck = false;

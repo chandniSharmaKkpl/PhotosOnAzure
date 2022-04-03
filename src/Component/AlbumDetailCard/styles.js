@@ -24,11 +24,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   video: {
+    // width: "93%",
+    // height: "93%",
+    alignSelf: "center",
+    // backgroundColor:'pink'
+  },
+
+  videoDetail: {
     width: "93%",
     height: "93%",
     alignSelf: "center",
     // backgroundColor:'pink'
   },
+  videoDetailLong: {
+    width: "93%",
+    height: "93%",
+    alignSelf: "center",
+     backgroundColor:'pink',
+     top:0,
+     position:'absolute', 
+
+  },
+
   viewTitleAndDelete: {
     flexDirection: "row",
     alignItems: "center",
@@ -125,6 +142,23 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: "5%",
   },
+
+  cellViewTransparant: {
+    width: "100%",
+    // marginHorizontal: width * 0.02,
+    // marginVertical: width * 0.02,
+    height: "100%", //height * 0.15,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    borderColor: "gray",
+    borderWidth: 1,
+    backgroundColor: "#0E365D",
+    position:'absolute',
+    top:0,
+    opacity: 0.5,
+    //backgroundColor: "green",
+  },
   
   cellView: {
   width: Platform.OS === 'android'? width * 0.40: width * 0.40,
@@ -138,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "gray",
     borderWidth: 1,
-  // backgroundColor: "red",
+  //backgroundColor: "pink",
 
      //backgroundColor: theme.colors.primary
   },
@@ -223,32 +257,18 @@ const styles = StyleSheet.create({
     top: 0,
     opacity: 0.5,
   },
-  cellViewTransparant: {
-    width: "100%",
-    // marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
-    height: "100%", //height * 0.15,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 20,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "#0E365D",
-    //position:'absolute',
-    top: 0,
-    opacity: 0.5,
-  },
+  
 
   imageView: {
     width: "100%",
     height: "100%",
   },
   image: {
-    // width: width * 0.4,
-    // marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
-    // height: height * 0.15,
-    // borderRadius: 20,
+    width: width * 0.4,
+    marginHorizontal: width * 0.02,
+    marginVertical: width * 0.02,
+    height: height * 0.15,
+    borderRadius: 20,
     
   },
   imageViewLongPress: {
