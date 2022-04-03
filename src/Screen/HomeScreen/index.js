@@ -536,12 +536,13 @@ export function HomeScreen(props) {
 
           const tempIMG = [];
           response.map((data1) => {
+
             const source = {
-              uri: Platform.OS === "android" ? data1.path : data1.path,
+              uri: Platform.OS === "android" ? data1.path : data1.sourceURL,
               name:
                 Platform.OS === "ios"
                   ? data1.filename.split(".HEIC")[0] + ".jpg"
-                  : data1.filename,
+                  : generateRandomFileName(),
               size: data1.size,
               type: data1.mime,
             };
@@ -923,6 +924,7 @@ export function HomeScreen(props) {
         user && user.user_detail ? user.user_detail.container_name : "";
       let imageUrl = AZURE_BASE_URL + containerName + "/" + item.file_name;
 
+    
       return (
         <MediaCard
           isSelectAll={isSelectAll}

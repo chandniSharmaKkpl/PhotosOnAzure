@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   video: {
-    // width: "93%",
-    // height: "93%",
+    width: "93%",
+    height: "93%",
     alignSelf: "center",
     // backgroundColor:'pink'
   },

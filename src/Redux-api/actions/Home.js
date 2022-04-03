@@ -391,12 +391,10 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
       headers: headerObj,
       data: param,
     })
-      .then((response) => {
-        console.log("libr i am in api res ==>response data", response.data)
+      .then((response) => {      
         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
       })
       .catch((error) => {
-        console.log("i am in api res ==>error", error)
         dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
       });
   }

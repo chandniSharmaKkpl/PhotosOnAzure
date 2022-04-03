@@ -106,9 +106,9 @@ const AddNewAlbum = (props) => {
   var countBack = 0;
   React.useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    console.log("arrayLibrary => ", arrayLibrary);
     if (route.params.uploadMediadatas) {
       setArrayLibrary(route.params.uploadMediadatas);
+
     }
     if (user && user.conf_key) {
       let azureKey = decryptKey(user.conf_key);
@@ -195,115 +195,115 @@ const AddNewAlbum = (props) => {
     setIsCheck(false);
   };
 
-  const uploadAzure = async (assest) => {
-    let getfinalTitle = getTimeStemp(title);
-    console.log("uploadAzure assets uri ", assest);
+  // const uploadAzure = async (assest) => {
+  //   let getfinalTitle = getTimeStemp(title);
+  //   console.log("uploadAzure assets uri ", assest);
 
-    // alert(` upload azure imgpicker object ---> ${JSON.stringify(assest)}`);
+  //   // alert(` upload azure imgpicker object ---> ${JSON.stringify(assest)}`);
 
-    let assetObject = {
-      filename: assest.file_name,
-      fileSize: assest.size,
-      height: assest.height ? assest.height : 200,
-      type: assest.file_type,
-      uri: assest.sourceURL ? assest.sourceURL : assest.uri,
-    };
+  //   let assetObject = {
+  //     filename: assest.file_name,
+  //     fileSize: assest.size,
+  //     height: assest.height ? assest.height : 200,
+  //     type: assest.file_type,
+  //     uri: assest.sourceURL ? assest.sourceURL : assest.uri,
+  //   };
 
-    console.log(" Assest object 207 ", assetObject);
+  //   console.log(" Assest object 207 ", assetObject);
 
-    //  alert(`uploadAzure asset objectpassing to library- ${JSON.stringify(assetObject)}`);
+  //   //  alert(`uploadAzure asset objectpassing to library- ${JSON.stringify(assetObject)}`);
 
-    const res = await azureblobfetch({
-      assest: assetObject,
-      container: user.user_detail.container_name
-        ? user.user_detail.container_name
-        : "", //your countainer name,
-      // filenameprefix: title + "/", //add before the autogenrated file name,
-      filenameprefix: getfinalTitle + "/", //add before the autogenrated file name,
+  //   const res = await azureblobfetch({
+  //     assest: assetObject,
+  //     container: user.user_detail.container_name
+  //       ? user.user_detail.container_name
+  //       : "", //your countainer name,
+  //     // filenameprefix: title + "/", //add before the autogenrated file name,
+  //     filenameprefix: getfinalTitle + "/", //add before the autogenrated file name,
 
-      type: "Upload",
-    });
-    setLoading(true);
-    Upload.addListener("progress", res.uploadId, (data) => {
-      console.log("218  progress === ", data);
-      // alert(`uploading progress ${JSON.stringify(data)}`)
-    });
-    Upload.addListener("cancelled", res.uploadId, (data) => {
-      // alert(`uploading cancelled ${JSON.stringify(data)}`)
+  //     type: "Upload",
+  //   });
+  //   setLoading(true);
+  //   Upload.addListener("progress", res.uploadId, (data) => {
+  //     console.log("218  progress === ", data);
+  //     // alert(`uploading progress ${JSON.stringify(data)}`)
+  //   });
+  //   Upload.addListener("cancelled", res.uploadId, (data) => {
+  //     // alert(`uploading cancelled ${JSON.stringify(data)}`)
 
-      countImgUploadAzure = countImgUploadAzure + 1;
-    });
-    Upload.addListener("completed", res.uploadId, (data) => {
-      console.warn("i am in Upload completed in Add New Album =>", data);
+  //     countImgUploadAzure = countImgUploadAzure + 1;
+  //   });
+  //   Upload.addListener("completed", res.uploadId, (data) => {
+  //     console.warn("i am in Upload completed in Add New Album =>", data);
 
-      // alert(`uploading completed ${JSON.stringify(data)}`)
+  //     // alert(`uploading completed ${JSON.stringify(data)}`)
 
-      countImgUploadAzure = countImgUploadAzure + 1;
-      // console.log("225 completed ===>","dictImageToSend",countImgUploadAzure, data);
+  //     countImgUploadAzure = countImgUploadAzure + 1;
+  //     // console.log("225 completed ===>","dictImageToSend",countImgUploadAzure, data);
 
-      // In api we don't need to pass uri in the image object.
-      let created_date = CurrentDate();
-      let dictImageToSend = {
-        file_name: res.filename,
-        file_type: assest.file_type.includes("image")
-          ? "image"
-          : assest.file_type.includes("video")
-          ? "video"
-          : assest.file_type,
-        is_success: true,
-        size: assest.size,
-        created_date: created_date,
-        album_id: 0,
-      };
+  //     // In api we don't need to pass uri in the image object.
+  //     let created_date = CurrentDate();
+  //     let dictImageToSend = {
+  //       file_name: res.filename,
+  //       file_type: assest.file_type.includes("image")
+  //         ? "image"
+  //         : assest.file_type.includes("video")
+  //         ? "video"
+  //         : assest.file_type,
+  //       is_success: true,
+  //       size: assest.size,
+  //       created_date: created_date,
+  //       album_id: 0,
+  //     };
 
-      console.log(
-        "242 completed === ",
-        "dictImageToSend",
-        countImgUploadAzure,
-        dictImageToSend
-      );
+  //     console.log(
+  //       "242 completed === ",
+  //       "dictImageToSend",
+  //       countImgUploadAzure,
+  //       dictImageToSend
+  //     );
 
-      arrayLibraryLocalData.push(dictImageToSend);
+  //     arrayLibraryLocalData.push(dictImageToSend);
 
-      // all picker selected images are uploaded on azure so we are calling server api to upload all uploaded images on server.
-      if (countImgUploadAzure === arrayLibrary.length) {
-        let param = {
-          sessid: user.sessid ? user.sessid : "",
-          name: title,
-          code_name: getfinalTitle,
-          data: arrayLibraryLocalData,
-        };
+  //     // all picker selected images are uploaded on azure so we are calling server api to upload all uploaded images on server.
+  //     if (countImgUploadAzure === arrayLibrary.length) {
+  //       let param = {
+  //         sessid: user.sessid ? user.sessid : "",
+  //         name: title,
+  //         code_name: getfinalTitle,
+  //         data: arrayLibraryLocalData,
+  //       };
 
-        console.log(
-          "completed === ",
-          "countImgUploadAzure",
-          countImgUploadAzure,
-          data
-        );
+  //       console.log(
+  //         "completed === ",
+  //         "countImgUploadAzure",
+  //         countImgUploadAzure,
+  //         data
+  //       );
 
-        setIsApiCall(true);
-        dispatch(uploadMedia(param));
-      }
+  //       setIsApiCall(true);
+  //       dispatch(uploadMedia(param));
+  //     }
 
-      //setLoading(false);
-    });
-    Upload.addListener("error", res.uploadId, (err) => {
-      countImgUploadAzure = countImgUploadAzure + 1;
-      countImgFailedToUpload = countImgFailedToUpload + 1;
-      setCountFailState(countImgFailedToUpload);
+  //     //setLoading(false);
+  //   });
+  //   Upload.addListener("error", res.uploadId, (err) => {
+  //     countImgUploadAzure = countImgUploadAzure + 1;
+  //     countImgFailedToUpload = countImgFailedToUpload + 1;
+  //     setCountFailState(countImgFailedToUpload);
 
-      if (countImgFailedToUpload === arrayLibrary.length) {
-        setIsApiCall(false);
-        setLoading(false);
-        Alert.alert("Alert", AppConstants.constant.WE_CANT_CREATE_ALBUM, [
-          {
-            text: "Ok",
-            onPress: () => moveBack(),
-          },
-        ]);
-      }
-    });
-  };
+  //     if (countImgFailedToUpload === arrayLibrary.length) {
+  //       setIsApiCall(false);
+  //       setLoading(false);
+  //       Alert.alert("Alert", AppConstants.constant.WE_CANT_CREATE_ALBUM, [
+  //         {
+  //           text: "Ok",
+  //           onPress: () => moveBack(),
+  //         },
+  //       ]);
+  //     }
+  //   });
+  // };
 
   // In Android file name is not getting by library so we are generating the random string to show the
   const generateRandomFileName = () => {
@@ -365,7 +365,7 @@ const AddNewAlbum = (props) => {
               file_name: fileNameTemp,
               file_type: data1.mime.includes("image")
                 ? data1.mime
-                : "image/jpeg",
+                : data1.mime,
               is_success: true,
               size: data1.size,
               album_id: 0,
@@ -422,9 +422,8 @@ const AddNewAlbum = (props) => {
 
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
+    
     const params = new FormData();
-
-    console.log(" data and title", data, "Title ---", title);
 
     let getfinalTitle = getTimeStemp(title);
     params.append("sessid", user.sessid);
@@ -432,7 +431,7 @@ const AddNewAlbum = (props) => {
     params.append("code_name", getfinalTitle);
 
     data.map((data1, index) => {
-      console.log(" data1 ", data1);
+      // console.log(" data1 ", data1);
       const source = {
         uri: data1.uri,
         name: data1.file_name,
@@ -442,8 +441,6 @@ const AddNewAlbum = (props) => {
       };
       params.append("album_media[" + index + "]", source);
     });
-
-    console.log("i am in api param==>", params);
     dispatch(uploadImgAddNewAlbum(params));
   };
 
@@ -840,10 +837,10 @@ const AddNewAlbum = (props) => {
   };
 
   const saveAlbumData = () => {
+
     if (arrayLibrary.length > 0) {
       //** */ We are uploading all data which we select from gallery to Azure **/
       setIsApiCall(true);
-      //callAPItoUploadImage(imageUpload)
       console.log("saveAlbumData ", arrayLibrary);
       callAPItoUploadImage(arrayLibrary);
     } else {

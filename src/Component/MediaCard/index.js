@@ -74,6 +74,7 @@ export const MediaCard = (props) => {
     isSelectAll ? setIsSelectAll(!isSelectAll) : setIsCheck(!isCheck);
   };
 
+  
   return (
     <View
       key={index}

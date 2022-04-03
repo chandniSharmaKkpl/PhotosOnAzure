@@ -211,6 +211,7 @@ const AlbumDetailScreen = (props) => {
           page: counter ? counter : currentPage,
           date: selectedDate,
         };
+        console.log(" params --====", param); 
         dispatch(getdMedialistbyAlbum(param));
       } else {
         let param = {
@@ -295,27 +296,28 @@ const AlbumDetailScreen = (props) => {
           // Upload Staging api and integration
           const tempIMG = [];
           response.map((data1) => {
+            if (Platform.OS === "ios") {
+            fileNameTemp = data1.filename;
+          } else {
+            fileNameTemp = generateRandomFileName();
+          }
             const source = {
-              uri: Platform.OS === "android" ? data1.path : data1.path,
-              name:
-                Platform.OS === "ios"
-                  ? data1.filename.split(".HEIC")[0] + ".jpg"
-                  : data1.filename,
+              uri: Platform.OS === "android" ? data1.path : data1.sourceURL,
+              name:fileNameTemp,
+                // Platform.OS === "ios"
+                //   ? data1.filename.split(".HEIC")[0] + ".jpg"
+                //   : generateRandomFileName(),
               size: data1.size,
               type: data1.mime,
             };
             tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
-            if (Platform.OS === "ios") {
-              fileNameTemp = data1.filename;
-            } else {
-              fileNameTemp = generateRandomFileName();
-            }
+            
 
             dictImageToShow = {
               file_name: fileNameTemp,
-              file_type: data1.mime.includes("image") ? "image" : data1.mime,
+              file_type: data1.mime,
               is_success: true,
               size: data1.size,
               owner_id: user.user_detail.user_id,
@@ -323,11 +325,11 @@ const AlbumDetailScreen = (props) => {
               album_id: route.params.albumdetail.album_id,
               sourceURL:
                 Platform.OS === "android" ? data1.path : data1.sourceURL,
-              uri: data1.path,
+              uri: Platform.OS === "android" ? data1.path : data1.sourceURL,
 
               user_media_id: Math.random(), // We are distincting array elements based on user_media id so we generate it unique
               pathString:
-                Platform.OS === "android" ? JSON.stringify(data1.path) : "",
+                Platform.OS === "android" ? JSON.stringify(data1.path) : data1.sourceURL,
             };
             tempMediaspce = tempMediaspce + data1.size;
 
@@ -440,7 +442,7 @@ const AlbumDetailScreen = (props) => {
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
-    console.warn("i am in api param==>", params);
+    console.log("callAPItoUploadImage ==> i am in api param==>", params);
     dispatch(updateAlbumImageUpload(params));
     props.navigation.navigate("Home");
   };
@@ -709,7 +711,6 @@ const AlbumDetailScreen = (props) => {
             }
             let imageUrl =
               AZURE_BASE_URL + containerName + "/" + item.file_name;
-
             return (
               <View key={item.user_media_id}>
                 <MediaCard

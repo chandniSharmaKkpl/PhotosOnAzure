@@ -272,6 +272,8 @@ export const CameraIcon = (props) => {
     })
       .then((response) => {
         console.log("captureImage response => ", response);
+        // alert(JSON.stringify(response)); 
+
         if (
           data.HomeReducer &&
           data.HomeReducer.userSpace &&
@@ -295,19 +297,18 @@ export const CameraIcon = (props) => {
         let sendcaptureimgdatatoalbumimgs = [];
         let fileNameTemp = "";
         if (Platform.OS === "ios") {
-          fileNameTemp = response.filename;
+          fileNameTemp = response.filename? response.filename:  generateRandomFileName();
         } else {
           fileNameTemp = generateRandomFileName();
         }
 
         let captureimgdata = {
-          filePath: response.path,
-          fileDisplay: response.path,
+          filePath: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
+          fileDisplay: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
           fileName: fileNameTemp,
           type: response.mime,
           mediaType: "image",
-          pathString:
-          Platform.OS === "android" ? response.path : response.sourceURL,
+          pathString: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
         };
         let sendcaptureimgdatatoalbum = {
           file_name: fileNameTemp,
@@ -315,10 +316,10 @@ export const CameraIcon = (props) => {
           is_success: true,
           size: response.size,
           album_id: 0,
-          uri: Platform.OS === "android" ? response.path : response.sourceURL,
+          uri: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
           user_media_id: Math.random(),
         };
-        console.log("sendcaptureimgdatatoalbum push =>", sendcaptureimgdatatoalbum);
+
         let sendcaptureimgdata = response;
         sendcaptureimgdatatoalbumimgs.push(sendcaptureimgdatatoalbum);
         sendselectedCaptureimgs.push(sendcaptureimgdata);
@@ -326,6 +327,7 @@ export const CameraIcon = (props) => {
         setArrayLibraryLocalData(sendselectedCaptureimgs);
         setmeadiaUploadList(selectedCaptureimgs);
         setaddtoAlbum(sendcaptureimgdatatoalbumimgs);
+
       })
       .catch((e) => {
         if (e.message !== "User cancelled image selection ") {
@@ -454,7 +456,6 @@ export const CameraIcon = (props) => {
 
       let fileNameTemp = "";
       if (!response.didCancel && !response.error) {
-        console.log("captureVideo ==> ",JSON.stringify(response,null,4));
         var currentTotalUsedBytes =
           data.HomeReducer.userSpace.own_space.own_space_used_total_bytes +
           response.size;
@@ -467,28 +468,27 @@ export const CameraIcon = (props) => {
         }
 
         if (Platform.OS === "ios") {
-          fileNameTemp = response.filename;
+          fileNameTemp = response.filename? response.filename: generateRandomFileName();
         } else {
           fileNameTemp = generateRandomFileName();
         }
 
         let videodata = {
-          filePath: response.path,
-          fileDisplay: response.path,
+          filePath: response.path? response.path: response.uri? response.uri:"",
+          fileDisplay: response.path? response.path: response.uri? response.uri:"",
           fileName: fileNameTemp,
           type: "video/mp4",
           mediaType: "video",
-          pathString:
-            Platform.OS === "android" ? response.path : response.sourceURL,
+          pathString: Platform.OS === "android" ? "file://" +response.path :response.path? response.path: response.uri? response.uri:"",
         };
         let sendcaptureviddata = response;
         let sendcaptureviddataAlbum = {
           file_name: fileNameTemp,
           file_type: "video/mp4",
           is_success: true,
-          size: response?.size,
+          size: response?.size? response.size: 10,
           album_id: 0,
-          uri: Platform.OS === "android" ? "file://" +response.path : response.sourceURL,
+          uri: Platform.OS === "android" ? "file://" +response.path : response.path? response.path: response.uri? response.uri:"",
           user_media_id: Math.random(),
         };
         capturevideo.push(videodata);

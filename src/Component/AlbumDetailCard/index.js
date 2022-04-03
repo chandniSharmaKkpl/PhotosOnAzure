@@ -42,6 +42,7 @@ export const MediaCard = (props) => {
     totalData
   } = props;
 
+  console.log("MediaCard -------------------------",item,props);
   const onClickMarks = () => {
    
     // Assigning reverse value of isCheck because state is updating on after render 
@@ -82,10 +83,8 @@ export const MediaCard = (props) => {
     <View
       key={index}
       //style={[styles.cellView, { backgroundColor: theme.colors.primary }
-
-       style={[styles.cellView, {  height:totalData>MEDIA_COUNT? randomBool? height*0.1:height*0.2: height * 0.16}
-      ]}
-    >
+      style={[styles.cellView, {  height:totalData>MEDIA_COUNT? randomBool? height*0.1:height*0.2: height * 0.16}
+      ]}    >
 
        <View style={styles.imageView}>
         {item.file_type.includes("image") ? (
@@ -117,10 +116,10 @@ export const MediaCard = (props) => {
            
           >
             <View style={styles.video}>
-              <VideoCard
+               <VideoCard
                 videoUrl={item.uri ? item.uri : imageUrl}
                 volume={0}
-              ></VideoCard>
+              ></VideoCard> 
             </View> 
             {/* This button is added above on video card to implement click of video */}
             <TouchableOpacity
@@ -147,8 +146,8 @@ export const MediaCard = (props) => {
      
       {isLongPress ? (
         <TouchableOpacity
-           style={[styles.buttonTransparantDetailView, {  height:totalData>MEDIA_COUNT? randomBool? height*0.1:height*0.2: height * 0.16}]}
-
+        style={[styles.cellView, {  height:totalData>MEDIA_COUNT? randomBool? height*0.1:height*0.2: height * 0.16}
+        ]}
           onLongPress={() => {
             item.isCheck = false;
             setIsCheck(false);
