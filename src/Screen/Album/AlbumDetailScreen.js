@@ -211,7 +211,6 @@ const AlbumDetailScreen = (props) => {
           page: counter ? counter : currentPage,
           date: selectedDate,
         };
-        console.log(" params --====", param); 
         dispatch(getdMedialistbyAlbum(param));
       } else {
         let param = {
@@ -442,7 +441,6 @@ const AlbumDetailScreen = (props) => {
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
-    console.log("callAPItoUploadImage ==> i am in api param==>", params);
     dispatch(updateAlbumImageUpload(params));
     props.navigation.navigate("Home");
   };

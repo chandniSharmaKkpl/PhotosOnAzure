@@ -42,7 +42,6 @@ export const MediaCard = (props) => {
     totalData
   } = props;
 
-  console.log("MediaCard -------------------------",item,props);
   const onClickMarks = () => {
    
     // Assigning reverse value of isCheck because state is updating on after render 

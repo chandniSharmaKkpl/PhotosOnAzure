@@ -360,7 +360,7 @@ const AddNewAlbum = (props) => {
             } else {
               fileNameTemp = generateRandomFileName(); // Since picker is not providing name in android so we generate it
             }
-            console.log("data1::", data1, data1.mime.includes("image"));
+            // console.log("data1::", data1, data1.mime.includes("image"));
             dictImageToShow = {
               file_name: fileNameTemp,
               file_type: data1.mime.includes("image")
@@ -423,20 +423,25 @@ const AddNewAlbum = (props) => {
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
     
+    //console.log(title);
+    // if(title.trim().length <=0){
+    //   alert('Please Insert Title');
+    //   return;
+    // }
     const params = new FormData();
 
-    let getfinalTitle = getTimeStemp(title);
+    let getfinalTitle = getTimeStemp(title? title: "Test");
     params.append("sessid", user.sessid);
     params.append("name", title);
-    params.append("code_name", getfinalTitle);
+    params.append("code_name", getfinalTitle? getfinalTitle: "Test_code_name");
 
     data.map((data1, index) => {
       // console.log(" data1 ", data1);
       const source = {
-        uri: data1.uri,
-        name: data1.file_name,
-        size: data1.size,
-        type: data1.file_type,
+        uri: data1.uri? data1.uri:'',
+        name: data1.file_name? data1.file_name:"test file name",
+        size: data1.size? data1.size: 100,
+        type: data1.file_type? data1.file_type: 'image/jpeg',
         // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
@@ -841,7 +846,6 @@ const AddNewAlbum = (props) => {
     if (arrayLibrary.length > 0) {
       //** */ We are uploading all data which we select from gallery to Azure **/
       setIsApiCall(true);
-      console.log("saveAlbumData ", arrayLibrary);
       callAPItoUploadImage(arrayLibrary);
     } else {
       //** create the empty album  */

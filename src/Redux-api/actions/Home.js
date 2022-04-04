@@ -349,7 +349,7 @@ export const notificationStatusApiCall = (param) => (dispatch) => {
 
 export const uploadImg = (param) => (dispatch) => {
   {
-    console.log(" libr param in uploadimg ", param);
+    // console.log(" libr param in uploadimg ", param);
 
     dispatch({ type: UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
@@ -364,11 +364,11 @@ export const uploadImg = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("libr i am in api res ==>response data", response.data)
+        // console.log("libr i am in api res ==>response data", response.data)
         dispatch({ type: UPLOAD_IMAGE_SUCCESS, payload: response.data });
       })
       .catch((error) => {
-        console.log("i am in api res ==>error", error)
+        // console.log("i am in api res ==>error", error)
         dispatch({ type: UPLOAD_IMAGE_FAILURE, payload: error });
       });
   }
@@ -377,7 +377,6 @@ export const uploadImg = (param) => (dispatch) => {
 
 export const uploadImgAddNewAlbum = (param) => (dispatch) => {
   {
-    console.log(" libr param in uploadimg ", param);
 
     dispatch({ type: ADD_NEW_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
@@ -428,7 +427,6 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
 
 export const updateAlbumImageUpload = (param) => (dispatch) => {
   {
-    console.log(" updatealbum param in uploadimg ", param);
 
     dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
@@ -443,11 +441,9 @@ export const updateAlbumImageUpload = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("update alb i am in api res ==>response data", response.data)
         dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_SUCCESS, payload: response.data });
       })
       .catch((error) => {
-        console.log("uodate albi am in api res ==>error", error)
         dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
       });
   }

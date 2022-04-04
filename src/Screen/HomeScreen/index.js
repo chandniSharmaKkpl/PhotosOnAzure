@@ -836,7 +836,6 @@ export function HomeScreen(props) {
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
 
-    console.log(" arrayDeleteItems", arrayDeleteItems);
 
     if (isLibrary) {
       let param = {
@@ -1301,7 +1300,6 @@ export function HomeScreen(props) {
     params.append("sessid", user.sessid);
     // params.append("name", "name");
     item.map((data1, index) => {
-      console.log(" data1 in lib", data1);
       params.append("album_media[" + index + "]", data1);
     });
     setIsApiCall(true);
