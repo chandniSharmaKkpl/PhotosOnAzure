@@ -424,10 +424,10 @@ const AddNewAlbum = (props) => {
   const callAPItoUploadImage = (data) => {
     
     //console.log(title);
-    // if(title.trim().length <=0){
-    //   alert('Please Insert Title');
-    //   return;
-    // }
+    if(title.trim().length <= 0){
+      alert('Please Insert Title');
+      return;
+    }
     const params = new FormData();
 
     let getfinalTitle = getTimeStemp(title? title: "Test");
