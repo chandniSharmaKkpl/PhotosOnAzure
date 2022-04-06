@@ -55,8 +55,8 @@ export const LoginWithEmail = (props) => {
     // email: "poojakumari.aelius@mailnator.com",
     // password: "Pooja@2021 ",
 
-    email: "test2@yopmail.com ",
-      password: "Test@123",
+    email: "test2@yopmail.com",
+      password: "Test@123 ",
 
       // email: "",
       // password: "",

@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     width: width * 0.25,
     height: height * 0.1,
     borderRadius: 20,
-    marginLeft: 4,
+    // marginLeft: 4,
     // shadowColor:'red',
     // shadowOffset: {
     //     width: 0,
@@ -249,6 +249,11 @@ const styles = StyleSheet.create({
     // shadowRadius: 2,
     // shadowOpacity: 0.5,
     // elevation: 1
+  },
+  video: {
+    width: width * 0.25,
+    height: height * 0.1,
+    borderRadius: 20,
   },
   iconView: {
     width: width * 0.3,

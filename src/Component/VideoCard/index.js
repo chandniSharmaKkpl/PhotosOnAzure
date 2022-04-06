@@ -101,7 +101,7 @@ const VideoCard = (props) => {
           uri:props.videoUrl
            // 'https://assets.mixkit.co/videos/download/mixkit-countryside-meadow-4075.mp4',
         }}
-        style={styles.mediaPlayer}
+        style={[styles.mediaPlayer,props.style]}
         volume={props.volume}
       />
       <MediaControls
