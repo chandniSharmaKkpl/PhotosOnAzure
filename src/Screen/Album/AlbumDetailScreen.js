@@ -1,87 +1,61 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
   Pressable,
   Alert,
   FlatList,
-  RefreshControl,
   Dimensions,
   Image,
-  ImageBackground,
   StatusBar,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
   View,
   Keyboard,
   BackHandler,
   Platform,
 } from "react-native";
-import {
-  azureblobfetch,
-  initAzureBlob,
-} from "react-native-azure-blob-storage-manager/azurblobstorage";
-import format from "date-fns/format";
+import { azureblobfetch } from "react-native-azure-blob-storage-manager/azurblobstorage";
 import MasonryList from "@react-native-seoul/masonry-list";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./style";
 import * as globals from "../../Utils/globals";
 import AppConstants from "../../Theme/AppConstant";
-import { ALBUM_DETAIL_SUCCESS_LOCAL_DATA } from "../../Redux-api/constant";
 import stylesHome from "../HomeScreen/style";
-import TextInputView from "../../Component/TextInputView";
-import { AppConstant } from "../../Theme";
 import { Header } from "../../Component/Header";
 import TitleView from "../../Component/TitleView";
 import Search from "../../Component/Search";
-import { Avatar, Headline, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import Button from "../../Component/auth/Button";
 import Spinner from "../../Component/auth/Spinner";
 import { AppColor } from "../../Theme";
 import moment from "moment";
 import {
   getdMedialistbyAlbum,
-  listAllMediaSuccess,
-  deleteAlbum,
-  deleteuser,
   uploadMedia,
   deleteUserMediaAlbumDetailSuccess,
   deleteUserMediaAlbumDetailFail,
   deleteUserMediaAlbumDetail,
   getdMediaListByAlbumSuccess,
-  uploadMediaSuccess,
   albumDetailSuccessLocalData,
-  uploadImg,
   updateAlbumImageUpload,
 } from "../../Redux-api/actions/Home";
 
 import AuthContext from "../../context/AuthContext";
-import { useRoute, useNavigation } from "@react-navigation/core";
-import FastImage from "react-native-fast-image";
-import VideoCard from "../../Component/VideoCard";
+import { useRoute } from "@react-navigation/core";
 import { MediaCard } from "../../Component/AlbumDetailCard";
 import ZoomView from "../../Component/ZoomView";
 import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIcons";
 import ImagePicker from "react-native-image-crop-picker";
 import Upload from "react-native-background-upload";
 import stylesAlbum from "../Album/style";
-import {
-  CurrentDate,
-  decryptKey,
-  checkStringContainsSpecialChar,
-} from "../../common";
+import { CurrentDate } from "../../common";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { removeCurrentUser } from "../../database/localDB";
 import { notifyMessage } from "../../Component/AlertView";
-import { NavigationActions, StackActions } from "@react-navigation/native";
 import CalendarView from "../../Component/Calendar";
 import { cloneDeep } from "lodash";
 
 const { height, width } = Dimensions.get("screen");
 
 const AlbumDetailScreen = (props) => {
-  var countImgUploadAzure = 0; // Image uploaded or failed increase count so that call server api after azure operations.
   var countImgFailedToUpload = 0; // Only count failed images so that we can show fail images counting to user.
   var arrayLibraryLocalData = []; // Local data which need to be save on server
   // var countPickerSelectedImage = 0; // How many images selected by image picker in 1 time open picker
@@ -153,11 +127,11 @@ const AlbumDetailScreen = (props) => {
   const clearState = () => {
     if (arrayImages) {
       setArrayImages([]);
-      arrayImages.length = 0;
+      // arrayImages.length = 0;
     }
     if (arrayAllDates) {
       setArrayAllDates([]);
-      arrayAllDates.length = 0;
+      // arrayAllDates.length = 0;
     }
   };
 
@@ -225,6 +199,7 @@ const AlbumDetailScreen = (props) => {
   );
 
   const callApiToDelete = (arrayDeleteItems) => {
+    // console.log("arrayDeleteItems  ===>, res ===>", arrayDeleteItems);
     setIsLongPress(false);
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
@@ -296,23 +271,22 @@ const AlbumDetailScreen = (props) => {
           const tempIMG = [];
           response.map((data1) => {
             if (Platform.OS === "ios") {
-            fileNameTemp = data1.filename;
-          } else {
-            fileNameTemp = generateRandomFileName();
-          }
+              fileNameTemp = data1.filename;
+            } else {
+              fileNameTemp = generateRandomFileName();
+            }
             const source = {
               uri: Platform.OS === "android" ? data1.path : data1.sourceURL,
-              name:fileNameTemp,
-                // Platform.OS === "ios"
-                //   ? data1.filename.split(".HEIC")[0] + ".jpg"
-                //   : generateRandomFileName(),
+              name: fileNameTemp,
+              // Platform.OS === "ios"
+              //   ? data1.filename.split(".HEIC")[0] + ".jpg"
+              //   : generateRandomFileName(),
               size: data1.size,
               type: data1.mime,
             };
             tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
-            
 
             dictImageToShow = {
               file_name: fileNameTemp,
@@ -328,7 +302,9 @@ const AlbumDetailScreen = (props) => {
 
               user_media_id: Math.random(), // We are distincting array elements based on user_media id so we generate it unique
               pathString:
-                Platform.OS === "android" ? JSON.stringify(data1.path) : data1.sourceURL,
+                Platform.OS === "android"
+                  ? JSON.stringify(data1.path)
+                  : data1.sourceURL,
             };
             tempMediaspce = tempMediaspce + data1.size;
 
@@ -497,95 +473,6 @@ const AlbumDetailScreen = (props) => {
     return finalTitle;
   };
 
-  const uploadAzure = async (assest) => {
-    let getfinalTitle = getTimeStemp(istitle);
-    let assetObject = {
-      filename: assest.file_name,
-      fileSize: assest.size,
-      height: assest.height,
-      type: assest.file_type,
-      uri: assest.sourceURL,
-    };
-    const res = await azureblobfetch({
-      assest: assetObject,
-      container: user.user_detail.container_name
-        ? user.user_detail.container_name
-        : "", //your countainer name,
-      filenameprefix: route.params.albumdetail.code_name + "/", //getfinalTitle + "/", //add before the autogenrated file name, pass code_name here
-      type: "Upload",
-    });
-    setLoading(true);
-    Upload.addListener("progress", res.uploadId, (data) => {});
-    Upload.addListener("cancelled", res.uploadId, (data) => {
-      countImgUploadAzure = countImgUploadAzure + 1;
-    });
-    Upload.addListener("completed", res.uploadId, (data) => {
-      console.warn(
-        "i am in Upload completed in Album Details screen ==>",
-        data
-      );
-
-      countImgUploadAzure = countImgUploadAzure + 1;
-
-      // In api we don't need to pass uri in the image object.
-      let created_date = CurrentDate();
-      let dictImageToSend = {
-        file_name: res.filename,
-        file_type: assest.file_type.includes("image")
-          ? "image"
-          : assest.file_type.includes("video")
-          ? "video"
-          : assest.file_type,
-        is_success: true,
-        size: assest.size,
-        created_date: created_date,
-        album_id: route.params.albumdetail.album_id,
-      };
-      arrayLibraryLocalData.push(dictImageToSend);
-
-      // all picker selected images are uploaded on azure so we are calling server api to upload all uploaded images on server.
-      if (countImgUploadAzure === countPickerSelectedImage) {
-        let param = {
-          sessid: user.sessid ? user.sessid : "",
-          data: arrayLibraryLocalData,
-        };
-
-        setIsApiCall(true);
-
-        dispatch(uploadMedia(param));
-        if (countImgFailedToUpload > 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_MULTIPLE_IMAGES_LIBRARY
-          );
-        } else if (countImgFailedToUpload === 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_SINGLE_IMAGE_LIBRARY
-          );
-        }
-      }
-      setLoading(false);
-    });
-    Upload.addListener("error", res.uploadId, (err) => {
-      countImgUploadAzure = countImgUploadAzure + 1;
-      countImgFailedToUpload = countImgFailedToUpload + 1;
-      setCountFailState(countImgFailedToUpload);
-
-      if (countImgFailedToUpload === countPickerSelectedImage) {
-        setIsApiCall(false);
-        setLoading(false);
-        if (countImgFailedToUpload > 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_MULTIPLE_IMAGES_LIBRARY
-          );
-        } else if (countImgFailedToUpload === 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_SINGLE_IMAGE_LIBRARY
-          );
-        }
-      }
-    });
-  };
-
   const moveBack = () => {
     route.params.onReturn("Chandni ");
     props.navigation.goBack();
@@ -606,7 +493,6 @@ const AlbumDetailScreen = (props) => {
         arrayImgOfDate.forEach((element1) => {
           if (element1.status === AppConstants.constant.NEW_ADDED) {
             isNewElementAdded = true;
-            // uploadAzure(element1);
             callAPItoUploadImage(imageUpload);
           }
         });
@@ -643,10 +529,7 @@ const AlbumDetailScreen = (props) => {
     var oneDate = moment(item).format("MMMM DD, YYYY");
 
     return (
-      <View
-        key={index}
-        //style={{ height: 200 }}
-      >
+      <View key={index}>
         <Text style={styles.textDate}>{oneDate}</Text>
         {renderList(arrayData)}
       </View>
@@ -660,10 +543,7 @@ const AlbumDetailScreen = (props) => {
     var oneDate = moment(item).format("MMMM DD, YYYY");
 
     return (
-      <View
-        key={index}
-        //style={{ height: 200 }}
-      >
+      <View key={index}>
         <Text style={styles.textDate}>{oneDate}</Text>
         {arrayData && arrayData.length > 0 ? (
           <MasonryList
@@ -779,11 +659,6 @@ const AlbumDetailScreen = (props) => {
   };
 
   const setData = () => {
-    // if (isNewDataAdded && data.HomeReducer.albumDetailLocalData) {
-    //   setIsNewDataAdded(false);
-    //   setArrayImages(data.HomeReducer.albumDetailLocalData)
-    //   return;
-    // }
     if (
       data.HomeReducer.albumDetailData.responseCode ===
       AppConstants.constant.SUCCESS
@@ -846,18 +721,6 @@ const AlbumDetailScreen = (props) => {
         AppConstants.constant.DELETE_SUCCESS
       ) {
         dispatch(deleteUserMediaAlbumDetailSuccess({})); // For making empty delete user media
-        // let dataToSet = 1;
-        // setCurrentPage(dataToSet);
-        // setArrayImages([]);
-        // arrayImages.length = 0;
-        // setArrayAllDates([]);
-        // arrayAllDates.length = 0;
-        // setIsApiCall(true);
-        // callgetmedialistbyalbumApi(
-        //   route.params.albumdetail.album_id,
-        //   dataToSet
-        // );
-        // notifyMessage(data.HomeReducer.deleteUserMediaAlbumDetail.message);
       } else if (
         data.HomeReducer.deleteUserMediaAlbumDetail.errorCode ===
         AppConstants.constant.DELETE_FAIL
@@ -1091,9 +954,6 @@ const AlbumDetailScreen = (props) => {
         {
           text: AppConstants.constant.NO,
           onPress: () => console.log(""),
-          //  {
-          //   (arrayCheckMarks.length = 0), setArrayCheckMarks([]);
-          // },
         },
       ]);
     }
@@ -1241,28 +1101,6 @@ const AlbumDetailScreen = (props) => {
                 )
               ) : null}
             </View>
-            {/* <View style={{ marginHorizontal: 15 }}>
-              <Search
-                onClickCalendar={onClickCalendar}
-                // onClickSearch={onClickSearch}
-                isCalendar={false}
-                searchTxt={selectedDate}
-                viewName={"AlbumDetailScreen"}
-              />
-            </View>
-            <>
-              {isCalendarShow ? (
-                <View style={{ padding: "2%", height: "40%" }}>
-                  <CalendarView
-                    // markedDates={markedDates}
-                    onDayPress={onClickCalendarDate}
-                  />
-                </View>
-              ) : null}
-            </> */}
-            {/* <View style={{ marginVertical: 5, marginHorizontal: 20 }}>
-              <Text style={styles.subTitle}>Photos And Videos</Text>
-            </View> */}
 
             <View style={{ flex: 1 }}>
               <>

@@ -1,20 +1,18 @@
-import { StyleSheet, Dimensions } from "react-native";
-import { AppColor, AppConstant } from "../../Theme";
+import { StyleSheet } from "react-native";
+import { AppColor } from "../../Theme";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
-  upgradeNowTxt:{
+  upgradeNowTxt: {
     color: AppColor.colors.WHITE,
-    // fontWeight: "900",
-     fontStyle: "normal",
-     fontFamily: "MuseoSlab-900",
+    fontStyle: "normal",
+    fontFamily: "MuseoSlab-900",
   },
   textPlan: {
     color: AppColor.colors.WHITE,
-   // fontWeight: "900",
     fontStyle: "normal",
     fontFamily: "MuseoSlab-900",
   },
@@ -33,7 +31,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 10,
     borderRadius: 5,
-    // marginHorizontal: 1,
     backgroundColor: AppColor.colors.THEME_BLUE,
   },
   inactivedotstyle: {
@@ -61,9 +58,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     paddingVertical: 10,
-    // opacity:0.7
-
-    // height:'20%'
   },
   bottombtnview: {
     backgroundColor: AppColor.colors.THEME_BLUE,
@@ -71,7 +65,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
   },
   mainview: {
-    // backgroundColor: AppColor.colors.THEME_BLUE,
     borderRadius: 15,
     height: 350,
     marginLeft: 15,
@@ -82,7 +75,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    // height:'80%'
   },
   btn: {
     marginVertical: 5,
@@ -96,8 +88,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     color: AppColor.colors.WHITE,
     padding: "2%",
-    textAlign:'center'
-    
+    textAlign: "center",
   },
   textPrice: {
     fontFamily: "MuseoSlab-500",
@@ -115,16 +106,15 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     color: AppColor.colors.WHITE,
   },
-  textEndDate:{
+  textEndDate: {
     fontFamily: "MuseoSlab-500",
     padding: "2%",
     fontSize: 18,
     fontWeight: "500",
     fontStyle: "normal",
     color: AppColor.colors.WHITE,
-    flexWrap:'wrap',
-    width:'50%',
-   // backgroundColor:'pink'
+    flexWrap: "wrap",
+    width: "50%",
   },
   album: {
     marginHorizontal: 20,
@@ -142,7 +132,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: "MuseoSlab-700",
     color: AppColor.colors.RED,
-    // fontFamily: "MuseoSlab",
     fontSize: 14,
     fontWeight: "300",
     fontStyle: "normal",
@@ -151,7 +140,6 @@ const styles = StyleSheet.create({
     fontFamily: "MuseoSlab-700",
 
     color: AppColor.colors.THEME_BLUE,
-    //fontFamily: "MuseoSlab",
     fontSize: 14,
     fontWeight: "300",
     fontStyle: "normal",

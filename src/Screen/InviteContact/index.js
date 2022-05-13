@@ -1,55 +1,37 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Dimensions,
-  PermissionsAndroid,
   Image,
-  ImageBackground,
   StatusBar,
-  SafeAreaView,
-  ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   FlatList,
-  Alert,
   Platform,
   Pressable,
   Keyboard,
   BackHandler,
-  Share
+  Share,
 } from "react-native";
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import styles from "./style";
-import * as globals from "../../Utils/globals";
-import TextInputView from "../../Component/TextInputView";
 import Spinner from "../../Component/auth/Spinner";
 import AppConstants from "../../Theme/AppConstant";
 import { Header } from "../../Component/Header";
 import SearchContact from "../../Component/SearchContact";
 import { AppConstant, AppImages } from "../../Theme";
 import Contacts from "react-native-contacts";
-import {
-  inviteuserlist,
-  sendappinvitation,
-  listAllMediaSuccess,
-} from "../../Redux-api/actions/Home";
-import { isEmailValid, isMobileNumberValid } from "../../helpers/validations";
+import { sendappinvitation } from "../../Redux-api/actions/Home";
 import { useSelector, useDispatch } from "react-redux";
 import AuthContext from "../../context/AuthContext";
 import { useTheme, Avatar } from "react-native-paper";
-import FastImage from "react-native-fast-image";
 import stylesAlbum from "../Album/style";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
 import * as RNLocalize from "react-native-localize";
-import {
-  CurrentDate,
-  decryptKey,
-  checkStringContainsSpecialChar,
-} from "../../common";
+import { checkStringContainsSpecialChar } from "../../common";
 import { notifyMessage } from "../../Component/AlertView";
 
 export const InviteContact = (props) => {
@@ -72,7 +54,7 @@ export const InviteContact = (props) => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     const unsubscribe = props.navigation.addListener("focus", () => {
-      setSearchText('');
+      setSearchText("");
       data.HomeReducer.isRequesting ? setLoading(false) : setLoading(false);
 
       setLoading(true);
@@ -124,58 +106,48 @@ export const InviteContact = (props) => {
   }, [searchText]);
 
   function handleBackButtonClick() {
-   // setSearchText('');
     props.navigation.goBack();
     return true;
   }
 
   // call when you want to share on social media via link
   const onshareApp = async (item) => {
-    const  messageToShow = AppConstant.constant.INVITE_CODE_SHARE+ " "+user.user_detail.invite_code
-      try {
-        const result = await Share.share({
-          message:
-            messageToShow,
-        });
-        if (result.action === Share.sharedAction) {
-          if (result.activityType) {
-            onInviteApicall(item)
-          } else {
-            onInviteApicall(item)
-          }
-        } else if (result.action === Share.dismissedAction) {
-          // dismissed
+    const messageToShow =
+      AppConstant.constant.INVITE_CODE_SHARE +
+      " " +
+      user.user_detail.invite_code;
+    try {
+      const result = await Share.share({
+        message: messageToShow,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          onInviteApicall(item);
+        } else {
+          onInviteApicall(item);
         }
-      } catch (error) {
-        notifyMessage(error.message);
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
-    };
+    } catch (error) {
+      notifyMessage(error.message);
+    }
+  };
 
-    
   const onInviteApicall = (item) => {
-
     let phoneNumberGet =
-      item && item.phoneNumbers && 
+      item &&
+      item.phoneNumbers &&
       item.phoneNumbers.length > 0 &&
       item.phoneNumbers[0] &&
       item.phoneNumbers[0].number
         ? item.phoneNumbers[0].number
         : null;
 
-   let phoneNumberTemp = phoneNumberGet.replace(/[^\w\s]/gi, '')
+    let phoneNumberTemp = phoneNumberGet.replace(/[^\w\s]/gi, "");
 
-    if (phoneNumberTemp && phoneNumberTemp.length>0) {
-
+    if (phoneNumberTemp && phoneNumberTemp.length > 0) {
       let currentCountry = RNLocalize.getCountry();
-
-      // if (phoneNumberTemp.includes("(")) {
-      //   phoneNumberTemp = phoneNumberTemp.replace(/(/g, "");
-      //   phoneNumberTemp = phoneNumberTemp.replace(/)/g, "");
-      // }
-
-      // if (phoneNumberTemp.includes("-")) {
-      //   phoneNumberTemp = phoneNumberTemp.replace(/-/g, "");
-      // }
 
       let final_number = phoneNumberTemp.replace(/ /g, "");
 
@@ -199,16 +171,13 @@ export const InviteContact = (props) => {
   };
 
   const renderList = ({ item }) => {
-    
     let final_name = item.familyName + " " + item.givenName;
     let userImage = "";
 
     return (
       <View activeOpacity={1} style={styles.renderItemContainer}>
         <TouchableOpacity activeOpacity={1} style={styles.innerContainer}>
-        
-            <Avatar.Icon icon="account" style={styles.image} />
-
+          <Avatar.Icon icon="account" style={styles.image} />
 
           <View style={{ marginLeft: 5 }}>
             <Text
@@ -296,9 +265,7 @@ export const InviteContact = (props) => {
     setSearchText(textSearch);
   };
 
-  const alertLogout = () => {
-    
-  };
+  const alertLogout = () => {};
 
   const moveToLoginScreen = () => {
     // Making array and user empty in logout
@@ -364,8 +331,7 @@ export const InviteContact = (props) => {
       {checkInviteResponseCode()}
       <StatusBar barStyle={"light-content"} backgroundColor={"#0E365D"} />
 
-      <Pressable style={{ flex: 1 }} onPress={()=> Keyboard.dismiss()}>
-
+      <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
         <Header
           leftIcon={require("../../assets/images/Menu.png")}
           leftClick={() => {
@@ -375,13 +341,15 @@ export const InviteContact = (props) => {
           titleIcon={require("../../assets/images/Logo_Icon.png")}
           test={"hello"}
           rightBackIcon={AppImages.images.backIcon}
-          rightBackIconClick={() =>  {
-           setSearchText('');
-            props.navigation.goBack()}}
+          rightBackIconClick={() => {
+            setSearchText("");
+            props.navigation.goBack();
+          }}
           rightViewLeftIcon={require("../../assets/images/Notification.png")}
-          notificationsClick={() =>{ 
-            setSearchText('');
-            props.navigation.navigate("Notifications")}}
+          notificationsClick={() => {
+            setSearchText("");
+            props.navigation.navigate("Notifications");
+          }}
         />
         <View style={styles.album}>
           <Text style={stylesAlbum.textMainTitle}>{"Search Contact"}</Text>

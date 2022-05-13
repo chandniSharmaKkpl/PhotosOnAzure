@@ -1,9 +1,7 @@
-import React, { useState, useRef, useTheme, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import {
   StatusBar,
   Alert,
-  ScrollView,
-  Pressable,
   Linking,
   TouchableWithoutFeedback,
   Image,
@@ -13,21 +11,17 @@ import {
   Text,
   View,
   TouchableOpacity,
-  DeviceEventEmitter,
   BackHandler,
 } from "react-native";
-import RNFS from "react-native-fs";
 import styles from "./style";
 import VideoCard from "../../Component/VideoCard";
 import { Header } from "../../Component/Header";
-import { AppImages, AppColor } from "../../Theme";
 import ReactModal from "react-native-modal";
 import * as globals from "../../Utils/globals";
 import ImagePicker from "react-native-image-crop-picker";
 import ImagePickerVideo from "react-native-image-picker";
 import FastImage from "react-native-fast-image";
 import Spinner from "../../Component/auth/Spinner";
-import { uploadMedia } from "../../Redux-api/actions/Home";
 import AuthContext from "../../context/AuthContext";
 import MediaContext from "../../context/MediaContext";
 import AppConstants from "../../Theme/AppConstant";
@@ -266,14 +260,10 @@ export const CameraIcon = (props) => {
     ImagePicker.openCamera({
       cropping: true,
       mediaType: "photo",
-      //compressImageQuality: 0.3,
       height: 300,
       width: 300,
     })
       .then((response) => {
-        console.log("captureImage response => ", response);
-        // alert(JSON.stringify(response)); 
-
         if (
           data.HomeReducer &&
           data.HomeReducer.userSpace &&
@@ -297,18 +287,35 @@ export const CameraIcon = (props) => {
         let sendcaptureimgdatatoalbumimgs = [];
         let fileNameTemp = "";
         if (Platform.OS === "ios") {
-          fileNameTemp = response.filename? response.filename:  generateRandomFileName();
+          fileNameTemp = response.filename
+            ? response.filename
+            : generateRandomFileName();
         } else {
           fileNameTemp = generateRandomFileName();
         }
 
         let captureimgdata = {
-          filePath: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
-          fileDisplay: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
+          filePath:
+            Platform.OS === "android"
+              ? response.path
+              : response.sourceURL
+              ? response.sourceURL
+              : response.path,
+          fileDisplay:
+            Platform.OS === "android"
+              ? response.path
+              : response.sourceURL
+              ? response.sourceURL
+              : response.path,
           fileName: fileNameTemp,
           type: response.mime,
           mediaType: "image",
-          pathString: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
+          pathString:
+            Platform.OS === "android"
+              ? response.path
+              : response.sourceURL
+              ? response.sourceURL
+              : response.path,
         };
         let sendcaptureimgdatatoalbum = {
           file_name: fileNameTemp,
@@ -316,7 +323,12 @@ export const CameraIcon = (props) => {
           is_success: true,
           size: response.size,
           album_id: 0,
-          uri: Platform.OS === "android"? response.path: response.sourceURL? response.sourceURL: response.path,
+          uri:
+            Platform.OS === "android"
+              ? response.path
+              : response.sourceURL
+              ? response.sourceURL
+              : response.path,
           user_media_id: Math.random(),
         };
 
@@ -327,7 +339,6 @@ export const CameraIcon = (props) => {
         setArrayLibraryLocalData(sendselectedCaptureimgs);
         setmeadiaUploadList(selectedCaptureimgs);
         setaddtoAlbum(sendcaptureimgdatatoalbumimgs);
-
       })
       .catch((e) => {
         if (e.message !== "User cancelled image selection ") {
@@ -436,7 +447,6 @@ export const CameraIcon = (props) => {
         setaddtoAlbum(sendtemDatatoAlbum);
       })
       .catch((e) => {
-        console.log("***********--->", e.message);
         closemediaPicker();
       });
   };
@@ -468,27 +478,51 @@ export const CameraIcon = (props) => {
         }
 
         if (Platform.OS === "ios") {
-          fileNameTemp = response.filename? response.filename: generateRandomFileName();
+          fileNameTemp = response.filename
+            ? response.filename
+            : generateRandomFileName();
         } else {
           fileNameTemp = generateRandomFileName();
         }
 
         let videodata = {
-          filePath: response.path? response.path: response.uri? response.uri:"",
-          fileDisplay: response.path? response.path: response.uri? response.uri:"",
+          filePath: response.path
+            ? response.path
+            : response.uri
+            ? response.uri
+            : "",
+          fileDisplay: response.path
+            ? response.path
+            : response.uri
+            ? response.uri
+            : "",
           fileName: fileNameTemp,
           type: "video/mp4",
           mediaType: "video",
-          pathString: Platform.OS === "android" ? "file://" +response.path :response.path? response.path: response.uri? response.uri:"",
+          pathString:
+            Platform.OS === "android"
+              ? "file://" + response.path
+              : response.path
+              ? response.path
+              : response.uri
+              ? response.uri
+              : "",
         };
         let sendcaptureviddata = response;
         let sendcaptureviddataAlbum = {
           file_name: fileNameTemp,
           file_type: "video/mp4",
           is_success: true,
-          size: response?.size? response.size: 10,
+          size: response?.size ? response.size : 10,
           album_id: 0,
-          uri: Platform.OS === "android" ? "file://" +response.path : response.path? response.path: response.uri? response.uri:"",
+          uri:
+            Platform.OS === "android"
+              ? "file://" + response.path
+              : response.path
+              ? response.path
+              : response.uri
+              ? response.uri
+              : "",
           user_media_id: Math.random(),
         };
         capturevideo.push(videodata);
@@ -649,16 +683,6 @@ export const CameraIcon = (props) => {
           );
         });
     }
-    //console.log(" data save flag ===", dataSaveFlag);
-    // if (dataSaveFlag.length === meadiaUploadList.length) {
-    //   Alert.alert(globals.appName, "Media stored successfully.", [
-    //     { text: "Ok", onPress: () => makeAPIcallofLib() },
-    //   ]);
-    // } else {
-    //   Alert.alert(
-    //     "Something went wrong. Please check your storage permission."
-    //   );
-    // }
   };
 
   /// FOR ADD IMAGES TO LIBRARY IN DASHBOARD
@@ -708,13 +732,6 @@ export const CameraIcon = (props) => {
   };
 
   const distictMediaArray = (data) => {
-    // if (Platform.OS === 'android') {
-
-    //   const distinctArray = [
-    //     ...new Map(data.map((x) => [x["pathString"], x])).values(),
-    //   ];
-    //   return data;
-    // }else
     {
       const distinctArray = [
         ...new Map(data.map((x) => [x["fileName"], x])).values(),

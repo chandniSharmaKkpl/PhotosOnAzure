@@ -9,9 +9,7 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Alert,
   BackHandler,
-
 } from "react-native";
 import * as globals from "../../Utils/globals";
 
@@ -22,7 +20,6 @@ import {
   Text,
   Title,
   useTheme,
-
 } from "react-native-paper";
 
 import { useRoute, useNavigation } from "@react-navigation/core";
@@ -30,7 +27,6 @@ import { useRoute, useNavigation } from "@react-navigation/core";
 import OtpBox from "../../Component/auth/OtpBox";
 import Button from "../../Component/auth/Button";
 import Spinner from "../../Component/auth/Spinner";
-import TextInputView from "../../Component/auth/TextInputView";
 import * as RNLocalize from "react-native-localize";
 
 import AuthContext from "../../context/AuthContext";
@@ -57,7 +53,7 @@ export const Verification = (props) => {
 
   React.useEffect(() => {
     let currentCountry = RNLocalize.getCountry();
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     if (!editMode && phoneNo !== route.params.phoneNumber) {
       const validate = Validate({ phoneNumber: phoneNo });
@@ -81,17 +77,16 @@ export const Verification = (props) => {
             () => {}
           );
         } else {
-          notifyMessage(globals.noInternet)
+          notifyMessage(globals.noInternet);
         }
       }
     }
-	return function cleanup() {
-		BackHandler.removeEventListener(
-		  "hardwareBackPress",
-		  handleBackButtonClick
-		);     
-		  };
-  
+    return function cleanup() {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
   }, [editMode, route.params.sessionId]);
 
   function handleBackButtonClick() {
@@ -119,7 +114,6 @@ export const Verification = (props) => {
           (res) => {
             if (res && res.data && res.data.responseCode) {
               if (res.data.data) {
-                //let conf_key = route.params.conf_key
                 res.data.data.conf_key = route.params.userData.conf_key;
                 // Getting container name also in response and pass it to the next view,
                 setUserData(res.data.data);
@@ -140,7 +134,7 @@ export const Verification = (props) => {
           .catch((e) => console.log(e))
           .finally(() => setLoading(false));
       } else {
-        notifyMessage(globals.noInternet)
+        notifyMessage(globals.noInternet);
       }
     }
   };
@@ -153,14 +147,12 @@ export const Verification = (props) => {
   };
 
   const resendOtp = () => {
-    //	if (!editMode && phoneNo !== route.params.phoneNumber)
     {
       const validate = Validate({ phoneNumber: phoneNo });
 
       setFormError(validate !== "ok" ? validate.phoneNumberErr : "");
 
       let currentCountry = RNLocalize.getCountry();
-
 
       if (validate === "ok") {
         if (globals.isInternetConnected == true) {
@@ -170,8 +162,10 @@ export const Verification = (props) => {
             "updatemobile",
             {
               sessid: route.params.sessionId,
-              phone: currentCountry === AppConstant.constant.INDIA? phoneNo:
-                phoneNo.length === 10
+              phone:
+                currentCountry === AppConstant.constant.INDIA
+                  ? phoneNo
+                  : phoneNo.length === 10
                   ? phoneNo.replace(phoneNo.charAt(0), "61")
                   : phoneNo,
             },
@@ -186,7 +180,7 @@ export const Verification = (props) => {
             .catch((e) => console.log(e))
             .finally(() => setLoading(false));
         } else {
-          notifyMessage(globals.noInternet)
+          notifyMessage(globals.noInternet);
         }
       }
     }
@@ -210,8 +204,7 @@ export const Verification = (props) => {
         }
       ).catch((e) => console.log(e));
     } else {
-      notifyMessage(globals.noInternet)
-     
+      notifyMessage(globals.noInternet);
     }
   };
 
@@ -293,11 +286,6 @@ export const Verification = (props) => {
                 onPress={() => setEditMode(!editMode)}
               />
             </View>
-
-            {/* <TextInputView
-							icon={require('../../assets/icons/swipe.png')}
-							placeholder="Resend Verification Text"
-						/> */}
 
             <OtpBox setOtpVal={(e) => setOtpVal(e)} />
 

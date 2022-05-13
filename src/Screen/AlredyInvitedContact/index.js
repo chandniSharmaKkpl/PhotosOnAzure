@@ -1,14 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Dimensions,
   PermissionsAndroid,
-  Image,
-  ImageBackground,
   StatusBar,
-  SafeAreaView,
-  ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   FlatList,
@@ -17,32 +12,20 @@ import {
   Platform,
   Pressable,
   BackHandler,
-  Linking
-
 } from "react-native";
 import styles from "./style";
 import stylesAlbum from "../Album/style";
-import TextInputView from "../../Component/TextInputView";
 import Spinner from "../../Component/auth/Spinner";
 import AppConstants from "../../Theme/AppConstant";
 import { Header } from "../../Component/Header";
 import Search from "../../Component/Search";
 import { AppImages } from "../../Theme";
-import {
-  inviteuserlist,
-  sendappinvitation,
-  listAllMediaSuccess,
-} from "../../Redux-api/actions/Home";
+import { inviteuserlist } from "../../Redux-api/actions/Home";
 import { useSelector, useDispatch } from "react-redux";
 import AuthContext from "../../context/AuthContext";
 import { useTheme, Avatar } from "react-native-paper";
-import {
-  CurrentDate,
-  decryptKey,
-  checkStringContainsSpecialChar,
-} from "../../common";
-import Contacts from 'react-native-contacts';
-
+import { checkStringContainsSpecialChar } from "../../common";
+import Contacts from "react-native-contacts";
 
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
@@ -87,36 +70,30 @@ export const AlredyInviteContact = (props) => {
     // flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
   }, []);
 
-  React.useEffect(() => {    
+  React.useEffect(() => {
     if (searchText && searchText.length !== 0) {
       if (checkStringContainsSpecialChar(searchText)) {
         notifyMessage(AppConstants.constant.ALBUM_NAME_SPECIAL_CHAR_VALIDATION);
         return;
       }
     }
-      if (searchText) {
-        const newData = masterDataSource.filter(function (item) {
-          let final_names = item.full_name;
+    if (searchText) {
+      const newData = masterDataSource.filter(function (item) {
+        let final_names = item.full_name;
 
-          const itemData = final_names
-            ? final_names.toUpperCase()
-            : "".toUpperCase();
-          const textData = searchText.toUpperCase();
-          return itemData.indexOf(textData) > -1;
-        });
-        setMyContact(newData);
-        setSearchText(searchText);
-      } else {
-        setMyContact(masterDataSource);
-        setSearchText(searchText);
-      }
-    
-  }, [searchText])
-
-  // const iOSPermission = async () => {
-  //   Contacts.requestPermission();
-
-  // }
+        const itemData = final_names
+          ? final_names.toUpperCase()
+          : "".toUpperCase();
+        const textData = searchText.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setMyContact(newData);
+      setSearchText(searchText);
+    } else {
+      setMyContact(masterDataSource);
+      setSearchText(searchText);
+    }
+  }, [searchText]);
 
   const handleBackButtonClick = () => {
     //props.navigation.goBack();
@@ -129,7 +106,7 @@ export const AlredyInviteContact = (props) => {
         [
           {
             text: AppConstants.constant.CANCEL,
-            onPress: () => countBack = 0,
+            onPress: () => (countBack = 0),
             style: "cancel",
           },
           {
@@ -141,57 +118,51 @@ export const AlredyInviteContact = (props) => {
           cancelable: false,
         }
       );
-    }else{
-      setSearchText("")
+    } else {
+      setSearchText("");
       props.navigation.goBack();
     }
     return true;
   };
 
   const requestReadContactPermissionAndroid = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_CONTACTS
-        );
-          setPermissionGranted(granted); 
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            setSearchText('');
-            props.navigation.navigate("InviteContact");
-          } else {
-           // requestReadContactPermissionAndroid();
-          }
-      } catch (err) {
-        // console.warn(err);
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS
+      );
+      setPermissionGranted(granted);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        setSearchText("");
+        props.navigation.navigate("InviteContact");
+      } else {
+        // requestReadContactPermissionAndroid();
       }
+    } catch (err) {}
   };
 
-  const requestReadContactPermissionIos = ()=>{
+  const requestReadContactPermissionIos = () => {
     try {
-      Contacts.checkPermission().then(permission => {
-
+      Contacts.checkPermission().then((permission) => {
         // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
-       
-        if (permission === 'authorized') {
-          setSearchText('');
+
+        if (permission === "authorized") {
+          setSearchText("");
           props.navigation.navigate("InviteContact");
-        }else{
+        } else {
           againContactRequest();
         }
-       
-     
-      })
-    } catch (error) {
-    }
-  }
+      });
+    } catch (error) {}
+  };
 
-  const againContactRequest = ()=>{
-    Contacts.requestPermission().then(permission => {
-      if (permission === 'authorized') {
-        setSearchText('');
-       props.navigation.navigate("InviteContact");
+  const againContactRequest = () => {
+    Contacts.requestPermission().then((permission) => {
+      if (permission === "authorized") {
+        setSearchText("");
+        props.navigation.navigate("InviteContact");
       }
-     })
-  }
+    });
+  };
   // distict contacts
   const distictContact = (data) => {
     const distinctArray = [
@@ -219,15 +190,7 @@ export const AlredyInviteContact = (props) => {
         style={[styles.renderItemContainer, { backgroundColor: "#eff4f9" }]}
       >
         <TouchableOpacity activeOpacity={1} style={styles.innerContainer}>
-          {/* {item.image ? (
-            <Image
-              resizeMode="contain"
-              style={styles.image}
-              source={item.image}
-            />
-          ) : ( */}
-            <Avatar.Icon icon="account" style={styles.image} />
-          {/* )} */}
+          <Avatar.Icon icon="account" style={styles.image} />
 
           <View style={{ marginLeft: 5 }}>
             <Text
@@ -277,18 +240,11 @@ export const AlredyInviteContact = (props) => {
     }
   };
 
-  
-
   const onChangeText = (textSearch) => {
     setSearchText(textSearch);
-
   };
 
-  const alertLogout = () => {
-    // Alert.alert("Alert", data.AuthReducer.data.message, [
-    //   { text: "Ok", onPress: () => moveToLoginScreen() },
-    // ]);
-  };
+  const alertLogout = () => {};
 
   const moveToLoginScreen = () => {
     // Making array and user empty in logout
@@ -302,7 +258,11 @@ export const AlredyInviteContact = (props) => {
   };
 
   const checkMyContactResponseCode = () => {
-    if (data.HomeReducer && data.HomeReducer.invitedUserList && data.HomeReducer.invitedUserList.responseCode) {
+    if (
+      data.HomeReducer &&
+      data.HomeReducer.invitedUserList &&
+      data.HomeReducer.invitedUserList.responseCode
+    ) {
       if (
         data.HomeReducer.invitedUserList.responseCode ===
           AppConstants.constant.FAILURE &&
@@ -345,8 +305,12 @@ export const AlredyInviteContact = (props) => {
 
   const handleLoadMore = () => {
     if (
-      data.HomeReducer && data.HomeReducer.invitedUserList && data.HomeReducer.invitedUserList.responseCode &&
-      data.HomeReducer.invitedUserList.responseCode === AppConstants.constant.SUCCESS ) {
+      data.HomeReducer &&
+      data.HomeReducer.invitedUserList &&
+      data.HomeReducer.invitedUserList.responseCode &&
+      data.HomeReducer.invitedUserList.responseCode ===
+        AppConstants.constant.SUCCESS
+    ) {
       if (
         data.HomeReducer.invitedUserList.data.totalPages >= currentPage &&
         myContact.length < data.HomeReducer.invitedUserList.data.totalAlbumCount
@@ -361,7 +325,7 @@ export const AlredyInviteContact = (props) => {
       {checkMyContactResponseCode()}
       <StatusBar barStyle={"light-content"} backgroundColor={"#0E365D"} />
 
-      <Pressable style={{ flex: 1 }} onPress={()=> Keyboard.dismiss()}>
+      <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
         <Header
           leftIcon={require("../../assets/images/Menu.png")}
           leftClick={() => {
@@ -371,15 +335,16 @@ export const AlredyInviteContact = (props) => {
           titleIcon={require("../../assets/images/Logo_Icon.png")}
           test={"hello"}
           rightBackIcon={AppImages.images.backIcon}
-          rightBackIconClick={() => { 
-            setSearchText("")
-            props.navigation.goBack()
+          rightBackIconClick={() => {
+            setSearchText("");
+            props.navigation.goBack();
           }}
           rightViewLeftIcon={require("../../assets/images/Notification.png")}
           notificationsClick={() => {
-let txt = '';
+            let txt = "";
             setSearchText(txt);
-            props.navigation.navigate("Notifications")}}
+            props.navigation.navigate("Notifications");
+          }}
         />
         <View style={styles.album}>
           <Text style={stylesAlbum.textMainTitle}>Search Contact</Text>
@@ -414,17 +379,16 @@ let txt = '';
           <Pressable
             style={styles.invitecontactbuttonview}
             onPress={() => {
-              if(Platform.OS === 'android'){
-              if (permissionGranted === PermissionsAndroid.RESULTS.GRANTED) {
-                setSearchText('');
-                props.navigation.navigate("InviteContact");
-              }else{
-                requestReadContactPermissionAndroid();
+              if (Platform.OS === "android") {
+                if (permissionGranted === PermissionsAndroid.RESULTS.GRANTED) {
+                  setSearchText("");
+                  props.navigation.navigate("InviteContact");
+                } else {
+                  requestReadContactPermissionAndroid();
+                }
+              } else {
+                requestReadContactPermissionIos();
               }
-            }else{
-              requestReadContactPermissionIos();
-
-            }
             }}
           >
             <Text style={[styles.invitecontactbuttontext]}>{"My Contact"}</Text>

@@ -6,6 +6,7 @@ export default StyleSheet.create({
     MainWrappper: {
         // width:width,
         backgroundColor: '#fff',
+        // backgroundColor: "pink",
         flexDirection: "row",
         // height: deviceInfo.hasNotch() ? 90 : 70,
         justifyContent: 'space-between',
@@ -35,8 +36,8 @@ export default StyleSheet.create({
         justifyContent:'center',
         top:  -60,
         right: "50%",
-      // backgroundColor:'pink'
-        backgroundColor:'rgba(240,244,249,0.7)'
+      backgroundColor:'pink'
+        // backgroundColor:'rgba(240,244,249,0.7)'
 
     },
     whiteCircle:{

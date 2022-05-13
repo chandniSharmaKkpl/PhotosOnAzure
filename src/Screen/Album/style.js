@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     flexDirection: "row",
   },
-  viewContainImg:{
-    width:'50%',
-     height:'50%'
+  viewContainImg: {
+    width: "50%",
+    height: "50%",
   },
   addAlbumView: {
     width: 60,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.02,
     marginVertical: width * 0.02,
   },
-  footerAddAlbum:{
+  footerAddAlbum: {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
@@ -48,9 +48,7 @@ const styles = StyleSheet.create({
     color: AppColor.colors.THEME_BLUE,
     fontFamily: "MuseoSlab-300",
     marginLeft: "5%",
-    // alignSelf:'center',
     marginTop: "2%",
-    // marginBottom:'5%'
   },
 
   detailText2: {
@@ -59,11 +57,6 @@ const styles = StyleSheet.create({
     color: AppColor.colors.THEME_BLUE,
     fontFamily: "MuseoSlab-300",
     marginTop: "2%",
-
-    // marginLeft:'5%',
-    // alignSelf:'center',
-    // marginTop:'2%',
-    // marginBottom:'5%'
   },
 
   iconDelete: {
@@ -92,10 +85,10 @@ const styles = StyleSheet.create({
     padding: "5%",
     fontFamily: "MuseoSlab-700",
   },
-  textDate:{
+  textDate: {
     fontFamily: "MuseoSlab-300",
-    color: 'black', 
-    fontSize:18
+    color: "black",
+    fontSize: 18,
   },
   album: {
     margin: 20,
@@ -164,12 +157,10 @@ const styles = StyleSheet.create({
   },
   imageShareIcon: {},
   pencilIcon: {
-    // backgroundColor: 'pink',
     flex: 0.2,
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    // borderBottomEndRadius: 20,
   },
   navyBlueView: {
     flex: 0.5,
@@ -186,7 +177,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#0E365D",
     alignSelf: "center",
     borderRadius: 20,
-    // marginVertical: 8,
     shadowColor: "gray",
     shadowOffset: {
       width: 0,
@@ -202,53 +192,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#eff4f9",
     flexDirection: "row",
     alignItems: "center",
-    // zIndex: 1,
     borderRadius: 20,
     position: "absolute",
-    // shadowColor:'gray',
-    // shadowOffset: {
-    //     width: 0,
-    //     height: 0.5
-    // },
-    // shadowRadius: 2,
-    // shadowOpacity: 0.5,
-    // elevation: 1
   },
   imageFolder: {
-    width: '100%',
-    height: '100%',
-  //  borderRadius: 20,
-   // marginLeft: 4,
-    // shadowColor:'red',
-    // shadowOffset: {
-    //     width: 0,
-    //     height: 0.5
-    // },
-    // shadowRadius: 2,
-    // shadowOpacity: 0.5,
-    // elevation: 1
+    width: "100%",
+    height: "100%",
   },
-  viewAlbumPlaceHolder:{
+  viewAlbumPlaceHolder: {
     width: width * 0.25,
     height: height * 0.1,
     borderRadius: 20,
     marginLeft: 4,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
     width: width * 0.25,
     height: height * 0.1,
     borderRadius: 20,
-    // marginLeft: 4,
-    // shadowColor:'red',
-    // shadowOffset: {
-    //     width: 0,
-    //     height: 0.5
-    // },
-    // shadowRadius: 2,
-    // shadowOpacity: 0.5,
-    // elevation: 1
   },
   video: {
     width: width * 0.25,
@@ -257,11 +219,7 @@ const styles = StyleSheet.create({
   },
   iconView: {
     width: width * 0.3,
-    // marginHorizontal: 10,
-    // alignItems: 'center',
     justifyContent: "center",
-    // borderRadius: 20,
-    // position: 'absolute',
     right: 0,
     height: "50%",
   },
@@ -269,19 +227,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 20,
     width: 20,
-    // margin: 5,
     height: 20,
   },
   invitebuttonview: {
-    // flex: 0.5,
-    // height: "37.5%",
     padding: 7,
-    // marginLeft:width *0.05,
     borderRadius: 6,
     backgroundColor: "red",
     alignItems: "center",
     alignSelf: "center",
-    // justifyContent:'center',
     flexDirection: "row",
   },
   invitebuttontext: {
@@ -297,6 +250,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     marginRight: 4,
   },
+
   ///// shared/own album style
   viewAlbum: {
     padding: "5%",
@@ -318,14 +272,12 @@ const styles = StyleSheet.create({
   textSelectPhoto: {
     fontFamily: "MuseoSlab-300",
     color: "#fff",
-    textAlign:'center'
+    textAlign: "center",
   },
   viewFlatListDropDown: {
     backgroundColor: "red",
     borderRadius: 6,
-    //   position:'absolute',
     padding: "5%",
-    //marginTop:100,
   },
   viewDropDownCell: {
     padding: "2%",
@@ -362,7 +314,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   titleviewstyle: {
-    // marginHorizontal: globals.screenWidth * 0.02,
     marginVertical: globals.screenHeight * 0.01,
   },
   choosefilestyle: {

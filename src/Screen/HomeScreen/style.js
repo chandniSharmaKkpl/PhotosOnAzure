@@ -1,17 +1,16 @@
 import { StyleSheet, Dimensions } from "react-native";
 const { height, width } = Dimensions.get("screen");
-import { AppColor, AppConstant } from "../../Theme";
+import { AppColor } from "../../Theme";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
-  textBottom:{ 
+  textBottom: {
     color: "#fff",
-    fontFamily: 'MuseoSlab-500',
-    fontSize:12
-
+    fontFamily: "MuseoSlab-500",
+    fontSize: 12,
   },
   addView: {
     width: 60,
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
     width: "93%",
     height: "93%",
     alignSelf: "center",
-    backgroundColor:'pink'
+    backgroundColor: "pink",
   },
   viewTitleAndDelete: {
     flexDirection: "row",
@@ -41,9 +40,7 @@ const styles = StyleSheet.create({
   viewFlatListDropDown: {
     backgroundColor: AppColor.colors.RED,
     borderRadius: 6,
-    //   position:'absolute',
     padding: "5%",
-    //marginTop:100,
   },
   viewDropDownCell: {
     padding: "2%",
@@ -51,8 +48,7 @@ const styles = StyleSheet.create({
   textDropDownCell: {
     padding: "2%",
     color: AppColor.colors.WHITE,
-    fontFamily: 'MuseoSlab-700'
-
+    fontFamily: "MuseoSlab-700",
   },
   viewAlbum: {
     padding: "5%",
@@ -61,10 +57,8 @@ const styles = StyleSheet.create({
   },
   textAlbum: {
     padding: "3%",
-    //fontWeight:'bold',
     color: AppColor.colors.WHITE,
-    fontFamily: 'MuseoSlab-700'
-
+    fontFamily: "MuseoSlab-700",
   },
   viewLoader: {
     padding: 10,
@@ -79,16 +73,15 @@ const styles = StyleSheet.create({
     height: "18%",
   },
   album: { margin: 10 },
-  headerViewUser: { 
-    marginBottom:'5%',
-   // backgroundColor:'pink'
+  headerViewUser: {
+    marginBottom: "5%",
   },
 
   albumText: {
     color: "#0E365D",
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: 22,
-     fontFamily: 'MuseoSlab-500'
+    fontFamily: "MuseoSlab-500",
   },
   viewCellAlbum: {
     position: "absolute",
@@ -121,8 +114,7 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   cellView: {
-   width: width * 0.41,
-    // width: width*0.8 ,
+    width: width * 0.41,
 
     marginHorizontal: width * 0.02,
     marginVertical: width * 0.02,
@@ -133,14 +125,11 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "red",
-
-     //backgroundColor: theme.colors.primary
   },
 
   cellViewAlbumShare: {
     width: width * 0.35,
     marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
     height: height * 0.18,
     alignItems: "center",
     justifyContent: "center",
@@ -152,23 +141,19 @@ const styles = StyleSheet.create({
   imageAllbumCard: {
     width: width * 0.35,
     marginHorizontal: width * 0.02,
-    //marginVertical: width * 0.02,
     height: height * 0.16,
     borderRadius: 20,
-    alignSelf:'center'
-    
+    alignSelf: "center",
   },
   buttonTransparant: {
     width: width * 0.41,
     marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
     height: height * 0.15,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
     borderColor: "gray",
     borderWidth: 1,
-    // backgroundColor: "#0E365D",
     position: "absolute",
     top: 0,
   },
@@ -176,14 +161,12 @@ const styles = StyleSheet.create({
   buttonTransparantShare: {
     width: width * 0.35,
     marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
     height: height * 0.18,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
     borderColor: "gray",
     borderWidth: 1,
-    // backgroundColor: "#0E365D",
     position: "absolute",
     top: 0,
   },
@@ -191,7 +174,6 @@ const styles = StyleSheet.create({
   cellViewTransparantShare: {
     width: width * 0.35,
     marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
     height: height * 0.18,
     alignItems: "center",
     justifyContent: "center",
@@ -204,16 +186,13 @@ const styles = StyleSheet.create({
   },
   cellViewTransparant: {
     width: "100%",
-    // marginHorizontal: width * 0.02,
-    // marginVertical: width * 0.02,
-    height: "100%", //height * 0.15,
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "#0E365D",
-    //position:'absolute',
     top: 0,
     opacity: 0.5,
   },
@@ -228,7 +207,6 @@ const styles = StyleSheet.create({
     marginVertical: width * 0.02,
     height: height * 0.15,
     borderRadius: 20,
-    
   },
   imageViewLongPress: {
     width: "80%",
@@ -245,8 +223,6 @@ const styles = StyleSheet.create({
   allPhotosTitle: {
     marginVertical: 20,
     fontFamily: "MuseoSlab-700",
-    //fontWeight:'bold',
-
   },
   userImage: {
     height: 30,
@@ -257,13 +233,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 5,
-    
   },
   userHeaderView: {
     flexDirection: "row",
     alignItems: "center",
-    },
-    
+  },
+
   greetingText: {
     fontSize: 16,
     fontWeight: "normal",
@@ -280,7 +255,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-   // padding: 20,
     backgroundColor: "rgba(14, 54, 93, 0.6)",
     width: width * 0.41,
     height: height * 0.15,
@@ -307,7 +281,7 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 20,
   },
- 
+
   fullScreenTextView: {
     flex: 1,
     alignItems: "center",
@@ -324,7 +298,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     color: "#fff",
-    // textAlign: "center",
     backgroundColor: "rgba(16,70,88,0.7)",
     width: "90%",
     borderBottomLeftRadius: 45,

@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import {
   StatusBar,
-  ScrollView,
   Text,
   View,
   Keyboard,
@@ -10,7 +9,6 @@ import {
   Alert,
   TouchableOpacity,
   Dimensions,
-  Image,
 } from "react-native";
 import styles from "./style";
 import { Header } from "../../Component/Header";
@@ -22,7 +20,7 @@ import FastImage from "react-native-fast-image";
 import { notifyMessage } from "../../Component/AlertView";
 import Button from "../../Component/auth/Button";
 import AppConstants from "../../Theme/AppConstant";
-import { useRoute, useNavigation } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/core";
 import {
   albumListOfUser,
   revokeShareAlbum,
@@ -49,7 +47,6 @@ const ManageAccess = (props) => {
   const route = useRoute();
 
   React.useEffect(() => {
-
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
     callApiToGetUserAlbums("effect", 1);
 
@@ -131,17 +128,6 @@ const ManageAccess = (props) => {
         ) {
           data.HomeReducer.revokeShareAlbumData.errorCode = null;
           props.navigation.goBack();
-
-          // Alert.alert(
-          //   AppConstants.constant.ALERT,
-          //   data.HomeReducer.revokeShareAlbumData.message,
-          //   [
-          //     {
-          //       text: AppConstants.constant.OK,
-          //       onPress: () => props.navigation.goBack()
-          //     }
-          //   ]
-          // );
         } else {
           if (
             data.HomeReducer.revokeShareAlbumData.errorCode ===
@@ -221,7 +207,6 @@ const ManageAccess = (props) => {
         }
       >
         <TouchableOpacity
-          //  onPress={() => gotoAlbumDetails(item)}
           activeOpacity={1}
           style={[
             styles.innerContainer,
@@ -235,7 +220,6 @@ const ManageAccess = (props) => {
               style={styles.image}
               source={{
                 uri: imageUrl,
-                //headers: { Authorization: 'someAuthToken' },
                 priority: FastImage.priority.normal,
               }}
               resizeMode={FastImage.resizeMode.cover}
@@ -290,7 +274,6 @@ const ManageAccess = (props) => {
               style={[
                 styles.iconView,
                 {
-                  // backgroundColor: AppColor.colors.LITE_BLUE,
                   borderBottomEndRadius: 20,
                 },
               ]}

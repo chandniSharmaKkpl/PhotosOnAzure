@@ -1,69 +1,41 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { Keyboard } from "react-native";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
-import { launchImageLibrary } from "react-native-image-picker";
 import Spinner from "../../Component/auth/Spinner";
 import AppConstants from "../../Theme/AppConstant";
 import AuthContext from "../../context/AuthContext";
+import { initAzureBlob } from "react-native-azure-blob-storage-manager/azurblobstorage";
 import {
-  azureblobfetch,
-  initAzureBlob,
-} from "react-native-azure-blob-storage-manager/azurblobstorage";
-import Upload from "react-native-background-upload";
-import {
-  uploadMedia,
   checkAlbumName,
-  uploadImg,
   uploadImgAddNewAlbum,
 } from "../../Redux-api/actions/Home";
 import * as globals from "../../Utils/globals";
 import ZoomView from "../../Component/ZoomView";
-import {
-  CurrentDate,
-  decryptKey,
-  checkStringContainsSpecialChar,
-} from "../../common";
-import FastImage from "react-native-fast-image";
+import { decryptKey, checkStringContainsSpecialChar } from "../../common";
 import ImagePicker from "react-native-image-crop-picker";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import SubscriptionError from "../../Component/SubscriptionError";
 
 import {
   Pressable,
   Alert,
   FlatList,
-  Dimensions,
   Image,
-  ImageBackground,
   StatusBar,
-  SafeAreaView,
-  ScrollView,
   TextInput,
-  TouchableOpacity,
   View,
-  DeviceEventEmitter,
   Platform,
-  ToastAndroid,
   BackHandler,
 } from "react-native";
 import styles from "./style";
-import stylesHome from "../HomeScreen/style";
 import stylesRegister from "../Register/style";
 import stylesAlbum from "../Album/style";
-
-import TextInputView from "../../Component/TextInputView";
-
 import { Header } from "../../Component/Header";
 import TitleView from "../../Component/TitleView";
-import Search from "../../Component/Search";
-import { Avatar, Headline, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import Button from "../../Component/auth/Button";
 import { useSelector, useDispatch } from "react-redux";
-import VideoCard from "../../Component/VideoCard";
-import { useRoute, useNavigation } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/core";
 import { removeCurrentUser } from "../../database/localDB";
 import { MediaCard } from "../../Component/MediaCard";
 import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIcons";
@@ -75,7 +47,6 @@ import { AppColor } from "../../Theme";
 const AddNewAlbum = (props) => {
   const { user } = React.useContext(AuthContext);
   // var arrayLibraryLocalData = []; // Local data which need to be save on server
-  var countImgUploadAzure = 0; // Image uploaded or failed increase count so that call server api after azure operations.
   var countImgFailedToUpload = 0; // Only count failed images so that we can show fail images counting to user.
   const data = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -108,7 +79,6 @@ const AddNewAlbum = (props) => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
     if (route.params.uploadMediadatas) {
       setArrayLibrary(route.params.uploadMediadatas);
-
     }
     if (user && user.conf_key) {
       let azureKey = decryptKey(user.conf_key);
@@ -184,7 +154,6 @@ const AddNewAlbum = (props) => {
     var splitStr = title.toLowerCase();
     var replacedStr = splitStr.split(" ").join("_");
     var finalTitle = replacedStr + "_" + date;
-    console.log("timeeee", finalTitle);
     return finalTitle;
   };
 
@@ -194,116 +163,6 @@ const AddNewAlbum = (props) => {
     setArrayCheckMarks([]);
     setIsCheck(false);
   };
-
-  // const uploadAzure = async (assest) => {
-  //   let getfinalTitle = getTimeStemp(title);
-  //   console.log("uploadAzure assets uri ", assest);
-
-  //   // alert(` upload azure imgpicker object ---> ${JSON.stringify(assest)}`);
-
-  //   let assetObject = {
-  //     filename: assest.file_name,
-  //     fileSize: assest.size,
-  //     height: assest.height ? assest.height : 200,
-  //     type: assest.file_type,
-  //     uri: assest.sourceURL ? assest.sourceURL : assest.uri,
-  //   };
-
-  //   console.log(" Assest object 207 ", assetObject);
-
-  //   //  alert(`uploadAzure asset objectpassing to library- ${JSON.stringify(assetObject)}`);
-
-  //   const res = await azureblobfetch({
-  //     assest: assetObject,
-  //     container: user.user_detail.container_name
-  //       ? user.user_detail.container_name
-  //       : "", //your countainer name,
-  //     // filenameprefix: title + "/", //add before the autogenrated file name,
-  //     filenameprefix: getfinalTitle + "/", //add before the autogenrated file name,
-
-  //     type: "Upload",
-  //   });
-  //   setLoading(true);
-  //   Upload.addListener("progress", res.uploadId, (data) => {
-  //     console.log("218  progress === ", data);
-  //     // alert(`uploading progress ${JSON.stringify(data)}`)
-  //   });
-  //   Upload.addListener("cancelled", res.uploadId, (data) => {
-  //     // alert(`uploading cancelled ${JSON.stringify(data)}`)
-
-  //     countImgUploadAzure = countImgUploadAzure + 1;
-  //   });
-  //   Upload.addListener("completed", res.uploadId, (data) => {
-  //     console.warn("i am in Upload completed in Add New Album =>", data);
-
-  //     // alert(`uploading completed ${JSON.stringify(data)}`)
-
-  //     countImgUploadAzure = countImgUploadAzure + 1;
-  //     // console.log("225 completed ===>","dictImageToSend",countImgUploadAzure, data);
-
-  //     // In api we don't need to pass uri in the image object.
-  //     let created_date = CurrentDate();
-  //     let dictImageToSend = {
-  //       file_name: res.filename,
-  //       file_type: assest.file_type.includes("image")
-  //         ? "image"
-  //         : assest.file_type.includes("video")
-  //         ? "video"
-  //         : assest.file_type,
-  //       is_success: true,
-  //       size: assest.size,
-  //       created_date: created_date,
-  //       album_id: 0,
-  //     };
-
-  //     console.log(
-  //       "242 completed === ",
-  //       "dictImageToSend",
-  //       countImgUploadAzure,
-  //       dictImageToSend
-  //     );
-
-  //     arrayLibraryLocalData.push(dictImageToSend);
-
-  //     // all picker selected images are uploaded on azure so we are calling server api to upload all uploaded images on server.
-  //     if (countImgUploadAzure === arrayLibrary.length) {
-  //       let param = {
-  //         sessid: user.sessid ? user.sessid : "",
-  //         name: title,
-  //         code_name: getfinalTitle,
-  //         data: arrayLibraryLocalData,
-  //       };
-
-  //       console.log(
-  //         "completed === ",
-  //         "countImgUploadAzure",
-  //         countImgUploadAzure,
-  //         data
-  //       );
-
-  //       setIsApiCall(true);
-  //       dispatch(uploadMedia(param));
-  //     }
-
-  //     //setLoading(false);
-  //   });
-  //   Upload.addListener("error", res.uploadId, (err) => {
-  //     countImgUploadAzure = countImgUploadAzure + 1;
-  //     countImgFailedToUpload = countImgFailedToUpload + 1;
-  //     setCountFailState(countImgFailedToUpload);
-
-  //     if (countImgFailedToUpload === arrayLibrary.length) {
-  //       setIsApiCall(false);
-  //       setLoading(false);
-  //       Alert.alert("Alert", AppConstants.constant.WE_CANT_CREATE_ALBUM, [
-  //         {
-  //           text: "Ok",
-  //           onPress: () => moveBack(),
-  //         },
-  //       ]);
-  //     }
-  //   });
-  // };
 
   // In Android file name is not getting by library so we are generating the random string to show the
   const generateRandomFileName = () => {
@@ -360,12 +219,9 @@ const AddNewAlbum = (props) => {
             } else {
               fileNameTemp = generateRandomFileName(); // Since picker is not providing name in android so we generate it
             }
-            // console.log("data1::", data1, data1.mime.includes("image"));
             dictImageToShow = {
               file_name: fileNameTemp,
-              file_type: data1.mime.includes("image")
-                ? data1.mime
-                : data1.mime,
+              file_type: data1.mime.includes("image") ? data1.mime : data1.mime,
               is_success: true,
               size: data1.size,
               album_id: 0,
@@ -422,26 +278,26 @@ const AddNewAlbum = (props) => {
 
   // Upload Staging api and integration
   const callAPItoUploadImage = (data) => {
-    
-    //console.log(title);
-    if(title.trim().length <= 0){
-      alert('Please Insert Title');
+    if (title.trim().length <= 0) {
+      alert("Please Insert Title");
       return;
     }
     const params = new FormData();
 
-    let getfinalTitle = getTimeStemp(title? title: "Test");
+    let getfinalTitle = getTimeStemp(title ? title : "Test");
     params.append("sessid", user.sessid);
     params.append("name", title);
-    params.append("code_name", getfinalTitle? getfinalTitle: "Test_code_name");
+    params.append(
+      "code_name",
+      getfinalTitle ? getfinalTitle : "Test_code_name"
+    );
 
     data.map((data1, index) => {
-      // console.log(" data1 ", data1);
       const source = {
-        uri: data1.uri? data1.uri:'',
-        name: data1.file_name? data1.file_name:"test file name",
-        size: data1.size? data1.size: 100,
-        type: data1.file_type? data1.file_type: 'image/jpeg',
+        uri: data1.uri ? data1.uri : "",
+        name: data1.file_name ? data1.file_name : "test file name",
+        size: data1.size ? data1.size : 100,
+        type: data1.file_type ? data1.file_type : "image/jpeg",
         // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
@@ -580,11 +436,6 @@ const AddNewAlbum = (props) => {
       ];
       return distinctArray;
     } else {
-      // const distinctArray = [
-      //   ...new Map(data.map((x) => [x["fileName"], x])).values(),
-      // ];
-      // return distinctArray;
-
       const distinctArray = [
         ...new Map(data.map((x) => [x["file_name"], x])).values(),
       ];
@@ -595,10 +446,6 @@ const AddNewAlbum = (props) => {
   const callbackFunction = (childData) => {};
 
   const moveBack = () => {
-    //route.params.onReturn("Chandni ");
-    //props.navigation.navigate('Home');
-    // return;
-
     setTitle("");
     if (route.params.itisfrom == "Album") {
       props.navigation.goBack();
@@ -608,7 +455,6 @@ const AddNewAlbum = (props) => {
     }
     {
       if (route.params.itisfrom == "camera") {
-        //props.navigation.goBack();
         props.navigation.navigate("HomeStack", { from: "addNewAlbum" });
       } else {
         props.navigation.navigate("Home", { from: "addNewAlbum" });
@@ -642,7 +488,6 @@ const AddNewAlbum = (props) => {
   };
 
   const checkResponseCode = () => {
-    // console.log("<Subscrip......11",  data.HomeReducer.checkAlbumNameData);
     if (isApiCall) {
       if (
         data.HomeReducer &&
@@ -724,10 +569,6 @@ const AddNewAlbum = (props) => {
         ) {
           setLoading(false);
           setIsApiCall(false);
-          console.log(
-            "<Subscrip......",
-            data.HomeReducer.uploadImagesAddNewAlbum
-          );
           return (
             <SubscriptionError
               comeFrom={AppConstants.constant.ADD_NEW_ALBUM}
@@ -748,11 +589,6 @@ const AddNewAlbum = (props) => {
             data.HomeReducer.uploadImagesAddNewAlbum.message
           );
         } else {
-          console.log(
-            " 333 data.HomeReducer",
-            data.HomeReducer.uploadImagesAddNewAlbum
-          );
-
           if (
             data.HomeReducer.uploadImagesAddNewAlbum &&
             data.HomeReducer.uploadImagesAddNewAlbum.responseCode &&
@@ -764,14 +600,11 @@ const AddNewAlbum = (props) => {
             setLoading(false);
             setIsApiCall(false);
             // To stop redundant execution
-            // var alertMessage = data.HomeReducer.uploadImagesAddNewAlbum.message;
-            // // alert(`After saving -== ${alertMessage}`);
             let dict = data.HomeReducer.uploadImagesAddNewAlbum;
             // // Make empty after showing alert
             dict.responseCode = "";
             dict.errorCode = "";
             data.HomeReducer.uploadImagesAddNewAlbum = dict;
-            // dispatch(uploadImagesSuccess([]));
             moveBack();
           } else {
           }
@@ -842,7 +675,6 @@ const AddNewAlbum = (props) => {
   };
 
   const saveAlbumData = () => {
-
     if (arrayLibrary.length > 0) {
       //** */ We are uploading all data which we select from gallery to Azure **/
       setIsApiCall(true);
@@ -864,11 +696,6 @@ const AddNewAlbum = (props) => {
       flagError = true;
       setTitleError(AppConstants.constant.ALBUM_NAME_EMPTY_VALIDATION);
     }
-
-    // if (!arrayLibrary.length > 0) {
-    //   flagError = true;
-    //   setEmptyMediaError(AppConstants.constant.ALBUM_IMAGE_VALIDATION);
-    // }
 
     if (!flagError) {
       setIsApiCall(true);
@@ -936,9 +763,6 @@ const AddNewAlbum = (props) => {
       {
         text: AppConstants.constant.NO,
         onPress: () => console.log(""),
-        // onPress: () => {
-        //   (arrayCheckMarks.length = 0), setArrayCheckMarks([]);
-        // },
       },
     ]);
   };
@@ -1042,7 +866,6 @@ const AddNewAlbum = (props) => {
               </Text>
             ) : null}
 
-            {/* <View style={{ height: arrayLibrary.length > 0 ? arrayLibrary.length * (height * 0.15) : (height * 0.18) }}>  */}
             <FlatList
               ref={flatListRef}
               data={distinctLibraryArray(arrayLibrary)}
@@ -1056,7 +879,6 @@ const AddNewAlbum = (props) => {
               keyExtractor={(item, index) => item.file_name}
             />
             {loading ? <Spinner /> : null}
-            {/* </View> */}
             <View style={styles.buttonSave}>
               <Button color={AppColor.colors.RED} onPress={onClickSave}>
                 Save

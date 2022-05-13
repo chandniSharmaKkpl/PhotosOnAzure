@@ -1,5 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
-const { height, width } = Dimensions.get('screen');
+import { StyleSheet } from 'react-native';
 
 
 
@@ -14,7 +13,6 @@ const styles = StyleSheet.create({
     greetingText: {
         fontSize: 20,
         fontWeight: "normal",
-       // color: AppColor.colors.THEME_BLUE,
         fontFamily: "MuseoSlab-500",
       },
 });

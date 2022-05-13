@@ -715,6 +715,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS: {
+      // console.log("DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS  ===>",action.payload);
       return {
         ...state,
         deleteUserMediaAlbumDetail: action.payload,

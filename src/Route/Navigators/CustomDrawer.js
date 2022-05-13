@@ -34,18 +34,18 @@ export default CustomDrawer = () => {
   const onClickNotificationSwitch = () => {
     if (user && user.user_detail) {
       let userDetailTemp = user.user_detail;
-    userDetailTemp.notification_status = !userDetailTemp.notification_status;
-    user.user_detail = userDetailTemp;
-    setUserData(user);
-    //  setNotif(!notif);
+      userDetailTemp.notification_status = !userDetailTemp.notification_status;
+      user.user_detail = userDetailTemp;
+      setUserData(user);
+      //  setNotif(!notif);
 
-    let param = {
-      sessid: user.sessid ? user.sessid : "",
-      notification_status: !userDetailTemp.notification_status === false ? 0 : 1,
-    };
-    dispatch(notificationStatusApiCall(param));
+      let param = {
+        sessid: user.sessid ? user.sessid : "",
+        notification_status:
+          !userDetailTemp.notification_status === false ? 0 : 1,
+      };
+      dispatch(notificationStatusApiCall(param));
     }
-    
   };
   const checkResponseCode = () => {
     var response = {};
@@ -67,7 +67,7 @@ export default CustomDrawer = () => {
         );
       }
       dispatch(notificationSettingSuccess([]));
-     // notifyMessage(data.HomeReducer.notificationSetting.message); Client removed alert messages 
+      // notifyMessage(data.HomeReducer.notificationSetting.message); Client removed alert messages
     }
   };
 
@@ -93,7 +93,10 @@ export default CustomDrawer = () => {
           <Text style={styles.drawerItem}>Notifications</Text>
 
           <Pressable onPress={() => onClickNotificationSwitch()}>
-            {user && user.user_detail && user.user_detail.notification_status && user.user_detail.notification_status ? (
+            {user &&
+            user.user_detail &&
+            user.user_detail.notification_status &&
+            user.user_detail.notification_status ? (
               <Image
                 source={require("../../assets/icons/drawer/btn-on.png")}
                 style={styles.switch}
@@ -108,18 +111,6 @@ export default CustomDrawer = () => {
             )}
           </Pressable>
         </Pressable>
-
-
-        {/* <Pressable style={{ flexDirection: 'row', alignItems: 'center' }} onPress={
-					()=>navigation.navigate("ManageAccess")
-					}>
-					<IconButton
-						size={16}
-						color="#FFF"
-						icon={require('../../assets/icons/drawer/privacy.png')}
-					/>
-					<Text style={styles.drawerItem}>Manage Access</Text>
-				</Pressable> */}
 
         <Pressable
           style={{ flexDirection: "row", alignItems: "center" }}
@@ -171,7 +162,6 @@ export default CustomDrawer = () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-           
           }}
           onPress={() => navigation.navigate("UpdateEmail")}
         >
@@ -187,7 +177,6 @@ export default CustomDrawer = () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-           
           }}
           onPress={() => navigation.navigate("InviteCode")}
         >
@@ -231,7 +220,6 @@ const styles = StyleSheet.create({
   drawer: {
     flex: 1,
     marginVertical: 20,
-    //backgroundColor:'red'
   },
   drawerLogo: {
     width: "90%",

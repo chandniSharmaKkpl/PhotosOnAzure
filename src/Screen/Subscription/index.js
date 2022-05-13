@@ -11,7 +11,7 @@ import styles from "./style";
 import { Header } from "../../Component/Header";
 import { AppImages, AppColor } from "../../Theme";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { Avatar, Headline, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import Button from "../../Component/auth/Button";
 import Spinner from "../../Component/auth/Spinner";
 import {
@@ -21,16 +21,15 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import AuthContext from "../../context/AuthContext";
 import UserContext from "../../context/UserContext";
-import { listplans, listAllMediaSuccess } from "../../Redux-api/actions/Home";
-import React, { useEffect, useState, useContext } from "react";
+import { listplans } from "../../Redux-api/actions/Home";
+import React, { useContext } from "react";
 import AppConstants from "../../Theme/AppConstant";
 import { IApContext } from "../../Component/InAppPurchase/IAPController";
-import TabSwitch from "../../Component/auth/TabSwitch";
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { LIST_PLANS_SUCCESS } from "../../Redux-api/constant";
 import { notifyMessage } from "../../Component/AlertView";
-import { getCurrentUser, setCurrentUser } from "../../database/localDB";
+import { setCurrentUser } from "../../database/localDB";
 
 export default Subscription = (props) => {
   const [activeSlide, setactiveSlide] = React.useState(0);
@@ -45,12 +44,7 @@ export default Subscription = (props) => {
   const { setUserData } = React.useContext(AuthContext);
   const { setUser } = React.useContext(UserContext);
 
-  const {
-    makePurchase,
-    makeSubscription,
-    showUpgrade,
-    handleAfterPurchase,
-  } = useContext(IApContext);
+  const { makeSubscription } = useContext(IApContext);
 
   const data = useSelector((state) => state);
   const [loading, setLoading] = React.useState(false);
@@ -147,7 +141,6 @@ export default Subscription = (props) => {
         </View>
         <View style={styles.bottombtnview}>
           <Button
-            // mode="contained"
             style={styles.btn}
             uppercase={false}
             color={AppColor.colors.RED}
@@ -367,8 +360,6 @@ export default Subscription = (props) => {
       default:
         break;
     }
-    // afterSubscriptionSuccess();
-    // return;
     makeSubscription(selectedSku, selectedSkuData, monthly);
   };
 
@@ -381,7 +372,6 @@ export default Subscription = (props) => {
     dictTemp.subscription_status = "1";
     dictTemp.subscription_start_date = "2021-12-18";
     dictTemp.subscription_end_date = "2021-12-19";
-    // user.user_detail = dictTemp;
 
     setUserData(dictUser);
     setUser(dictUser);
@@ -439,7 +429,6 @@ export default Subscription = (props) => {
         if (isApiCall) {
           setIsApiCall(false);
         }
-        // showUpgradeAlert();
         return false;
       } else {
         setData();
@@ -492,42 +481,6 @@ export default Subscription = (props) => {
               inactiveDotOpacity={0.4}
               inactiveDotScale={0.6}
             />
-            {/* <View style={styles.tabSwitch}>
-              <TabSwitch
-                tabs={["Monthly", "Yearly"]}
-                onPressFirstTab={() => {
-                  setMonthly(true);
-                  // if (planDataMonthly.length == 0)
-                  {
-                    setIsApiCall(true);
-                    let dataParam = {
-                      sessid: user.sessid ? user.sessid : "",
-                      plan_type: AppConstants.constant.MONTHLY_PARAM,
-                    };
-                    dispatch(listplans(dataParam));
-                  }
-                  // else {
-                  //   setCarouselItems(planDataMonthly);
-                  // }
-                }}
-                onPressSecondTab={() => {
-                  setMonthly(false);
-                  //  if (planDataYearly.length == 0)
-                  {
-                    setIsApiCall(true);
-                    let dataParam = {
-                      sessid: user.sessid ? user.sessid : "",
-                      plan_type: AppConstants.constant.YEARLY_PARAM,
-                    };
-                    dispatch(listplans(dataParam));
-                  }
-                  // else {
-                  //   setCarouselItems(planDataYearly);
-                  // }
-                }}
-                isFirstTab={monthly}
-              />
-            </View> */}
 
             <View style={styles.buttonSave}>
               <Button
@@ -546,4 +499,3 @@ export default Subscription = (props) => {
     </>
   );
 };
-//export default Subscription;

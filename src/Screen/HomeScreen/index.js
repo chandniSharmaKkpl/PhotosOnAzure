@@ -1,7 +1,6 @@
 import React, { useRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
-import axios from "axios";
 import {
   StatusBar,
   FlatList,
@@ -70,16 +69,11 @@ import { AlbumCard } from "../../Component/AlbumCard";
 import { IApContext } from "../../Component/InAppPurchase/IAPController";
 import SubscriptionError from "../../Component/SubscriptionError";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
-import {
-  useNavigation,
-  useRoute,
-  useNavigationState,
-} from "@react-navigation/native";
+import { useRoute, useNavigationState } from "@react-navigation/native";
 import { notifyMessage } from "../../Component/AlertView";
 
 export function HomeScreen(props) {
   var countPickerSelectedImage = 0; // How many images selected by image picker in 1 time open picker
-  var countImgUploadAzure = 0; // Image uploaded or failed increase count so that call server api after azure operations.
   var countImgFailedToUpload = 0; // Only count failed images so that we can show fail images counting to user.
   var arrayLibraryLocalData = []; // Local data which need to be save on server
   var countBack = 0;
@@ -215,6 +209,8 @@ export function HomeScreen(props) {
     }
   }, [searchAlbumName]);
 
+
+
   // Callback function for back action
   const handleBackButtonClick = () => {
     countBack = countBack + 1;
@@ -240,11 +236,11 @@ export function HomeScreen(props) {
         }
       );
     } else {
-      // let place = routes[routes.length - 1];
       props.navigation.goBack();
     }
     return true;
   };
+  
 
   // In Android file name is not getting by library so we are generating the random string to show the
   const generateRandomFileName = () => {
@@ -263,144 +259,16 @@ export function HomeScreen(props) {
     callApiToGetOwnAlbumData();
   }, [pageCountOwnAlbum]);
 
+// For albumcounter
+  React.useEffect(() => {
+    
+    if(data.HomeReducer.deleteUserMediaAlbumDetail.data){
+
+    callApiToGetOwnAlbumData();
+    }
+  }, [data.HomeReducer.deleteUserMediaAlbumDetail]);
   const refreshAlbumList = () => {
     setpageCountOwnAlbum(1);
-  };
-  // React.useEffect(() => {
-  //   callApiToGetLibraryData();
-  // }, [arrayLibrary]);
-
-  const uploadAzure = async (assest) => {
-    let assetObject = {};
-
-    if (Platform.OS === "ios") {
-      assetObject = {
-        filename: assest.filename,
-        fileSize: assest.size,
-        height: assest.height,
-        type: assest.mime,
-        uri: assest.sourceURL,
-      };
-    } else {
-      assetObject = {
-        filename: generateRandomFileName(),
-        fileSize: assest.size,
-        height: assest.height,
-        type: assest.mime,
-        uri: assest.path,
-      };
-    }
-    const res = await azureblobfetch({
-      assest: assetObject,
-      container: user.user_detail.container_name
-        ? user.user_detail.container_name
-        : "", //your countainer name,
-      filenameprefix: "", //add before the autogenrated file name,
-      type: "Upload",
-    });
-    setLoading(true);
-    Upload.addListener("progress", res.uploadId, (data) => {});
-    Upload.addListener("cancelled", res.uploadId, (data) => {
-      countImgUploadAzure = countImgUploadAzure + 1;
-    });
-    Upload.addListener("completed", res.uploadId, (data) => {
-      // data includes responseCode: number and responseBody: Object
-      // We are passing uri to show images locally with the url
-      countImgUploadAzure = countImgUploadAzure + 1;
-      let dictImageToShow = {};
-
-      if (Platform.OS === "ios") {
-        dictImageToShow = {
-          file_name: assest.filename,
-          file_type: assest.mime.includes("image") ? "image" : assest.mime,
-          is_success: true,
-          size: assest.size,
-          album_id: 0,
-          uri: res.url,
-          user_media_id: Math.random(), // We are distincting array elements based on user_media id so we generate it unique
-        };
-      } else {
-        dictImageToShow = {
-          file_name: generateRandomFileName(),
-          file_type: assest.mime.includes("image") ? "image" : assest.mime,
-          is_success: true,
-          size: assest.size,
-          album_id: 0,
-          uri: res.url,
-          user_media_id: Math.random(), // We are distincting array elements based on user_media id so we generate it unique
-        };
-      }
-      if (arrayLibrary) {
-        if (arrayLibrary.length > 0) {
-          arrayLibrary.splice(0, 0, dictImageToShow);
-        } else {
-          arrayLibrary.push(dictImageToShow);
-        }
-      }
-
-      flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
-
-      // In api we don't need to pass uri in the image object.
-      let created_date = CurrentDate();
-      let dictImageToSend = {
-        file_name: res.filename,
-        file_type: assest.mime.includes("image")
-          ? "image"
-          : assest.mime.includes("video")
-          ? "video"
-          : assest.mime,
-        is_success: true,
-        size: assest.size,
-        created_date: created_date,
-        album_id: 0,
-      };
-      arrayLibraryLocalData.push(dictImageToSend);
-
-      // all picker selected images are uploaded on azure so we are calling server api to upload all uploaded images on server.
-      if (countImgUploadAzure === countPickerSelectedImage) {
-        let param = {
-          sessid: user.sessid ? user.sessid : "",
-          name: "",
-          data: arrayLibraryLocalData,
-        };
-        dispatch(uploadMedia(param));
-        if (countImgFailedToUpload > 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_MULTIPLE_IMAGES_LIBRARY
-          );
-        } else if (countImgFailedToUpload === 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_SINGLE_IMAGE_LIBRARY
-          );
-        }
-      }
-      setLoading(false);
-    });
-    Upload.addListener("error", res.uploadId, (err) => {
-      // Increase count in fail situation because only uploading those images on server who are successfully uploaded on azure.
-      countImgUploadAzure = countImgUploadAzure + 1;
-      countImgFailedToUpload = countImgFailedToUpload + 1;
-      setCountFailState(countImgFailedToUpload);
-
-      if (countImgFailedToUpload === countPickerSelectedImage) {
-        setIsApiCall(false);
-        setLoading(false);
-
-        if (countImgFailedToUpload > 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_MULTIPLE_IMAGES_LIBRARY
-          );
-        } else if (countImgFailedToUpload === 1) {
-          notifyMessage(
-            AppConstants.constant.AZURE_CANT_UPLOAD_SINGLE_IMAGE_LIBRARY
-          );
-        }
-      }
-
-      setLoading(false);
-      // Alert.alert('Image upload failed!')
-      // uploadAzure(assest);
-    });
   };
 
   // Initialy check
@@ -536,7 +404,6 @@ export function HomeScreen(props) {
 
           const tempIMG = [];
           response.map((data1) => {
-
             const source = {
               uri: Platform.OS === "android" ? data1.path : data1.sourceURL,
               name:
@@ -570,7 +437,6 @@ export function HomeScreen(props) {
               userOwnSpace.own_space.own_space_total_bytes
             ) {
               uploadMediaVar = true;
-              // uploadAzure(data1);
             } else {
               uploadMediaVar = false;
             }
@@ -625,8 +491,6 @@ export function HomeScreen(props) {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.headerViewUser}>
-          {/* <Text style={styles.greetingText}>{getTimeMessage()}</Text> */}
-
           <Pressable
             style={[styles.userHeaderView, { alignSelf: "flex-start" }]}
             onPress={() => props.navigation.navigate("EditDetails")}
@@ -659,7 +523,6 @@ export function HomeScreen(props) {
 
         <Search
           onClickCalendar={onClickCalendar} //temp
-          // onClickCalendar={() => {}}
           onClickSearch={onClickSearch}
           isCalendar={true}
           onChangeText={onChangeText}
@@ -792,7 +655,6 @@ export function HomeScreen(props) {
                     libraryResponse.data.totalPages >= pageCountLibrary &&
                     arrayLibrary.length < libraryResponse.data.totalMediaCount
                   ) {
-                    // getLibraryData(false);
                     callApiToGetLibraryData();
                   }
               }}
@@ -802,7 +664,6 @@ export function HomeScreen(props) {
                 }
                 setIsLibrary(false);
                 setIsSharedAlbum(false);
-                //   getOwnAlbumData(false);
                 callApiToGetOwnAlbumData();
               }}
               isFirstTab={isLibrary}
@@ -836,7 +697,6 @@ export function HomeScreen(props) {
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
 
-
     if (isLibrary) {
       let param = {
         sessid: user.sessid ? user.sessid : "",
@@ -857,7 +717,6 @@ export function HomeScreen(props) {
 
     for (let index = 0; index < arrayCheckMarks.length; index++) {
       const element = arrayCheckMarks[index];
-      //  console.log(" element is --", element);
 
       if (element.isCheck) {
         if (isLibrary) {
@@ -923,7 +782,6 @@ export function HomeScreen(props) {
         user && user.user_detail ? user.user_detail.container_name : "";
       let imageUrl = AZURE_BASE_URL + containerName + "/" + item.file_name;
 
-    
       return (
         <MediaCard
           isSelectAll={isSelectAll}
@@ -974,10 +832,6 @@ export function HomeScreen(props) {
     }
     item.isSharedAlbum = isSharedAlbum;
     setIsLongPress(false);
-    //   const resetAction = StackActions.reset({
-    //     index: 0,
-    //     actions: [NavigationActions.navigate({ routeName: 'MainActivity' })],
-    // });
     props.navigation.navigate("AlbumDetailScreen", {
       albumdetail: item,
       access: itemAccess,
@@ -1379,7 +1233,6 @@ export function HomeScreen(props) {
           arrayLibrary &&
           arrayLibrary.length < libraryResponse.data.totalMediaCount
         ) {
-          // getLibraryData(true);
           callApiToGetLibraryData(dataToset, "loadMore");
         }
       }
@@ -1535,7 +1388,6 @@ export function HomeScreen(props) {
       }
       if (dataResponse.errorCode === AppConstants.constant.NO_MEDIA) {
         setIsApiCall(false);
-        //alertShow(false, dataResponse);
       } else {
         setData();
       }
@@ -1582,7 +1434,6 @@ export function HomeScreen(props) {
       }
     }
 
-    // console.log(" delete album check ", data.HomeReducer.deleteAlbum)
     // Delete Album
     if (
       data.HomeReducer.deleteAlbum &&
@@ -1774,8 +1625,6 @@ export function HomeScreen(props) {
     <>
       {checkResponseCode()}
 
-      {/* {isClickForSearch ? resetPageCountOnSearch() : null} */}
-
       <StatusBar barStyle={"light-content"} backgroundColor={"#0E365D"} />
       <View
         style={{
@@ -1788,17 +1637,10 @@ export function HomeScreen(props) {
         <Header
           leftIcon={require("../../assets/images/Menu.png")}
           leftClick={() => {
-            // setPageCountLibrary(1);
-            // arrayLibrary.length = 0;
-            // Keyboard.dismiss();
-            // setIsImageFullScreen(false);
-            // setIsVideoFullScreen(false);
             props.navigation.toggleDrawer();
           }}
           isNotificationShow={true}
           titleIcon={require("../../assets/images/Logo_Icon.png")}
-          // rightBackIcon={require("../../assets/images/Back.png")}
-          // rightBackIconClick={() => props.navigation.goBack()}
           rightViewLeftIcon={require("../../assets/images/Notification.png")}
           notificationsClick={() => {
             setPageCountLibrary(1);
@@ -1839,7 +1681,6 @@ export function HomeScreen(props) {
               numColumns={2}
               renderItem={isLibrary ? renderLibraryList : renderAlbumList}
               ListHeaderComponent={renderHeader()}
-              // ListFooterComponent={renderFooter()}
               extraData={
                 isLibrary
                   ? distictLibraryArray(arrayLibrary)
