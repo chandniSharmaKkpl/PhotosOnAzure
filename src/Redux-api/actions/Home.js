@@ -796,13 +796,15 @@ export const deleteUserMediaAlbumDetail = (data) => (dispatch) => {
       data: data,
     })
       .then((response) => {
-        //  console.log('deleteUserMediaAlbumDetail',response.data);
+         console.log('deleteUserMediaAlbumDetail',response.data);
         dispatch({
           type: DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS,
           payload: response.data,
         });
       })
       .catch((error) => {
+        consol.log("deleteUserMediaAlbumDetail  ==>", error)
+
         dispatch({
           type: DELETE_USER_MEDIA_ALBUM_DETAIL_FAILURE,
           payload: error,
@@ -834,6 +836,8 @@ export const deleteAlbum = (data) => (dispatch) => {
       })
 
       .catch((error) => {
+        consol.log("DELETE_ALBUM_FAILURE  ==>", error)
+
         dispatch({ type: DELETE_ALBUM_FAILURE, payload: error });
       });
   } else {

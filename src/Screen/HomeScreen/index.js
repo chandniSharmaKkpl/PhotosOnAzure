@@ -143,6 +143,8 @@ export function HomeScreen(props) {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     const unsubscribe = props.navigation.addListener("focus", () => {
+      console.log("focus");
+
       removeEditMode();
       setSearchAlbumName("");
       setIsAlbumDropDownOpen(false);
@@ -157,10 +159,20 @@ export function HomeScreen(props) {
         arrayAlbumOwn.length = 0; // Make empty so show new data
         callApiToGetOwnAlbumData("", "", 1);
       }
+      console.log(
+        "focus data.HomeReducer.deleteUserMediaAlbumDetail ==>",
+        data.HomeReducer.deleteUserMediaAlbumDetail
+      );
+      if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
+        callApiToGetOwnAlbumData();
+      }
       //  setIsLibrary(true);
     });
+
+
     // flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
     return () => {
+
       BackHandler.removeEventListener(
         "hardwareBackPress",
         handleBackButtonClick
@@ -209,8 +221,6 @@ export function HomeScreen(props) {
     }
   }, [searchAlbumName]);
 
-
-
   // Callback function for back action
   const handleBackButtonClick = () => {
     countBack = countBack + 1;
@@ -240,7 +250,6 @@ export function HomeScreen(props) {
     }
     return true;
   };
-  
 
   // In Android file name is not getting by library so we are generating the random string to show the
   const generateRandomFileName = () => {
@@ -259,14 +268,20 @@ export function HomeScreen(props) {
     callApiToGetOwnAlbumData();
   }, [pageCountOwnAlbum]);
 
-// For albumcounter
+  // For albumcounter
   React.useEffect(() => {
-    
-    if(data.HomeReducer.deleteUserMediaAlbumDetail.data){
-
-    callApiToGetOwnAlbumData();
+    if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
+      console.log(
+        "data.HomeReducer.deleteUserMediaAlbumDetail ==>",
+        data.HomeReducer.deleteUserMediaAlbumDetail
+      );
+      callApiToGetOwnAlbumData();
     }
-  }, [data.HomeReducer.deleteUserMediaAlbumDetail]);
+  }, [
+    pageCountOwnAlbum,
+    data.HomeReducer.deleteUserMediaAlbumDetail &&
+      data.HomeReducer.deleteUserMediaAlbumDetail.data,
+  ]);
   const refreshAlbumList = () => {
     setpageCountOwnAlbum(1);
   };
