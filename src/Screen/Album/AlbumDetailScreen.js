@@ -410,13 +410,17 @@ const AlbumDetailScreen = (props) => {
     const params = new FormData();
     // let getfinalTitle = getTimeStemp(title);
 
-    console.warn("i am in callAPItoUploadImage=>", data);
+    console.log("413------->i am in callAPItoUploadImage=>", data);
+    
     params.append("sessid", user.sessid);
     params.append("name", istitle);
     params.append("code_name", route.params.albumdetail.code_name);
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
+
+    console.log("420------->i am in callAPItoUploadImage=>", params);
+
     dispatch(updateAlbumImageUpload(params));
     props.navigation.navigate("Home");
   };

@@ -295,6 +295,7 @@ export const InviteContact = (props) => {
         var dict = data.HomeReducer.sendAppInviteResponse;
         dict.message = "";
         data.HomeReducer.sendAppInviteResponse = dict;
+        console.log("Messages ===>", message);
         notifyMessage(message);
       }
     }
@@ -305,10 +306,10 @@ export const InviteContact = (props) => {
       if (
         data.HomeReducer.sendAppInviteResponse.errorCode &&
         data.HomeReducer.sendAppInviteResponse.errorCode ===
-          AppConstants.constant.NOT_AUTHORIZED
-      ) {
-        alertLogout();
-      } else {
+        AppConstants.constant.NOT_AUTHORIZED
+        ) {
+          alertLogout();
+        } else {
         setInviteContactData();
       }
     }
