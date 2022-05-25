@@ -284,6 +284,7 @@ const AlbumDetailScreen = (props) => {
               size: data1.size,
               type: data1.mime,
             };
+            console.log("source =>", source);
             tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
@@ -337,7 +338,7 @@ const AlbumDetailScreen = (props) => {
           // Upload Staging api and integration
           setImageUpload(tempIMG);
 
-          if (uplodmedia == true) {
+          if (uplodmedia === true) {
             if (arrayAllDates.length > 0) {
               let todayDate = moment().format("YYYY-MM-DD");
               //** check date already present in the array  */
@@ -489,17 +490,18 @@ const AlbumDetailScreen = (props) => {
     if (arrayImages.length > 0) {
       // We are uploading all data which we select from gallery to Azure
       var isNewElementAdded = false;
+      console.log("imageUpload  =>", imageUpload);
+      callAPItoUploadImage(imageUpload);
       arrayImages.forEach((element, index) => {
         let dateValue = arrayAllDates[index];
-
+        
         let arrayImgOfDate = element[dateValue];
-
-        arrayImgOfDate.forEach((element1) => {
-          if (element1.status === AppConstants.constant.NEW_ADDED) {
-            isNewElementAdded = true;
-            callAPItoUploadImage(imageUpload);
-          }
-        });
+        // console.log("arrayImgOfDate =>", arrayImgOfDate);
+        // arrayImgOfDate.forEach((element1,index) => {
+        //   if (element1.status === AppConstants.constant.NEW_ADDED) {
+        //     isNewElementAdded = true;
+        //   }
+        // });
       });
       if (!isNewElementAdded) {
         moveBack();
@@ -600,7 +602,7 @@ const AlbumDetailScreen = (props) => {
                   setIsSelectAll={setIsSelectAll}
                   setIsCheck={setIsCheck}
                   isCheck={isCheck}
-                  isLongPress={isaccess == 0 ? null : isLongPress}
+                  isLongPress={isaccess === 0 ? null : isLongPress}
                   setIsLongPress={setIsLongPress}
                   item={item}
                   itemZoom={item}
@@ -931,7 +933,7 @@ const AlbumDetailScreen = (props) => {
       arrayDeleteItems = [];
     } else {
       {
-        if (arrayDeleteItems.length == 0) {
+        if (arrayDeleteItems.length === 0) {
           notifyMessage(AppConstants.constant.PLEASE_SELECT_ATLEAST_ONE_ITEM);
           return;
         } else {
@@ -1094,7 +1096,7 @@ const AlbumDetailScreen = (props) => {
             >
               <TitleView title={"Album Details" + " " + istitle} />
               {isLongPress ? (
-                isaccess == 0 ? null : (
+                isaccess === 0 ? null : (
                   <IconMaterialCommunity
                     onPress={() => onClickDelete()}
                     name="delete-circle"
@@ -1132,7 +1134,7 @@ const AlbumDetailScreen = (props) => {
                 />
               </>
               {loading || data.HomeReducer.isRequesting ? <Spinner /> : null}
-              {isaccess == 1 ? (
+              {isaccess === 1 ? (
                 <View style={styles.buttonSave}>
                   <Pressable
                     style={[styles.footerAddAlbum, { marginBottom: "5%" }]}

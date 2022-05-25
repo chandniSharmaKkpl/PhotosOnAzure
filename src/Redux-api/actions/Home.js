@@ -365,6 +365,7 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("uploadImgAddNewAlbum ==>",response.data );
         dispatch({
           type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS,
           payload: response.data,
@@ -378,6 +379,7 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
 
 export const updateAlbumImageUpload = (param) => (dispatch) => {
   {
+      console.log("UPDATE_ALB_UPLOAD_IMAGE_REQUEST ==>" );
     dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
       Accept: "application/json",
@@ -391,6 +393,7 @@ export const updateAlbumImageUpload = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("Upload response ===>", response);
         dispatch({
           type: UPDATE_ALB_UPLOAD_IMAGE_SUCCESS,
           payload: response.data,
@@ -619,6 +622,7 @@ export const listsOwnAlbumOnAlbumScreen = (param) => (dispatch) => {
 //   Calling api for getting own album data home view
 
 export const listsOwnAlbum = (param) => (dispatch) => {
+  console.log("listsOwnAlbum =>" , param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: OWN_ALBUM_REQUEST, payload: {} });
 

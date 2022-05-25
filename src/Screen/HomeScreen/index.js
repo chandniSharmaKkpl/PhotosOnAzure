@@ -143,7 +143,6 @@ export function HomeScreen(props) {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     const unsubscribe = props.navigation.addListener("focus", () => {
-      console.log("focus");
 
       removeEditMode();
       setSearchAlbumName("");
@@ -159,18 +158,17 @@ export function HomeScreen(props) {
         arrayAlbumOwn.length = 0; // Make empty so show new data
         callApiToGetOwnAlbumData("", "", 1);
       }
-      console.log(
-        "focus data.HomeReducer.deleteUserMediaAlbumDetail ==>",
-        data.HomeReducer.deleteUserMediaAlbumDetail
-      );
+      
       if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
         callApiToGetOwnAlbumData();
       }
-      //  setIsLibrary(true);
+      if (data.HomeReducer.uploadImagesAddNewAlbum?.message === "Album added successfully"){
+        console.log("isCompare data.HomeReducer.uploadImagesAddNewAlbum.message ==>", data.HomeReducer.uploadImagesAddNewAlbum?.message);
+        callApiToGetOwnAlbumData();
+      }
     });
 
 
-    // flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
     return () => {
 
       BackHandler.removeEventListener(
@@ -268,13 +266,15 @@ export function HomeScreen(props) {
     callApiToGetOwnAlbumData();
   }, [pageCountOwnAlbum]);
 
+
+
   // For albumcounter
   React.useEffect(() => {
     if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
-      console.log(
-        "data.HomeReducer.deleteUserMediaAlbumDetail ==>",
-        data.HomeReducer.deleteUserMediaAlbumDetail
-      );
+      // console.log(
+      //   "data.HomeReducer.deleteUserMediaAlbumDetail ==>",
+      //   data.HomeReducer.deleteUserMediaAlbumDetail
+      // );
       callApiToGetOwnAlbumData();
     }
   }, [
@@ -743,7 +743,7 @@ export function HomeScreen(props) {
     }
     var alertTitle = "";
     if (isLibrary) {
-      if (arrayDeleteItems.length == 0) {
+      if (arrayDeleteItems.length === 0) {
         notifyMessage(AppConstants.constant.PLEASE_SELECT_ATLEAST_ONE_ITEM);
         return;
       } else {
@@ -761,7 +761,7 @@ export function HomeScreen(props) {
         }
       }
     } else {
-      if (arrayDeleteItems.length == 0) {
+      if (arrayDeleteItems.length === 0) {
         notifyMessage(AppConstants.constant.PLEASE_SELECT_ATLEAST_ONE_ALBUM);
         return;
       } else {
@@ -857,6 +857,7 @@ export function HomeScreen(props) {
   };
 
   const renderAlbumList = ({ item, index }) => {
+    // console.log("renderAlbumList =>", item.name, index);
     if (item.name) {
       let containerName = "";
       if (isSharedAlbum) {
@@ -866,7 +867,6 @@ export function HomeScreen(props) {
           user && user.user_detail ? user.user_detail.container_name : "";
       }
       let imageUrl = AZURE_BASE_URL + containerName + "/" + item.file_name;
-
       return (
         <AlbumCard
           isSharedAlbum={isSharedAlbum}
@@ -1128,10 +1128,12 @@ export function HomeScreen(props) {
     pageCount,
     textToSearch
   ) => {
+    console.log();
     setIsApiCall(true);
     if (selectedDate && selectedDate.length > 0) {
       dispatch(
         listsOwnAlbum({
+
           sessid: user.sessid ? user.sessid : "",
           date: selectedDate,
           page: pageCount,

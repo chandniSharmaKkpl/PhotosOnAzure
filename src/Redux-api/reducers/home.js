@@ -843,6 +843,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS: {
+      console.log("ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS =>", action.payload);
       return {
         ...state,
         uploadImagesAddNewAlbum: action.payload,
