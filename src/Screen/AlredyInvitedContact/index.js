@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Dimensions,
   PermissionsAndroid,
@@ -12,6 +12,7 @@ import {
   Platform,
   Pressable,
   BackHandler,
+  Linking
 } from "react-native";
 import styles from "./style";
 import stylesAlbum from "../Album/style";
@@ -26,7 +27,7 @@ import AuthContext from "../../context/AuthContext";
 import { useTheme, Avatar } from "react-native-paper";
 import { checkStringContainsSpecialChar } from "../../common";
 import Contacts from "react-native-contacts";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { notifyMessage } from "../../Component/AlertView";
@@ -49,7 +50,38 @@ export const AlredyInviteContact = (props) => {
   const [loading, setLoading] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [permissionGranted, setPermissionGranted] = React.useState(false);
+  const [count, setCount] = useState(0);
+
   var countBack = 0;
+
+  const getCounter = async () => {
+    try {
+      const value = await AsyncStorage.getItem("Permission");
+      if(value !== null) {
+        // value previously stored
+        const clickCount = JSON.parse(value).requestCount;
+        return clickCount;
+      }else{
+        return 0
+      }
+      // return value?.requestCount || 0
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const setCounter = async (value) => {
+    try {
+      const ContactPermission = {
+        requestCount: value,
+      };
+      const jsonValue = JSON.stringify(ContactPermission)
+      await AsyncStorage.setItem("Permission", jsonValue);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   React.useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -127,17 +159,43 @@ export const AlredyInviteContact = (props) => {
 
   const requestReadContactPermissionAndroid = async () => {
     try {
+      const preCount = await getCounter();
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS
       );
+
       setPermissionGranted(granted);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         setSearchText("");
         props.navigation.navigate("InviteContact");
       } else {
+        setCounter(preCount + 1);
+        if (preCount >= 2) {
+          Alert.alert(
+            AppConstants.constant.ALERT,
+            AppConstants.constant.USER_GO_TO_SETTING,
+
+            [
+              {
+                text: AppConstants.constant.CANCEL,
+                onPress: () => countBack = 0,
+                style: "cancel",
+              },
+              {
+                text: AppConstants.constant.OK,
+                onPress: () => Linking.openSettings(),
+              },
+            ],
+            {
+              cancelable: false,
+            }
+          );
+        }
         // requestReadContactPermissionAndroid();
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log("requestReadContactPermissionAndroid", err);
+    }
   };
 
   const requestReadContactPermissionIos = () => {
@@ -385,6 +443,7 @@ export const AlredyInviteContact = (props) => {
                   props.navigation.navigate("InviteContact");
                 } else {
                   requestReadContactPermissionAndroid();
+                  setCount(count + 1);
                 }
               } else {
                 requestReadContactPermissionIos();

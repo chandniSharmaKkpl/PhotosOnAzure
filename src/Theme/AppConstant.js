@@ -69,7 +69,10 @@ const constant = {
   ALBUM_SHARED_SUCCESSFULLY: "album_shared",
   ALBUM_SHARED_FAILED: "sharing_fail",
   NOTIFICATION_STATUS_UPDATED: "notification_status_updated",
-  SUBSCRIPTION_EXPIRED: "subscription_expired" || "subscription_invalid" || "master_subscription_expired",
+  SUBSCRIPTION_EXPIRED:
+    "subscription_expired" ||
+    "subscription_invalid" ||
+    "master_subscription_expired",
   PURCHASE_PLAN_OR_USE_INVITE_CODE: "purchase_plan_or_use_invite_code",
   MASTER_SUBSCRIPTION_EXPIRED: "master_subscription_expired",
   SUBSCRIPTION_INVALID: "subscription_invalid",
@@ -79,7 +82,7 @@ const constant = {
     "shared_other_user_album_listing_successful",
   ALBUM_REVOKED: "album_revoked",
   ALBUM_CREATION_FAILED: "album_creation_failed",
- VERIFICATION_SUCCESS : "verification_success",
+  VERIFICATION_SUCCESS: "verification_success",
 
   // Values
   NO_SUBSCRIPTION: "0",
@@ -106,20 +109,19 @@ const constant = {
   YEAR_REGULAR_PLAN_IOS: "YEAR_REGULAR_PLAN_iOS",
   ONE_MONTH_PREMIUM_PLAN_IOS: "com.onlinephotos.premium_plan.iOS",
   YEAR_PREMIUM_PLAN_IOS: "YEAR_PREMIUM_PLAN_iOS",
-   BASIC_MONTHLY_PLAN_IOS:'com.ofv.basic_monthly.iOS',
-  BUSINESS_MONTHLY_PLAN_IOS:'com.ofv.business_monthly.iOS',
-  ADVANCED_MONTHLY_PLAN_IOS:'com.ofv.advanced_monthly.iOS',
-  PREMIER_MONTHLY_PLAN_IOS:'com.ofv.premier_monthly.iOS',
-
+  BASIC_MONTHLY_PLAN_IOS: "com.ofv.basic_monthly.iOS",
+  BUSINESS_MONTHLY_PLAN_IOS: "com.ofv.business_monthly.iOS",
+  ADVANCED_MONTHLY_PLAN_IOS: "com.ofv.advanced_monthly.iOS",
+  PREMIER_MONTHLY_PLAN_IOS: "com.ofv.premier_monthly.iOS",
 
   // //* Android Live IAP productIds  */
-  BASIC_MONTHLY_PLAN:'com.ofv.basic_monthly',
+  BASIC_MONTHLY_PLAN: "com.ofv.basic_monthly",
   ONE_MONTH_STANDARD_PLAN: "com.ofv.standard_monthly",
-  BUSINESS_MONTHLY_PLAN:'com.ofv.business_monthly',
-  ADVANCED_MONTHLY_PLAN:'com.ofv.advanced_monthly',
+  BUSINESS_MONTHLY_PLAN: "com.ofv.business_monthly",
+  ADVANCED_MONTHLY_PLAN: "com.ofv.advanced_monthly",
   ONE_MONTH_PREMIUM_PLAN: "com.ofv.premium_monthly",
-  PREMIER_MONTHLY_PLAN:'com.ofv.premier_monthly',
- 
+  PREMIER_MONTHLY_PLAN: "com.ofv.premier_monthly",
+
   YEAR_STANDARD_PLAN: "com.ofv.standard_yearly",
   YEAR_REGULAR_PLAN: "com.ofv.regular_yearly",
   YEAR_PREMIUM_PLAN: "com.ofv.premium_yearly",
@@ -172,6 +174,8 @@ const constant = {
   INVALID_PHONE_NUMBER: "Invalid phone number",
   YOU_CAN_DELETE_ONLY_OWN_ALBUMS: "You can delete only your own albums",
   MEDIA_SAVED_TO_ALBUM: "Media saved to your Album",
+  USER_GO_TO_SETTING:
+    "For sharing the album to others you need to give permission for accessing contacts  otherwise you can't share it. ",
 
   // For library
 
@@ -250,7 +254,8 @@ const constant = {
   PLEASE_TRY_AFTER_SOME_TIME: "Please try after sometime. ",
   CONTACT_ACCESS_PERMISSION_IN_SETTING: "Please allow accessing of contacts",
   ALREADY_PURCHASED: "You have already purchased this plan.",
-  ALREADY_ACTIVE_PLAN:'You already have an active plan, you can purchase new plan when the current plan will expire.',
+  ALREADY_ACTIVE_PLAN:
+    "You already have an active plan, you can purchase new plan when the current plan will expire.",
   INVITE_CODE_SHARE:
     "I am sharing my OnlineFamilyVault app invitation code with you. Please enter it in the invitation code section of the app and confirm it",
   INVITE_CODE_EMPTY: "Invite code cannot be empty",
@@ -262,8 +267,9 @@ const constant = {
     "Are you sure about revoke user access?",
   PLEASE_SELECT_ONE_ALBUM_TO_REVOKE: "Please select an album to revoke",
   EXIT_APP: "Exit App",
+  GO_TO_SETTING : "",
   WANT_TO_EXIT_APP: "Do you want to exit the application?",
-  PLEASE_SELECT_DATE:'Please select date',
+  PLEASE_SELECT_DATE: "Please select date",
 };
 module.exports = {
   constant,
