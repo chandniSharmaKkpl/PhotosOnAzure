@@ -3,7 +3,6 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  ScrollView,
   View,
   Dimensions,
   TouchableWithoutFeedback,
@@ -13,19 +12,12 @@ import {
   Linking,
   Alert,
   BackHandler,
-  Keyboard
+  Keyboard,
 } from "react-native";
-import {
-  Headline,
-  Subheading,
-  Avatar,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { Headline, Avatar, Text, useTheme } from "react-native-paper";
 import styles from "./style";
 import { isValidDate } from "../../helpers/validations";
 import moment from "moment";
-import { listAllMediaSuccess } from "../../Redux-api/actions/Home";
 import ImagePicker from "react-native-image-crop-picker";
 import { useNavigation } from "@react-navigation/core";
 import Button from "../../Component/auth/Button";
@@ -33,7 +25,6 @@ import Spinner from "../../Component/auth/Spinner";
 import TextInputView from "../../Component/auth/TextInputView";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AuthContext from "../../context/AuthContext";
-import { Axios } from "../../helpers/Axios";
 import ReactModal from "react-native-modal";
 import Entypo from "react-native-vector-icons/Entypo";
 import format from "date-fns/format";
@@ -45,7 +36,7 @@ import { useSelector, useDispatch } from "react-redux";
 import FastImage from "react-native-fast-image";
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default EditProfile = (props) => {
   const navigation = useNavigation();
@@ -74,8 +65,6 @@ export default EditProfile = (props) => {
     fullNameErr: "",
     addressErr: "",
     dateOfBirthErr: "",
-    // passwordErr: '',
-    // confPasswordErr: '',
   });
   const [profile_imagePath, setProfile_imagePath] = React.useState(
     user && user.user_detail && user.user_detail.profile_image
@@ -110,7 +99,7 @@ export default EditProfile = (props) => {
   React.useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
     const unsubscribe = props.navigation.addListener("focus", () => {
-      // Need to set profile image from user because once user select any image from phone gallery it will take default gallery path and in the update condition we are checking old and new value from the user value update 
+      // Need to set profile image from user because once user select any image from phone gallery it will take default gallery path and in the update condition we are checking old and new value from the user value update
       setProfile_imagePath(
         user && user.user_detail && user.user_detail.profile_image
           ? user.user_detail.profile_image
@@ -139,7 +128,7 @@ export default EditProfile = (props) => {
         [
           {
             text: AppConstants.constant.CANCEL,
-            onPress: () => countBack = 0,
+            onPress: () => (countBack = 0),
             style: "cancel",
           },
           {
@@ -241,8 +230,6 @@ export default EditProfile = (props) => {
             fullNameErr: "",
             addressErr: "",
             dateOfBirthErr: "",
-            // passwordErr: '',
-            // confPasswordErr: '',
           }
     );
 
@@ -252,8 +239,6 @@ export default EditProfile = (props) => {
       params.append("sessid", user.sessid);
       params.append("address", userdetail.address);
       params.append("date_of_birth", userdetail.date_of_birth);
-      // params.append("password", userdetail.password);
-      // params.append("confirm", userdetail.confPassword);
 
       params.append("profile_image", {
         name: Math.floor(new Date().getTime() / 1000) + ".png",
@@ -364,7 +349,9 @@ export default EditProfile = (props) => {
     setTimeout(() => {
       if (item.title == AppConstants.constant.CAPTURE_IMAGE) {
         captureImage();
-      } else if (item.title == AppConstants.constant.SELECT_PHOTO_FROM_LIBRARY) {
+      } else if (
+        item.title == AppConstants.constant.SELECT_PHOTO_FROM_LIBRARY
+      ) {
         chooseMedia();
       }
     }, 1000);
@@ -374,7 +361,6 @@ export default EditProfile = (props) => {
     ImagePicker.openPicker({
       cropping: true,
       mediaType: "photo",
-      // compressImageQuality: 0.3,
       width: 500,
       height: 500,
       forceJpg: true,
@@ -382,7 +368,6 @@ export default EditProfile = (props) => {
       compressImageMaxWidth: 640,
       compressImageMaxHeight: 480,
       freeStyleCropEnabled: true,
-      //  quality: 0.3,
     })
       .then((response) => {
         setMeadiaUploadList({
@@ -414,7 +399,6 @@ export default EditProfile = (props) => {
     ImagePicker.openCamera({
       cropping: true,
       mediaType: "photo",
-      //  compressImageQuality: 0.3,
       width: 500,
       height: 500,
       forceJpg: true,
@@ -422,7 +406,6 @@ export default EditProfile = (props) => {
       compressImageMaxWidth: 640,
       compressImageMaxHeight: 480,
       freeStyleCropEnabled: true,
-      //  quality: 0.3,
     })
       .then((response) => {
         setMeadiaUploadList({
@@ -481,10 +464,6 @@ export default EditProfile = (props) => {
   };
 
   const setSuccsessmsg = (msg) => {
-    // Alert.alert("OnlinePhotos", msg, [
-    //   { text: "Ok", onPress: () => navigation.goBack() },
-    // ]);
-
     navigation.goBack();
   };
 
@@ -562,228 +541,180 @@ export default EditProfile = (props) => {
       {checkResponseCode()}
 
       <View style={styles.container}>
-      <ImageBackground
-            style={{flex:1}}
-            resizeMode="cover"
-            source={require("../../assets/img/bgDark.png")}
-          >
-      <KeyboardAwareScrollView
-          style={styles.scrollViewStyle}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="always"
-        >
-            <Pressable onPress={()=> Keyboard.dismiss()}>
-        {ONopenmediaPicker()}
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.imageIcon}
-            resizeMode="cover"
-            source={require("../../assets/img/bgLight.png")}
-          />
-          <View style={styles.logo}>
-            <Image
-              style={{ width: "100%", height: "100%" }}
-              resizeMode="contain"
-              source={require("../../assets/img/logo.png")}
-            />
-          </View>
-
-          <Pressable onPress={() => navigation.goBack()} style={styles.back}>
-            <Image
-              style={
-                Platform.OS === "android"
-                  ? { height: 26, width: 26 }
-                  : { height: 28, width: 28, marginTop: 22 }
-              }
-              resizeMode="cover"
-              source={require("../../assets/icons/back.png")}
-            />
-          </Pressable>
-        </View>
-       
         <ImageBackground
-          style={styles.inputViewImage}
+          style={{ flex: 1 }}
           resizeMode="cover"
-          imageStyle={{
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
-          }}
           source={require("../../assets/img/bgDark.png")}
         >
-         
-          <View
-            style={{
-              alignSelf: "center",
-              alignItems: "center",
-              justifyContent: "center",
-              height: width * 0.28,
-              width: width * 0.28,
-              borderRadius: (width * 0.28) / 2,
-              marginTop: -height * 0.055,
-              // borderColor: "red",
-              // borderWidth: 0.1,
-            }}
-          >
-            {profile_imagePath ? (
-              <FastImage
-                style={{
-                  height: width * 0.28,
-                  width: width * 0.28,
-                  borderRadius: (width * 0.28) / 2,
-                }}
-                source={{ uri: profile_imagePath }}
-                resizeMode={FastImage.resizeMode.cover}
-              />
-            ) : (
-              <Avatar.Icon icon="account" size={100} />
-            )}
-            <TouchableOpacity
-              style={{
-                height: width * 0.075,
-                width: width * 0.075,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: (width * 0.1) / 2,
-                left: 33,
-                marginTop: -height * 0.038,
-                backgroundColor: "white",
-              }}
-              onPress={() => openmediaPicker()}
-            >
-              <Entypo
-                name="edit"
-                size={width * 0.04}
-                color={"red"}
-                style={{ alignSelf: "center" }}
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/* <ScrollView
-            bounces={false}
+          <KeyboardAwareScrollView
             style={styles.scrollViewStyle}
             showsVerticalScrollIndicator={false}
-          > */}
-            <View style={styles.titleView}>
-              <Headline style={styles.titleStyle}>
-                Hi,
-                {" " + userdetail && userdetail.fullName
-                  ? userdetail.full_name
-                  : ""}
-              </Headline>
-            </View>
-
-            <View style={styles.inputView}>
-              <TextInputView
-                icon={require("../../assets/icons/fullName.png")}
-                placeholder="Full Name"
-                value={userdetail.fullName}
-                error={error.fullNameErr}
-                onChangeText={(e) => setUser({ ...userdetail, fullName: e })}
-              />
-              {/* 
-              <Pressable onPress={showDatePicker}>
-                <TextInputView
-                  icon={require("../../assets/icons/date.png")}
-                  placeholder="Date Of Birth"
-                  value={userdetail.date_of_birth}
-                  error={error.dateOfBirthErr}
-                  editable={false}
+            keyboardShouldPersistTaps="always"
+          >
+            <Pressable onPress={() => Keyboard.dismiss()}>
+              {ONopenmediaPicker()}
+              <View style={styles.logoContainer}>
+                <Image
+                  style={styles.imageIcon}
+                  resizeMode="cover"
+                  source={require("../../assets/img/bgLight.png")}
                 />
-              </Pressable> */}
-              <TextInputView
-                keyboardType="number-pad"
-                icon={require("../../assets/icons/date.png")}
-                placeholder="Date Of Birth in dd-mm-yyyy"
-                value={userdetail.date_of_birth}
-                error={error.dateOfBirthErr}
-                maxLength={10}
-                onChangeText={(e) => handleChange(e)}
-                isright={require("../../assets/icons/date.png")}
-                onRightPress={showDatePicker}
-                // onChangeText={(e) => setUser({ ...user, date_of_birth: e })}
-              />
+                <View style={styles.logo}>
+                  <Image
+                    style={{ width: "100%", height: "100%" }}
+                    resizeMode="contain"
+                    source={require("../../assets/img/logo.png")}
+                  />
+                </View>
 
-              <TextInputView
-                icon={require("../../assets/icons/address.png")}
-                placeholder="Address"
-                value={userdetail.address}
-                error={error.addressErr}
-                onChangeText={(e) => setUser({ ...userdetail, address: e })}
-              />
+                <Pressable
+                  onPress={() => navigation.goBack()}
+                  style={styles.back}
+                >
+                  <Image
+                    style={
+                      Platform.OS === "android"
+                        ? { height: 26, width: 26 }
+                        : { height: 28, width: 28, marginTop: 22 }
+                    }
+                    resizeMode="cover"
+                    source={require("../../assets/icons/back.png")}
+                  />
+                </Pressable>
+              </View>
 
-              {/* <TextInputView
-							secureTextEntry={true}
-							icon={require('../../assets/icons/password.png')}
-							placeholder="******"
-							value={user.password}
-							error={error.passwordErr}
-							onChangeText={(e) => setUser({ ...user, password: e })}
-						/>
-
-						<TextInputView
-							secureTextEntry={true}
-							icon={require('../../assets/icons/password.png')}
-							placeholder="******"
-							value={user.confPassword}
-							error={error.confPasswordErr}
-							onChangeText={(e) => setUser({ ...user, confPassword: e })}
-						/>
- */}
-
-              {formErr ? (
-                <Text style={[styles.error, { color: theme.colors.accent }]}>
-                  {formErr}
-                </Text>
-              ) : null}
-
-              <Button color="#FFF" onPress={submitForm}>
-                Update
-              </Button>
-
-              {/* <Button
-                color={theme.colors.accent}
-                style={{ marginTop: 25, marginBottom: 10 }}
+              <ImageBackground
+                style={styles.inputViewImage}
+                resizeMode="cover"
+                imageStyle={{
+                  borderTopLeftRadius: 25,
+                  borderTopRightRadius: 25,
+                }}
+                source={require("../../assets/img/bgDark.png")}
               >
-                View Nominee Details
-              </Button> */}
-            </View>
-          {/* </ScrollView> */}
-         
-        </ImageBackground>
-       
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          date={
-            userdetail.date_of_birth != ""
-              ? moment(userdetail.date_of_birth, "DD-MM-YYYY").toDate()
-              : new Date()
-          }
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-        {loading || data.AuthReducer.isRequesting ? <Spinner /> : null}
-        </Pressable>
-        </KeyboardAwareScrollView>
+                <View
+                  style={{
+                    alignSelf: "center",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: width * 0.28,
+                    width: width * 0.28,
+                    borderRadius: (width * 0.28) / 2,
+                    marginTop: -height * 0.055,
+                  }}
+                >
+                  {profile_imagePath ? (
+                    <FastImage
+                      style={{
+                        height: width * 0.28,
+                        width: width * 0.28,
+                        borderRadius: (width * 0.28) / 2,
+                      }}
+                      source={{ uri: profile_imagePath }}
+                      resizeMode={FastImage.resizeMode.cover}
+                    />
+                  ) : (
+                    <Avatar.Icon icon="account" size={100} />
+                  )}
+                  <TouchableOpacity
+                    style={{
+                      height: width * 0.075,
+                      width: width * 0.075,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: (width * 0.1) / 2,
+                      left: 33,
+                      marginTop: -height * 0.038,
+                      backgroundColor: "white",
+                    }}
+                    onPress={() => openmediaPicker()}
+                  >
+                    <Entypo
+                      name="edit"
+                      size={width * 0.04}
+                      color={"red"}
+                      style={{ alignSelf: "center" }}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.titleView}>
+                  <Headline style={styles.titleStyle}>
+                    Hi,
+                    {" " + userdetail && userdetail.fullName
+                      ? userdetail.full_name
+                      : ""}
+                  </Headline>
+                </View>
+
+                <View style={styles.inputView}>
+                  <TextInputView
+                    icon={require("../../assets/icons/fullName.png")}
+                    placeholder="Full Name"
+                    value={userdetail.fullName}
+                    error={error.fullNameErr}
+                    onChangeText={(e) =>
+                      setUser({ ...userdetail, fullName: e })
+                    }
+                  />
+                  <TextInputView
+                    keyboardType="number-pad"
+                    icon={require("../../assets/icons/date.png")}
+                    placeholder="Date Of Birth in dd-mm-yyyy"
+                    value={userdetail.date_of_birth}
+                    error={error.dateOfBirthErr}
+                    maxLength={10}
+                    onChangeText={(e) => handleChange(e)}
+                    isright={require("../../assets/icons/date.png")}
+                    onRightPress={showDatePicker}
+                  />
+
+                  <TextInputView
+                    icon={require("../../assets/icons/address.png")}
+                    placeholder="Address"
+                    value={userdetail.address}
+                    error={error.addressErr}
+                    onChangeText={(e) => setUser({ ...userdetail, address: e })}
+                  />
+
+                  {formErr ? (
+                    <Text
+                      style={[styles.error, { color: theme.colors.accent }]}
+                    >
+                      {formErr}
+                    </Text>
+                  ) : null}
+
+                  <Button color="#FFF" onPress={submitForm}>
+                    Update
+                  </Button>
+                </View>
+              </ImageBackground>
+
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                date={
+                  userdetail.date_of_birth != ""
+                    ? moment(userdetail.date_of_birth, "DD-MM-YYYY").toDate()
+                    : new Date()
+                }
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+              {loading || data.AuthReducer.isRequesting ? <Spinner /> : null}
+            </Pressable>
+          </KeyboardAwareScrollView>
         </ImageBackground>
       </View>
     </>
   );
 };
 
-function Validate({
-  fullName,
-  address,
-  date_of_birth,
-  password,
-  // confPassword,
-}) {
+function Validate({ fullName, address, date_of_birth, password }) {
   let fullNameErr = "";
   let addressErr = "";
   let dateOfBirthErr = "";
-  // let passwordErr = ''
-  // let confPasswordErr = ''
 
   if (fullName.trim() === "") {
     fullNameErr = "Full name cannot be empty";
@@ -801,33 +732,13 @@ function Validate({
     dateOfBirthErr = "Invalid Date of birth";
   }
 
-  // if (password.trim() === '') {
-  // 	passwordErr = 'Password cannot be empty'
-  // }
-
-  // if (confPassword.trim() === '') {
-  // 	confPasswordErr = 'Confirm Password cannot be empty'
-  // } else {
-  // 	if (password.trim() !== confPassword.trim()) {
-  // 		confPasswordErr = 'Password did not match'
-  // 	}
-  // }
-
-  if (
-    fullNameErr === "" &&
-    addressErr === "" &&
-    dateOfBirthErr === ""
-    // passwordErr === "" &&
-    // confPasswordErr === ""
-  ) {
+  if (fullNameErr === "" && addressErr === "" && dateOfBirthErr === "") {
     return "ok";
   } else {
     return {
       fullNameErr,
       addressErr,
       dateOfBirthErr,
-      // passwordErr,
-      // confPasswordErr,
     };
   }
 }

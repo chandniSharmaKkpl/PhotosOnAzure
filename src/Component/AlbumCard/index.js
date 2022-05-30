@@ -36,6 +36,7 @@ export const AlbumCard = (props) => {
     isSharedAlbum,
   } = props;
 
+
   const onClickMarks = () => {
     // Assigning reverse value of isCheck because state is updating on after render
 
@@ -66,7 +67,7 @@ export const AlbumCard = (props) => {
       arrayCheckMarks.push(item);
     }
 
-    if(arrayCheckMarks.length === 0){
+    if (arrayCheckMarks.length === 0) {
       setIsLongPress(!isLongPress);
     }
 
@@ -80,25 +81,64 @@ export const AlbumCard = (props) => {
     >
       <TouchableOpacity
         key={index}
-        onLongPress={() =>
-          isSharedAlbum
-            ? notifyMessage(AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS)
-            : setIsLongPress(!isLongPress)
-              // setIsCheck(false)
+        onLongPress={
+          () =>
+            isSharedAlbum
+              ? notifyMessage(
+                  AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
+                )
+              : setIsLongPress(!isLongPress)
+          // setIsCheck(false)
         }
         onPress={moveToAlbumDetail}
         style={[styles.cellView, { backgroundColor: theme.colors.primary }]}
       >
         <View style={styles.imageView}>
-          <FastImage
-            style={styles.image}
-            source={{
-              uri: imageUrl,
-              //headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
+          {item.file_type && item.file_type.includes("image") ? (
+            <>
+              <FastImage
+                style={styles.image}
+                source={{
+                  uri: imageUrl,
+                  //headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            </>
+          ) : (
+            <View style={[styles.image, { justifyContent: "center" }]}>
+              <View style={styles.video}>
+                <VideoCard
+                  // style={styles.image}
+                  volume={0}
+                  videoUrl={imageUrl}
+                ></VideoCard>
+              </View>
+              <TouchableOpacity
+                style={[
+                  {
+                    justifyContent: "center",
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    top: 0,
+                    left: 0,
+                  },
+                ]}
+                onLongPress={
+                  () =>
+                    isSharedAlbum
+                      ? notifyMessage(
+                          AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
+                        )
+                      : setIsLongPress(!isLongPress)
+                  // setIsCheck(false)
+                }
+                onPress={moveToAlbumDetail}
+              />
+            </View>
+          )}
         </View>
         <View style={styles.albumBottomView}>
           <Text style={[styles.albumBottomText, { width: width * 0.4 }]}>

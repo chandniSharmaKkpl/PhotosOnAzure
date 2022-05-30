@@ -1,18 +1,14 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   Image,
   Share,
   FlatList,
-  StatusBar,
-  SafeAreaView,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Alert,
-  Pressable,
   Keyboard,
   BackHandler,
   Platform,
@@ -20,53 +16,35 @@ import {
 import AppConstants from "../../Theme/AppConstant";
 import * as globals from "../../Utils/globals";
 import Spinner from "../../Component/auth/Spinner";
-import TabSwitch from "../../Component/auth/TabSwitch";
-import VideoCard from "../../Component/VideoCard";
 import styles from "./style";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
-import TextInputView from "../../Component/TextInputView";
 import TitleView from "../../Component/TitleView";
 import { Header } from "../../Component/Header";
-import Search from "../../Component/Search";
 import { AppImages } from "../../Theme";
-import ImageCard from "../../Component/ImageCard";
-import FolderCard from "../../Component/FolderCard";
-import ZoomView from "../../Component/ZoomView";
-import { useRoute, useNavigation } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/core";
 import { useSelector, useDispatch } from "react-redux";
-import { AppConstant } from "../../Theme";
 import { notifyMessage } from "../../Component/AlertView";
 import {
   shareAlbumToUserApi,
-  listAllMediaSuccess,
   inviteuserlist,
-  listsOwnAlbum,
   listsOwnAlbumOnSharedView,
   listOwnAlbumSharedViewSuccess,
 } from "../../Redux-api/actions/Home";
 import SubscriptionError from "../../Component/SubscriptionError";
 import { AppColor } from "../../Theme";
-import IconIonIcons from "react-native-vector-icons/Ionicons";
 
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 
 import AuthContext from "../../context/AuthContext";
 import { useTheme, Avatar } from "react-native-paper";
-import FastImage from "react-native-fast-image";
-import Contacts from "react-native-contacts";
 import { AlbumCard } from "../../Component/AlbumCardShareView";
-import {SELECTED_REVOKED_USER} from '../../Redux-api/constant';
-
-import AntDesign from "react-native-vector-icons/AntDesign";
-const height = Dimensions.get("screen").height;
-const width = Dimensions.get("screen").width;
+import { SELECTED_REVOKED_USER } from "../../Redux-api/constant";
 
 export const ShareAlbumPhotos = (props) => {
   // var pageCountOwnAlbum = 1;
   const { user } = React.useContext(AuthContext);
   const { setUserData } = React.useContext(AuthContext);
-  const theme = useTheme();
   const [searchAlbumName, setSearchAlbumName] = useState(""); // Search bar text
   const dispatch = useDispatch();
   const route = useRoute();
@@ -91,8 +69,6 @@ export const ShareAlbumPhotos = (props) => {
   const [isCheck, setIsCheck] = React.useState(false); // For managing checks of single card
   const [arrayCheckMarks, setArrayCheckMarks] = React.useState([]); // Selected object array when deleting objects
 
-  const flatListRef = useRef();
-
   React.useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
@@ -110,7 +86,6 @@ export const ShareAlbumPhotos = (props) => {
     });
     setonSelectImg(false);
     setcurrentAlbumName("");
-    // setArrayAlbumOwn([]);
     return function cleanup() {
       BackHandler.removeEventListener(
         "hardwareBackPress",
@@ -206,7 +181,6 @@ export const ShareAlbumPhotos = (props) => {
         index={index}
         setArrayCheckMarks={setArrayCheckMarks}
         arrayCheckMarks={arrayCheckMarks}
-        //  onClickAlbumItem = {()=> onselectoneImage(item, index)}
         moveToAlbumDetail={() => {}}
       />
     );
@@ -221,9 +195,7 @@ export const ShareAlbumPhotos = (props) => {
 
   //share selected Media to User
   const shareMediatoUser = (item, arrayTempCheckAlbum) => {
-
     if (arrayTempCheckAlbum.length > 0) {
-    
       let tempArrayAlbumData = [];
       arrayTempCheckAlbum.map((data) => {
         let sendAlbumData = {
@@ -233,7 +205,7 @@ export const ShareAlbumPhotos = (props) => {
         };
         tempArrayAlbumData.push(sendAlbumData);
       });
-  
+
       callSharedAlbumtoUserAPI(tempArrayAlbumData, item.user_id);
     } else {
       Alert.alert(globals.appName, AppConstants.constant.ALBUM_VALIDATION);
@@ -252,10 +224,10 @@ export const ShareAlbumPhotos = (props) => {
     dispatch(shareAlbumToUserApi(param));
   };
 
-  const onClickRevokeAccess = (item)=>{
-    dispatch({type:SELECTED_REVOKED_USER, payload:item})
-    props.navigation.navigate("ManageAccess", {selectedUser:item})
-  }
+  const onClickRevokeAccess = (item) => {
+    dispatch({ type: SELECTED_REVOKED_USER, payload: item });
+    props.navigation.navigate("ManageAccess", { selectedUser: item });
+  };
 
   const onClickShareByContact = (item) => {
     var arrayTempCheckAlbum = [];
@@ -333,26 +305,15 @@ export const ShareAlbumPhotos = (props) => {
     return (
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          {/* {item.image ? (
-            <FastImage
-              resizeMode="cover"
-              style={styles.cardStyle}
-              source={item.image}
-            />
-          ) : ( */}
-            <Avatar.Icon
-              icon="account"
-              style={[styles.cardStyle, { position: "absolute" }]}
-            />
-          {/* )} */}
+          <Avatar.Icon
+            icon="account"
+            style={[styles.cardStyle, { position: "absolute" }]}
+          />
         </View>
 
         <View style={styles.bottomView}>
           <View style={styles.usernameview}>
-            <Text 
-            style={styles.txtName}
-            multiline ={true}
-            >
+            <Text style={styles.txtName} multiline={true}>
               {item.full_name}
             </Text>
           </View>
@@ -361,7 +322,7 @@ export const ShareAlbumPhotos = (props) => {
             <View style={styles.viewInsideBottom}>
               <TouchableOpacity
                 onPress={() => onClickShareByContact(item)}
-                 style={styles.lastbottomContactview}
+                style={styles.lastbottomContactview}
               >
                 <Image
                   style={styles.bottomshare}
@@ -371,17 +332,28 @@ export const ShareAlbumPhotos = (props) => {
               </TouchableOpacity>
             </View>
 
-         {item.is_shared === "1"?   <View style={[styles.viewInsideBottom, { backgroundColor: AppColor.colors.RED, borderBottomRightRadius:20 }]}>
-              <TouchableOpacity
-                onPress={() => onClickRevokeAccess(item)}
-                style={styles.lastbottomContactview}>
-                <Image
-                  style={styles.bottomshare}
-                  resizeMode="contain"
-                  source={AppImages.images.user_access}
-                />
-              </TouchableOpacity>
-            </View>: null }
+            {item.is_shared === "1" ? (
+              <View
+                style={[
+                  styles.viewInsideBottom,
+                  {
+                    backgroundColor: AppColor.colors.RED,
+                    borderBottomRightRadius: 20,
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  onPress={() => onClickRevokeAccess(item)}
+                  style={styles.lastbottomContactview}
+                >
+                  <Image
+                    style={styles.bottomshare}
+                    resizeMode="contain"
+                    source={AppImages.images.user_access}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
         </View>
       </View>
@@ -442,7 +414,6 @@ export const ShareAlbumPhotos = (props) => {
       data.HomeReducer.invitedUserList.responseCode ===
         AppConstants.constant.SUCCESS
     ) {
-      //  if (isApiCall)
       {
         if (
           data.HomeReducer.invitedUserList.errorCode ===
@@ -486,20 +457,17 @@ export const ShareAlbumPhotos = (props) => {
   // set Shared album data message
   const setSharedAlbumData = (shareResponse) => {
     let msg = shareResponse.message ? shareResponse.message : "";
-if(shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED){
-  let dictTemp = shareResponse; 
-  dictTemp.errorCode = "";
-  shareResponse = dictTemp;
-  notifyMessage(msg);
-  
-}
-    // shareResponse.errorCode === "sharing_fail"
-    //   ? "already_exists"
-    //   : shareResponse.message;
+    if (shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED) {
+      let dictTemp = shareResponse;
+      dictTemp.errorCode = "";
+      shareResponse = dictTemp;
+      notifyMessage(msg);
+    }
+
     if (isApiCall) {
       setIsApiCall(false);
       setLoading(false);
-      moveBack()
+      moveBack();
     }
   };
   const listOwnAlbumSuccessApiCall = () => {
@@ -566,7 +534,7 @@ if(shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED){
     ) {
       if (
         data.HomeReducer.shareAlbumToUserData.errorCode ===
-          AppConstants.constant.NOT_AUTHORIZED
+        AppConstants.constant.NOT_AUTHORIZED
       ) {
         alertLogout();
       } else {
@@ -575,7 +543,6 @@ if(shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED){
         dict.errorCode = "";
         data.HomeReducer.shareAlbumToUserData = dict;
       }
-      // else
       {
       }
     }
@@ -684,12 +651,10 @@ if(shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED){
               <TitleView title="Choose Album" />
               <View style={{ marginTop: 10 }}>
                 <FlatList
-                  // style={{ height:200 }}
                   onEndReachedThreshold={0.1}
                   bounces={true}
                   horizontal={true}
                   showsVerticalScrollIndicator={false}
-                  // data={arrayAlbumOwn}
                   data={distictOwnAlbumArray(arrayAlbumOwn)}
                   showsHorizontalScrollIndicator={false}
                   keyboardShouldPersistTaps={"handled"}
@@ -711,17 +676,6 @@ if(shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED){
               <View style={styles.readContactView}>
                 <TitleView title="Contacts" />
               </View>
-
-              {/* <TabSwitch
-                tabs={["Read Only", "Full Share"]}
-                onPressFirstTab={() => {
-                  setreadOnly(true);
-                }}
-                onPressSecondTab={() => {
-                  setreadOnly(false);
-                }}
-                isFirstTab={readOnly}
-              /> */}
 
               <View style={{ flexDirection: "row" }}>
                 <FlatList
@@ -769,11 +723,6 @@ if(shareResponse.errorCode === AppConstants.constant.ALBUM_SHARED_FAILED){
               >
                 Share
               </Text>
-              {/* <IconIonIcons
-              name= "share-social"
-              color={AppColor.colors.THEME_BLUE}
-              style={{fontSize:30, alignSelf:'flex-start'}}
-/> */}
             </TouchableOpacity>
           </View>
 

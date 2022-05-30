@@ -1,57 +1,34 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
-  Pressable,
   Alert,
   FlatList,
-  RefreshControl,
   Dimensions,
-  Image,
-  ImageBackground,
   StatusBar,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
   View,
   Keyboard,
   BackHandler,
-
 } from "react-native";
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 
 import { AppImages } from "../../Theme";
-import { AZURE_BASE_URL } from '../../Redux-api/endPoints';
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./style";
 import AppConstants from "../../Theme/AppConstant";
-import stylesHome from "../HomeScreen/style";
-import TextInputView from "../../Component/TextInputView";
-import { AppConstant } from "../../Theme";
 import { Header } from "../../Component/Header";
-import TitleView from "../../Component/TitleView";
-import Search from "../../Component/Search";
-import { Avatar, Headline, Text, useTheme } from "react-native-paper";
-import Button from "../../Component/auth/Button";
+import { Text, useTheme } from "react-native-paper";
 import Spinner from "../../Component/auth/Spinner";
-import { AppColor } from "../../Theme";
-import SubscriptionError from '../../Component/SubscriptionError';
+import SubscriptionError from "../../Component/SubscriptionError";
 
-import {
-  getNotificationList,
-  listAllMediaSuccess,
-} from "../../Redux-api/actions/Home";
+import { getNotificationList } from "../../Redux-api/actions/Home";
 import AuthContext from "../../context/AuthContext";
-import { useRoute, useNavigation } from "@react-navigation/core";
-import FastImage from 'react-native-fast-image'
+import { useRoute } from "@react-navigation/core";
 
 const { height, width } = Dimensions.get("screen");
-import {NotificationsCard} from "../../Component/NotificationsCard";
-import {notifyMessage} from '../../Component/AlertView'; 
+import { NotificationsCard } from "../../Component/NotificationsCard";
 
 export default Notifications = (props) => {
-
-    const { user } = React.useContext(AuthContext);
+  const { user } = React.useContext(AuthContext);
   const [notifocationList, setNotifocationList] = React.useState([]);
   const [isRefreshing, setisRefreshing] = React.useState(false);
   const theme = useTheme();
@@ -60,27 +37,27 @@ export default Notifications = (props) => {
   const data = useSelector((state) => state);
   const [loading, setLoading] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [isApiCall, setIsApiCall] = useState(false) // When calling listallmedia api  set this flag true so that only that time setData method will be call.
+  const [isApiCall, setIsApiCall] = useState(false); // When calling listallmedia api  set this flag true so that only that time setData method will be call.
   const [formErr, setFormError] = React.useState("");
   const { setUserData } = React.useContext(AuthContext);
-  const flatListRef = useRef() 
-var countBack = 0;
-  React.useEffect(() => {   
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
- 
+  const flatListRef = useRef();
+  var countBack = 0;
+  React.useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+
     const unsubscribe = props.navigation.addListener("focus", () => {
-    data.HomeReducer.isRequesting ? setLoading(false) : setLoading(false);
-    callgetNotificationListApi()
-    })
-    
-    flatListRef.current.scrollToOffset({ animated: true, offset: 0 }) // After adding any new object scroll flatlist to the index
+      data.HomeReducer.isRequesting ? setLoading(false) : setLoading(false);
+      callgetNotificationListApi();
+    });
+
+    flatListRef.current.scrollToOffset({ animated: true, offset: 0 }); // After adding any new object scroll flatlist to the index
     return function cleanup() {
       BackHandler.removeEventListener(
         "hardwareBackPress",
         handleBackButtonClick
-      );    
-      unsubscribe; 
-        };
+      );
+      unsubscribe;
+    };
   }, []);
 
   const handleBackButtonClick = () => {
@@ -93,7 +70,7 @@ var countBack = 0;
         [
           {
             text: AppConstants.constant.CANCEL,
-            onPress: () => countBack = 0,
+            onPress: () => (countBack = 0),
             style: "cancel",
           },
           {
@@ -105,7 +82,7 @@ var countBack = 0;
           cancelable: false,
         }
       );
-    }else{
+    } else {
       props.navigation.goBack();
     }
     return true;
@@ -119,141 +96,148 @@ var countBack = 0;
     return distinctArray;
   };
 
-    const callgetNotificationListApi=()=>{
+  const callgetNotificationListApi = () => {
     data.HomeReducer.isRequesting ? setLoading(false) : setLoading(false);
     setIsApiCall(true);
     let param = {
       sessid: user.sessid ? user.sessid : "",
-      page:currentPage
-    };      
+      page: currentPage,
+    };
     dispatch(getNotificationList(param));
     {
       setCurrentPage(currentPage + 1);
     }
+  };
+
+  const alertShow = () => {
+    if (isApiCall) {
+      setIsApiCall(false);
     }
+  };
 
-    const alertShow = () => {
-      if(isApiCall){
-        setIsApiCall(false);
-      //  notifyMessage( data.HomeReducer.data.message);
-      };
-      }
-      
-    
-      const moveToLoginScreen = () => {
-        // Making array and user empty in logout
-        removeCurrentUser(); // Remove current logged in user from asyn storage
-        dispatch(
-          logOutUser({
-            sessid: user.sessid ? user.sessid : "",
-          })
-        );
-        setUserData(null);
-      };
-    
-    
+  const moveToLoginScreen = () => {
+    // Making array and user empty in logout
+    removeCurrentUser(); // Remove current logged in user from asyn storage
+    dispatch(
+      logOutUser({
+        sessid: user.sessid ? user.sessid : "",
+      })
+    );
+    setUserData(null);
+  };
 
-   const setData = () => {
+  const setData = () => {
     if (data.HomeReducer.data.responseCode === AppConstants.constant.SUCCESS) {
       // Checking with length 0 to prevent re-rendering
 
       if (isApiCall) {
-
         setIsApiCall(false);
         setisRefreshing(false);
         if (notifocationList.length > 0) {
-
-          //paging case need to append data in existing array 
-          setNotifocationList(notifocationList.concat(data.HomeReducer.data.data.data))
-      } else {
+          //paging case need to append data in existing array
+          setNotifocationList(
+            notifocationList.concat(data.HomeReducer.data.data.data)
+          );
+        } else {
           // Initially when array length 0 add objects
           setNotifocationList(data.HomeReducer.data.data.data);
         }
       } else {
-        
       }
     }
-    };
+  };
 
-    const checkResponseCode = () => {
-      if (data.HomeReducer.data && data.HomeReducer.data.errorCode ) {
-        if (data.HomeReducer.data.errorCode === AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE) {
-          return(
-            <SubscriptionError comeFrom={AppConstants.constant.NOTIFICATION} errorCode={data.HomeReducer.data.errorCode} navigation={props.navigation}/>
-          )
-        }
+  const checkResponseCode = () => {
+    if (data.HomeReducer.data && data.HomeReducer.data.errorCode) {
+      if (
+        data.HomeReducer.data.errorCode ===
+        AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
+      ) {
+        return (
+          <SubscriptionError
+            comeFrom={AppConstants.constant.NOTIFICATION}
+            errorCode={data.HomeReducer.data.errorCode}
+            navigation={props.navigation}
+          />
+        );
       }
-        if (
-          data.HomeReducer &&
-          data.HomeReducer.data &&
-          data.HomeReducer.data.responseCode
-        ) {
-          if (
-            data.HomeReducer.data.errorCode === AppConstants.constant.NO_NOTIFICATION
-          ) {
-            alertShow();
-          } else {
-            setData();
-          }
-        }
-      };
+    }
+    if (
+      data.HomeReducer &&
+      data.HomeReducer.data &&
+      data.HomeReducer.data.responseCode
+    ) {
+      if (
+        data.HomeReducer.data.errorCode ===
+        AppConstants.constant.NO_NOTIFICATION
+      ) {
+        alertShow();
+      } else {
+        setData();
+      }
+    }
+  };
 
-   const handleLoadMore = () => {
-        if (data.HomeReducer && data.HomeReducer.data && data.HomeReducer.data.responseCode && data.HomeReducer.data.responseCode === AppConstants.constant.SUCCESS) {
-          
-          if (data.HomeReducer.data.data.totalPages >= currentPage 
-            && notifocationList.length < data.HomeReducer.data.data.totalMediaCount) {
-              callgetNotificationListApi(true)
-          }
-        }
-      };
+  const handleLoadMore = () => {
+    if (
+      data.HomeReducer &&
+      data.HomeReducer.data &&
+      data.HomeReducer.data.responseCode &&
+      data.HomeReducer.data.responseCode === AppConstants.constant.SUCCESS
+    ) {
+      if (
+        data.HomeReducer.data.data.totalPages >= currentPage &&
+        notifocationList.length < data.HomeReducer.data.data.totalMediaCount
+      ) {
+        callgetNotificationListApi(true);
+      }
+    }
+  };
 
   const renderList = ({ item, index }) => {
-    
     return (
-      <NotificationsCard title={item.title} description={item.description}/>
+      <NotificationsCard title={item.title} description={item.description} />
     );
   };
 
-    return (
-        <>
-        {checkResponseCode()}
-            <StatusBar barStyle={"light-content"} backgroundColor={'#0E365D'} />
+  return (
+    <>
+      {checkResponseCode()}
+      <StatusBar barStyle={"light-content"} backgroundColor={"#0E365D"} />
 
-            <View style={{ flex: 1, backgroundColor:'white' }}>
-                <Header
-                    leftIcon={require('../../assets/images/Menu.png')}
-                    leftClick={() => {  
-                       Keyboard.dismiss();
-                      props.navigation.toggleDrawer();
-                     }}
-                    titleIcon={require('../../assets/images/Logo_Icon.png')}
-                    test={'hello'}
-                    rightBackIcon={AppImages.images.backIcon}
-                    rightBackIconClick={() => props.navigation.goBack()}
-                    notificationsClick={() => props.navigation.navigate('Notifications')}
-                />
-                <View style={styles.album}>
-                    <Text style={styles.albumText}>Notifications</Text>
-                </View>
-               {notifocationList && notifocationList.length == 0? <View style={styles.album}>
-                    <Text style={styles.greetingText}>No new notifications</Text>
-                </View> : null}
-                   <FlatList
-                  ref={flatListRef}
-                  data={distinctDataArray(notifocationList)}
-                  style={{flex:1}}
-                  onEndReached={handleLoadMore}
-                  onEndReachedThreshold={1}
-                  renderItem={renderList}
-                  showsVerticalScrollIndicator={false}
-                  // contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20 }}
-                  keyExtractor={(item, index) => index.toString()}
-          />
-          {loading || data.HomeReducer.isRequesting ? <Spinner /> : null}
-            
-            </View>
-        </>
-
-    )
-}
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <Header
+          leftIcon={require("../../assets/images/Menu.png")}
+          leftClick={() => {
+            Keyboard.dismiss();
+            props.navigation.toggleDrawer();
+          }}
+          titleIcon={require("../../assets/images/Logo_Icon.png")}
+          test={"hello"}
+          rightBackIcon={AppImages.images.backIcon}
+          rightBackIconClick={() => props.navigation.goBack()}
+          notificationsClick={() => props.navigation.navigate("Notifications")}
+        />
+        <View style={styles.album}>
+          <Text style={styles.albumText}>Notifications</Text>
+        </View>
+        {notifocationList && notifocationList.length == 0 ? (
+          <View style={styles.album}>
+            <Text style={styles.greetingText}>No new notifications</Text>
+          </View>
+        ) : null}
+        <FlatList
+          ref={flatListRef}
+          data={distinctDataArray(notifocationList)}
+          style={{ flex: 1 }}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={1}
+          renderItem={renderList}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        {loading || data.HomeReducer.isRequesting ? <Spinner /> : null}
+      </View>
+    </>
+  );
+};

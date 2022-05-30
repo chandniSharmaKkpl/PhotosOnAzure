@@ -7,7 +7,6 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Alert,
 } from "react-native";
 import * as globals from "../../Utils/globals";
 import { isEmailValid, isMobileNumberValid } from "../../helpers/validations";
@@ -27,7 +26,7 @@ import { Axios } from "../../helpers/Axios";
 
 import format from "date-fns/format";
 import { AppConstant } from "../../Theme";
-import {notifyMessage} from '../../Component/AlertView'; 
+import { notifyMessage } from "../../Component/AlertView";
 
 export const Register = (props) => {
   const navigation = useNavigation();
@@ -38,24 +37,15 @@ export const Register = (props) => {
   const theme = useTheme();
 
   const [user, setUser] = React.useState({
-    fullName: '',
-    email: '',
-    secondary_email: '',
-    phoneNumber: '',
-    password: '',
-    confPassword: '',
-     date_of_birth: '',
-    address: '',
-    invite_code: '',
-  //   fullName: "WinOFv22 ",
-  //   email: "winofv55@mailinator.com",
-  //   secondary_email: "win123@mailinator.com",
-  //   phoneNumber: "9999911355",
-  //   password: "Test@1234",
-  //   confPassword: "Test@1234",
-  //  date_of_birth: "12-09-1990",
-  //   address: "Test Address",
-  //   invite_code: "",
+    fullName: "",
+    email: "",
+    secondary_email: "",
+    phoneNumber: "",
+    password: "",
+    confPassword: "",
+    date_of_birth: "",
+    address: "",
+    invite_code: "",
   });
 
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
@@ -94,7 +84,7 @@ export const Register = (props) => {
   const submitForm = () => {
     const validate = Validate(user);
     let currentCountry = RNLocalize.getCountry();
- 
+
     setError(
       validate !== "ok"
         ? validate
@@ -175,9 +165,8 @@ export const Register = (props) => {
     ) {
       e = e + "-";
     }
-    setUser({ ...user, date_of_birth: e })
+    setUser({ ...user, date_of_birth: e });
   };
-
 
   return (
     <View style={styles.container}>
@@ -274,14 +263,6 @@ export const Register = (props) => {
                 right={true}
               />
             )}
-            {/* <TextInputView
-							secureTextEntry={true}
-							icon={require('../../assets/icons/password.png')}
-							placeholder="******"
-							value={user.password}
-							error={error.passwordErr}
-							onChangeText={(e) => setUser({ ...user, password: e })}
-						/> */}
 
             {isClickConfirmPwd ? (
               <TextInputView
@@ -309,16 +290,6 @@ export const Register = (props) => {
               />
             )}
 
-            {/* <TextInputView
-							secureTextEntry={true}
-							icon={require('../../assets/icons/password.png')}
-							placeholder="******"
-							value={user.confPassword}
-							error={error.confPasswordErr}
-							onChangeText={(e) => setUser({ ...user, confPassword: e })}
-						/> */}
-
-            {/* <Pressable onPress={showDatePicker}> */}
             <TextInputView
               keyboardType="number-pad"
               icon={require("../../assets/icons/date.png")}
@@ -326,10 +297,7 @@ export const Register = (props) => {
               value={user.date_of_birth}
               error={error.dateOfBirthErr}
               onChangeText={(e) => handleChange(e)}
-
-             // onChangeText={(e) => setUser({ ...user, date_of_birth: e })}
             />
-            {/* </Pressable> */}
 
             <TextInputView
               icon={require("../../assets/icons/address.png")}
@@ -355,10 +323,6 @@ export const Register = (props) => {
             <Button color="#FFF" onPress={submitForm}>
               Create Account
             </Button>
-
-            {/* <Button color={theme.colors.accent} style={{ marginTop: 25 }}>
-              Setup Nominee
-            </Button> */}
           </View>
 
           <View style={styles.loginButtonView}>
@@ -431,9 +395,9 @@ function Validate({
     phoneNumberErr = "Phone number cannot be empty";
   } else {
     if (currentCountry === AppConstant.constant.INDIA) {
-		if (phoneNumber.trim().length <10) {
-			phoneNumberErr = "Invalid phone number";
-		}
+      if (phoneNumber.trim().length < 10) {
+        phoneNumberErr = "Invalid phone number";
+      }
     } else {
       if (!isMobileNumberValid(phoneNumber)) {
         phoneNumberErr = "Invalid phone number";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Dimensions,
   Image,
@@ -12,7 +12,7 @@ import {
   TextInput,
   Keyboard,
   BackHandler,
-  Platform
+  Platform,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -24,28 +24,19 @@ import IconAntDesign from "react-native-vector-icons/AntDesign";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
 import AppColor from "../../Theme/AppColor";
 import AppConstants from "../../Theme/AppConstant";
-import { useRoute, useNavigation } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/core";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./style";
-import { AppConstant } from "../../Theme";
 import { Header } from "../../Component/Header";
 import Search from "../../Component/Search";
 import Spinner from "../../Component/auth/Spinner";
 import { AppImages } from "../../Theme";
 import {
-  listAlbum,
-  listAllMediaSuccess,
   listsOwnAlbumOnAlbumScreen,
   listsSharedAlbumOnAlbumScreen,
   updateAlbumName,
-  updateAlbumNameSuccess,
 } from "../../Redux-api/actions/Home";
-import CalendarView from "../../Component/Calendar";
-import {
-  CurrentDate,
-  decryptKey,
-  checkStringContainsSpecialChar,
-} from "../../common";
+import { checkStringContainsSpecialChar } from "../../common";
 import ReactModal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -53,10 +44,10 @@ const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
 import AuthContext from "../../context/AuthContext";
 import { useTheme } from "react-native-paper";
-import TextInputView from "../../Component/auth/TextInputView";
 import FastImage from "react-native-fast-image";
 import SubscriptionError from "../../Component/SubscriptionError";
 import { notifyMessage } from "../../Component/AlertView";
+import VideoCard from "../../Component/VideoCard";
 
 const AlbumScreen = (props) => {
   const [pageCountOwnAlbum, setpageCountOwnAlbum] = React.useState(1); // Pagination own album
@@ -92,6 +83,8 @@ const AlbumScreen = (props) => {
 
   var countBack = 0;
 
+ 
+  
   React.useEffect(() => {
     // requestReadContactPermission();
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -256,7 +249,13 @@ const AlbumScreen = (props) => {
     let imageUrl = AZURE_BASE_URL + containerName + "/" + item.file_name;
 
     return (
-      <View style={{ height:Platform.OS === 'android'? 80: 100, width: "100%", marginBottom: "5%" }}>
+      <View
+        style={{
+          height: Platform.OS === "android" ? 80 : 100,
+          width: "100%",
+          marginBottom: "5%",
+        }}
+      >
         <View style={styles.skyBlueView}>
           <View style={{ flex: 0.8 }} />
           <TouchableOpacity
@@ -277,110 +276,80 @@ const AlbumScreen = (props) => {
           </TouchableOpacity>
         </View>
 
-         <TouchableOpacity
-            onPress={() => gotoAlbumDetails(item)}
-            activeOpacity={1}
-            style={[
-              styles.innerContainer,
-              {
-                height:Platform.OS === 'android'? 80: 100,
-                width: isSharedAlbum ? width * 0.91 : width * 0.75,
-              },
-            ]}
-          >
-            {item.file_name? <FastImage
+        <TouchableOpacity
+          onPress={() => gotoAlbumDetails(item)}
+          activeOpacity={1}
+          style={[
+            styles.innerContainer,
+            {
+              height: Platform.OS === "android" ? 80 : 100,
+              width: isSharedAlbum ? width * 0.91 : width * 0.75,
+            },
+          ]}
+        >
+          {item.file_type && item.file_type.includes("image") ? (
+            <FastImage
               style={styles.image}
               source={{
                 uri: imageUrl,
-                //headers: { Authorization: 'someAuthToken' },
                 priority: FastImage.priority.normal,
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
-            :
-            <View style={styles.viewAlbumPlaceHolder}>
-              <View style={styles.viewContainImg}>
-              <FastImage
-          tintColor={'red'}
-            style={styles.imageFolder}
-            source={require("../../assets/images/Folder_Blue.png")}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-              </View>
- 
-            </View>
-         }
-            <View style={{ marginLeft: 8 }}>
-              <Text
-                numberOfLines={1}
+          ) : (
+            <View style={styles.video}>
+              <VideoCard
+                style={{ borderRadius: 20 }}
+                videoUrl={imageUrl}
+                volume={0}
+              ></VideoCard>
+
+              <TouchableOpacity
+                onPress={() => gotoAlbumDetails(item)}
+                activeOpacity={1}
                 style={[
-                  styles.albumText,
                   {
-                    width: width * 0.4,
-                    fontFamily: "MuseoSlab-300",
-                    fontSize: 18,
+                    justifyContent: "center",
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    top: 0,
+                    left: 0,
                   },
                 ]}
-              >
-                {item.name}
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  (styles.createText,
-                  {
-                    width: width * 0.4,
-                    color: "#0E365D",
-                    fontFamily: "MuseoSlab-300",
-                    fontSize: 10,
-                  })
-                }
-              >
-                {isSharedAlbum ? item.created_at : item.created_date}
-              </Text>
+              />
             </View>
-            {/* {isSharedAlbum ? null : (
-            <View
-              style={{
-                flexDirection: "column",
-                width: width * 0.3,
-                marginRight: 10,
-                height: "100%",
-                //backgroundColor:'pink'
-              }}
+          )}
+          <View style={{ marginLeft: 8 }}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.albumText,
+                {
+                  width: width * 0.4,
+                  fontFamily: "MuseoSlab-300",
+                  fontSize: 18,
+                },
+              ]}
             >
-              <TouchableOpacity
-                onPress={() => editAlbumName(item)}
-                style={[
-                  styles.iconView,
-                  {
-                    // backgroundColor: AppColor.colors.LITE_BLUE,
-                    // borderBottomEndRadius: 20,
-                  },
-                ]}
-              >
-                <Icon
-                  style={{ margin: 5, marginHorizontal: 10, borderRadius: 20 }}
-                  name={"pencil-outline"}
-                  size={20}
-                  color={"#fff"}
-                />
-              </TouchableOpacity>
-              <View style={styles.lineview}></View>
-              <TouchableOpacity
-                onPress={() => sharedAlbum(item)}
-                style={styles.iconView}
-              >
-                <Image
-                  style={styles.shareIcon}
-                  resizeMode="cover"
-                  source={AppImages.images.share}
-                />
-              </TouchableOpacity>
-            </View>
-          )} */}
-          </TouchableOpacity>
-      
+              {item.name}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                (styles.createText,
+                {
+                  width: width * 0.4,
+                  color: "#0E365D",
+                  fontFamily: "MuseoSlab-300",
+                  fontSize: 10,
+                })
+              }
+            >
+              {isSharedAlbum ? item.created_at : item.created_date}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -461,18 +430,11 @@ const AlbumScreen = (props) => {
                 width: width * 0.3,
                 marginRight: 10,
                 height: "100%",
-                //backgroundColor:'pink'
               }}
             >
               <TouchableOpacity
                 onPress={() => editAlbumName(item)}
-                style={[
-                  styles.iconView,
-                  {
-                    // backgroundColor: AppColor.colors.LITE_BLUE,
-                    // borderBottomEndRadius: 20,
-                  },
-                ]}
+                style={[styles.iconView]}
               >
                 <Icon
                   style={{ margin: 5, marginHorizontal: 10, borderRadius: 20 }}
@@ -576,9 +538,6 @@ const AlbumScreen = (props) => {
                   data.HomeReducer.sharedAlbumAlbumView.data.data
                 )
               );
-              // setTotalSharedAlbumspace(
-              //   data.HomeReducer.library.data.userSpace.own_space
-              // );
             } else {
               if (
                 data.HomeReducer.sharedAlbumAlbumView.data.totalAlbumCount === 0
@@ -587,18 +546,12 @@ const AlbumScreen = (props) => {
                 if (arrayAlbumShared && arrayAlbumShared.length > 0) {
                   arrayAlbumShared.length = 0;
                 }
-                // setTotalSharedAlbumspace(
-                //   data.HomeReducer.library.data.userSpace.own_space
-                // );
               } else {
                 // When api call first time
 
                 setArrayAlbumShared(
                   data.HomeReducer.sharedAlbumAlbumView.data.data
                 );
-                // setTotalSharedAlbumspace(
-                //   data.HomeReducer.library.data.userSpace.own_space
-                // );
               }
             }
           }
@@ -648,17 +601,14 @@ const AlbumScreen = (props) => {
 
   // Manage failure response and error condition to show alert and do action accordingly
   const showNoMediaAlert = (dataResponse) => {
-      
-      if (dataResponse && isApiCall) {
+    if (dataResponse && isApiCall) {
       if (dataResponse.errorCode === AppConstants.constant.NO_MEDIA) {
         setIsApiCall(false);
       }
       if (dataResponse.errorCode === AppConstants.constant.ALBUM_NOT_UPDATE) {
         setIsApiCall(false);
         notifyMessage(data.HomeReducer.data.message);
-      }
-     
-      else {
+      } else {
         setData();
       }
     }
@@ -702,23 +652,27 @@ const AlbumScreen = (props) => {
       setIsApiCall(false);
       updateAlbumDatas(data.HomeReducer.updateAlbumName.data);
     } else if (isSharedAlbum) {
-
-      if (data.HomeReducer.sharedAlbumAlbumView.errorCode === AppConstants.constant.NOT_AUTHORIZED) {
+      if (
+        data.HomeReducer.sharedAlbumAlbumView.errorCode ===
+        AppConstants.constant.NOT_AUTHORIZED
+      ) {
         let dict = data.HomeReducer.sharedAlbumAlbumView;
         dict.errorCode = "";
-        data.HomeReducer.sharedAlbumAlbumView = dict
+        data.HomeReducer.sharedAlbumAlbumView = dict;
         notifyMessage(data.HomeReducer.data.message);
-      }else{
+      } else {
         showNoMediaAlert(data.HomeReducer.sharedAlbumAlbumView);
       }
-
     } else {
-       if (data.HomeReducer.ownAlbumAlbumView.errorCode === AppConstants.constant.NOT_AUTHORIZED) {
+      if (
+        data.HomeReducer.ownAlbumAlbumView.errorCode ===
+        AppConstants.constant.NOT_AUTHORIZED
+      ) {
         let dict = data.HomeReducer.ownAlbumAlbumView;
         dict.errorCode = "";
-        data.HomeReducer.ownAlbumAlbumView = dict
+        data.HomeReducer.ownAlbumAlbumView = dict;
         notifyMessage(data.HomeReducer.data.message);
-      }else{
+      } else {
         showNoMediaAlert(data.HomeReducer.ownAlbumAlbumView);
       }
     }
@@ -754,18 +708,18 @@ const AlbumScreen = (props) => {
         data.HomeReducer.ownAlbumAlbumView &&
         data.HomeReducer.ownAlbumAlbumView.data
       )
-      if (
-        data.HomeReducer.ownAlbumAlbumView.data.totalPages >=
-          pageCountOwnAlbum &&
-        arrayAlbumOwn &&
-        arrayAlbumOwn.length <
-          data.HomeReducer.ownAlbumAlbumView.data.totalAlbumCount
-      ) {
-        let dataToSet = pageCountOwnAlbum + 1;
-        setpageCountOwnAlbum(dataToSet);
+        if (
+          data.HomeReducer.ownAlbumAlbumView.data.totalPages >=
+            pageCountOwnAlbum &&
+          arrayAlbumOwn &&
+          arrayAlbumOwn.length <
+            data.HomeReducer.ownAlbumAlbumView.data.totalAlbumCount
+        ) {
+          let dataToSet = pageCountOwnAlbum + 1;
+          setpageCountOwnAlbum(dataToSet);
 
-        callApiToGetOwnAlbumData("loadeMore", dataToSet);
-      }
+          callApiToGetOwnAlbumData("loadeMore", dataToSet);
+        }
     }
   };
 
@@ -797,20 +751,6 @@ const AlbumScreen = (props) => {
 
   // API response and manage own album data
   const getOwnAlbumData = (isLoadMore) => {
-    // if (
-    //   data.HomeReducer &&foc
-    //   data.HomeReducer.ownAlbumAlbumView &&
-    //   data.HomeReducer.ownAlbumAlbumView.data &&
-    //   data.HomeReducer.ownAlbumAlbumView.data.pageNo
-    // ) {
-    //   if (data.HomeReducer.ownAlbumAlbumView.data.pageNo === pageCountOwnAlbum) {
-    //     // We already have this page data no need to call api
-  
-    //     return;
-    //   } else {
-    //     callApiToGetOwnAlbumData();
-    //   }
-    // } else
     {
       // This is the first time when own album is empty and we need to call api
       callApiToGetOwnAlbumData();
@@ -819,20 +759,6 @@ const AlbumScreen = (props) => {
 
   // API response and manage shared album data
   const getSharedAlbumData = () => {
-    // if (
-    //   data.HomeReducer &&
-    //   data.HomeReducer.sharedAlbumAlbumView &&
-    //   data.HomeReducer.sharedAlbumAlbumView.data &&
-    //   data.HomeReducer.sharedAlbumAlbumView.data.pageNo
-    // ) {
-    //   if (data.HomeReducer.sharedAlbumAlbumView.data.pageNo === pageCountOwnAlbum) {
-    //     // We already have this page data no need to call api
-    
-    //     return;
-    //   } else {
-    //     callApiToGetSharedAlbum();
-    //   }
-    // } else
     {
       // This is the first time when own album is empty and we need to call api
       callApiToGetSharedAlbum();
@@ -939,8 +865,10 @@ const AlbumScreen = (props) => {
       if (
         data.HomeReducer &&
         data.HomeReducer.library &&
-        ((data.HomeReducer.library.errorCode ===
-          AppConstants.constant.SUBSCRIPTION_EXPIRED) || (data.HomeReducer.library.errorCode === AppConstants.constant.SUBSCRIPTION_INVALID))
+        (data.HomeReducer.library.errorCode ===
+          AppConstants.constant.SUBSCRIPTION_EXPIRED ||
+          data.HomeReducer.library.errorCode ===
+            AppConstants.constant.SUBSCRIPTION_INVALID)
       ) {
         showUpgradeAlert();
         return false;
@@ -949,7 +877,6 @@ const AlbumScreen = (props) => {
   };
 
   const showUpgradeAlert = () => {
-
     Alert.alert(
       AppConstants.constant.ONLINE_FAMILY_VAULT,
       AppConstants.constant.UPGRADE_ACCOUNT_ALERT,
@@ -985,7 +912,6 @@ const AlbumScreen = (props) => {
             Keyboard.dismiss();
             props.navigation.toggleDrawer();
           }}
-          
           titleIcon={require("../../assets/images/Logo_Icon.png")}
           test={"hello"}
           rightBackIcon={AppImages.images.backIcon}

@@ -1,16 +1,14 @@
 import * as React from "react";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   Image,
   ImageBackground,
   Pressable,
-  ScrollView,
   StyleSheet,
   View,
   Alert,
   BackHandler,
   Keyboard,
-  TextInput,
 } from "react-native";
 import * as globals from "../../Utils/globals";
 import { Headline, Text, useTheme } from "react-native-paper";
@@ -19,11 +17,8 @@ import Button from "../../Component/auth/Button";
 import Spinner from "../../Component/auth/Spinner";
 import TextInputView from "../../Component/auth/TextInputView";
 import AuthContext from "../../context/AuthContext";
-import { Axios } from "../../helpers/Axios";
 import PushControllerTemp from "../../Component/PushControllerTemp";
 import AppConstants from "../../Theme/AppConstant";
-import IconFontiso from "react-native-vector-icons/Fontisto";
-import IconEntypo from "react-native-vector-icons/Entypo";
 import { getCurrentUser, setCurrentUser } from "../../database/localDB";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../Redux-api/actions/LoginActions";
@@ -50,13 +45,17 @@ export const LoginWithEmail = (props) => {
     // password: "Test@1234",
 
     email: "winofv1@mailinator.com",
-    password: "Test@1234 ",
+    password: "Test@1234",
 
     // email: "poojakumari.aelius@mailnator.com",
     // password: "Pooja@2021 ",
 
-    email: "test2@yopmail.com",
-      password: "Test@123 ",
+    email: "test2@yopmail.com",   
+    password: "Test@123 ",
+
+    email: "",
+    password: "" ,
+
   });
 
   const [error, setError] = React.useState({
@@ -192,13 +191,15 @@ export const LoginWithEmail = (props) => {
           );
           return;
         }
- 
+
         if (response.errorCode === "verify_before_login") {
           setLoading(false);
           navigation.navigate("VerificationNew", {
             sessionId: response.data.sessid,
-            phoneNumber: response.data.phone ? response.data.phone:'', // response.data.user_detail.phone,
-            userData: response.data.user_detail? response.data.user_detail:'',
+            phoneNumber: response.data.phone ? response.data.phone : "", // response.data.user_detail.phone,
+            userData: response.data.user_detail
+              ? response.data.user_detail
+              : "",
             isRememberMe: checked,
           });
 
@@ -222,8 +223,6 @@ export const LoginWithEmail = (props) => {
           setLoading(false);
           notifyMessage(responseData.loginResponse.message);
         }
-
-        //setFormError(response.message);
       }
     }
   };
@@ -400,7 +399,6 @@ const styles = StyleSheet.create({
     marginTop: "15%",
     marginBottom: "2%",
     padding: "5%",
-    // fontFamily: fontConstant.BARLOW_REGULAR,
     fontSize: 20,
   },
   logoContainer: {
@@ -434,7 +432,6 @@ const styles = StyleSheet.create({
   inputView: {
     flex: 1,
     paddingHorizontal: 20,
-   // backgroundColor:'orange'
   },
   resetPasswordView: {
     marginTop: 10,

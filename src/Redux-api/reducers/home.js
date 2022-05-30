@@ -344,7 +344,6 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case LIST_ALL_MEDIA_SUCCESS: {
-      console.log("list all meida success -",action.payload)
       return {
         ...state,
         userSpace: action.payload.data.userSpace,
@@ -716,6 +715,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS: {
+      // console.log("DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS  ===>",action.payload);
       return {
         ...state,
         deleteUserMediaAlbumDetail: action.payload,
@@ -843,7 +843,7 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS: {
-      console.log("alb new:", action.payload);
+      console.log("ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS =>", action.payload);
       return {
         ...state,
         uploadImagesAddNewAlbum: action.payload,
@@ -852,7 +852,6 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case ADD_NEW_ALB_UPLOAD_IMAGE_FAILURE: {
-      console.log("failure:", action.payload);
       return {
         ...state,
         uploadImagesAddNewAlbum: action.payload.error,

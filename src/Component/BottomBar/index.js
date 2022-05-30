@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  Button,
+  View,
+  Text,
+  Image,
+  Pressable,
+  TouchableWithoutFeedback,
+} from "react-native";
 import styles from "../../Screen/Album/style";
-
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Style from "./style";
 
 // BottomBar tab icons
 const BottomItem = [
-    {
+  {
     key: 1,
     no: 1,
     name: "AlbumScreen",
@@ -39,39 +46,42 @@ const BottomBar = (props) => {
     });
   };
   return (
-    <View style={Style.MainWrappper}>
-      {BottomItem.map((data) =>
-        data.no == 2 ? (
-          <TouchableOpacity
-            key={data.key}
-            style={Style.positionIcon}
-            onPress={() => props.navigation.navigate("CameraIcon")}
-            //  onPress={() => console.log("ok")}
-          >
-            <View style={Style.whiteCircle}>
+    <View style={Style.container}>
+      <View style={Style.MainWrappper}>
+       
+        {BottomItem.map((data) =>
+          data.no == 2 ? (
+            <TouchableOpacity
+              key={data.key}
+              style={Style.positionIcon}
+              onPress={() => props.navigation.navigate("CameraIcon")}
+              // onPress={() => alert("ok")}
+            >
+              <View style={Style.whiteCircle}>
+                <Image
+                  resizeMode={"contain"}
+                  style={Style.addposticon}
+                  source={ScreenName == data.no ? data.image2 : data.image1}
+                />
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              key={data.key}
+              onPress={() => {
+                conditionalNavigate(data);
+              }}
+              activeOpacity={0.4}
+            >
               <Image
                 resizeMode={"contain"}
-                style={Style.addposticon}
+                style={data.no == 2 ? Style.addposticon : Style.icon}
                 source={ScreenName == data.no ? data.image2 : data.image1}
               />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            key={data.key}
-            onPress={() => {
-              conditionalNavigate(data);
-            }}
-            activeOpacity={0.4}
-          >
-            <Image
-              resizeMode={"contain"}
-              style={data.no == 2 ? Style.addposticon : Style.icon}
-              source={ScreenName == data.no ? data.image2 : data.image1}
-            />
-          </TouchableOpacity>
-        )
-      )}
+            </TouchableOpacity>
+          )
+        )}
+      </View>
     </View>
   );
 };

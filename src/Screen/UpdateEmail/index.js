@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 
 import {
   Image,
@@ -7,31 +7,18 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  TextInput,
   View,
   Alert,
   BackHandler,
-
 } from "react-native";
 import * as globals from "../../Utils/globals";
 
-import {
-  Headline,
-  IconButton,
-  Subheading,
-  Text,
-  Title,
-  useTheme,
-
-} from "react-native-paper";
+import { Headline, Subheading, Text, useTheme } from "react-native-paper";
 import { isEmailValid } from "../../helpers/validations";
 import AppConstants from "../../Theme/AppConstant";
 
-import { useRoute, useNavigation } from "@react-navigation/core";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/core";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 import Button from "../../Component/auth/Button";
 import Spinner from "../../Component/auth/Spinner";
@@ -41,8 +28,8 @@ import { updateEmail } from "../../Redux-api/actions/Auth";
 
 import AuthContext from "../../context/AuthContext";
 import { AppConstant } from "../../Theme";
-import SubscriptionError from '../../Component/SubscriptionError';
-import {notifyMessage} from '../../Component/AlertView'; 
+import SubscriptionError from "../../Component/SubscriptionError";
+import { notifyMessage } from "../../Component/AlertView";
 
 export default UpdateEmail = (props) => {
   const navigation = useNavigation();
@@ -62,10 +49,9 @@ export default UpdateEmail = (props) => {
   });
 
   React.useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     const unsubscribe = props.navigation.addListener("focus", () => {
-
       setEmail("");
       setError({
         emailErr: "",
@@ -75,16 +61,15 @@ export default UpdateEmail = (props) => {
       BackHandler.removeEventListener(
         "hardwareBackPress",
         handleBackButtonClick
-      );   
-      unsubscribe;  
-        };
+      );
+      unsubscribe;
+    };
   }, [props.navigation]);
 
   function handleBackButtonClick() {
     props.navigation.goBack();
     return true;
   }
-
 
   function Validate() {
     let emailErr = "";
@@ -109,9 +94,12 @@ export default UpdateEmail = (props) => {
   }
 
   const submitForm = () => {
-
-    if(user.user_detail && user.user_detail.email && user.user_detail.email === email ){
-      notifyMessage(AppConstants.constant.THIS_IS_YOUR_CURRENT_EMAIL)
+    if (
+      user.user_detail &&
+      user.user_detail.email &&
+      user.user_detail.email === email
+    ) {
+      notifyMessage(AppConstants.constant.THIS_IS_YOUR_CURRENT_EMAIL);
       return;
     }
     const validate = Validate();
@@ -139,16 +127,26 @@ export default UpdateEmail = (props) => {
 
   const checkResponseCode = () => {
     if (isApiCall) {
-
-      if (data.AuthReducer.data && data.AuthReducer.data.message && data.AuthReducer.data.responseCode) {
+      if (
+        data.AuthReducer.data &&
+        data.AuthReducer.data.message &&
+        data.AuthReducer.data.responseCode
+      ) {
         setIsApiCall(false);
         setLoading(false);
 
-        if (data.AuthReducer.data && data.AuthReducer.data.errorCode ) {
-          if (data.AuthReducer.data.errorCode === AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE) {
-            return(
-              <SubscriptionError comeFrom={AppConstants.constant.UPDATE_EMAIL} errorCode={data.AuthReducer.data.errorCode} navigation={props.navigation}/>
-            )
+        if (data.AuthReducer.data && data.AuthReducer.data.errorCode) {
+          if (
+            data.AuthReducer.data.errorCode ===
+            AppConstants.constant.PURCHASE_PLAN_OR_USE_INVITE_CODE
+          ) {
+            return (
+              <SubscriptionError
+                comeFrom={AppConstants.constant.UPDATE_EMAIL}
+                errorCode={data.AuthReducer.data.errorCode}
+                navigation={props.navigation}
+              />
+            );
           }
         }
 
@@ -273,9 +271,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   inputView: {
-    // flex: 1,
     paddingHorizontal: 30,
-    // backgroundColor:'pink',
     paddingTop: hp("5%"),
   },
   inputViewImage: {
@@ -283,7 +279,6 @@ const styles = StyleSheet.create({
   },
   scrollViewStyle: {
     flex: 1,
-    //backgroundColor:'green'
   },
   titleView: {
     margin: 20,

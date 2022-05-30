@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 
 import {
   Image,
@@ -7,7 +7,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  TextInput,
   View,
   BackHandler,
   Alert,
@@ -15,25 +14,14 @@ import {
 } from "react-native";
 import * as globals from "../../Utils/globals";
 
-import {
-  Headline,
-  IconButton,
-  Subheading,
-  Text,
-  Title,
-  useTheme,
-} from "react-native-paper";
-import { isinviteCodeValid } from "../../helpers/validations";
+import { Headline, Subheading, Text, useTheme } from "react-native-paper";
 import IconIonicons from "react-native-vector-icons/Ionicons";
 import { AppColor } from "../../Theme";
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 
-import { useRoute, useNavigation } from "@react-navigation/core";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/core";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 import Button from "../../Component/auth/Button";
 import Spinner from "../../Component/auth/Spinner";
@@ -44,7 +32,7 @@ import { updateInviteCodeApiCall } from "../../Redux-api/actions/Home";
 import AuthContext from "../../context/AuthContext";
 import { AppConstant } from "../../Theme";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import {notifyMessage} from '../../Component/AlertView';
+import { notifyMessage } from "../../Component/AlertView";
 
 export default InviteCode = (props) => {
   const navigation = useNavigation();
@@ -92,8 +80,8 @@ export default InviteCode = (props) => {
     if (inviteCode && inviteCode.length > 0) {
       if (inviteCode.trim() === "") {
         inviteCodeErr = AppConstant.constant.INVITE_CODE_EMPTY;
-      }else{
-        if(user && user.user_detail && user.user_detail.invite_code){
+      } else {
+        if (user && user.user_detail && user.user_detail.invite_code) {
           if (user.user_detail.invite_code === inviteCode) {
             inviteCodeErr = AppConstant.constant.ENTER_SHARED_INVITATION_CODE;
           }
@@ -136,7 +124,7 @@ export default InviteCode = (props) => {
   };
 
   const alertLogout = () => {
-    Alert.alert("Alert",data.HomeReducer.updateInviteCodeData.message, [
+    Alert.alert("Alert", data.HomeReducer.updateInviteCodeData.message, [
       { text: "Ok", onPress: () => moveToLoginScreen() },
     ]);
   };
@@ -158,7 +146,7 @@ export default InviteCode = (props) => {
         data.HomeReducer.updateInviteCodeData.errorCode
       ) {
         setIsApiCall(false);
-        
+
         setLoading(false);
         if (
           data.HomeReducer.updateInviteCodeData.errorCode &&
@@ -167,8 +155,8 @@ export default InviteCode = (props) => {
         ) {
           alertLogout();
           return;
-        } 
-       
+        }
+
         Alert.alert("Alert", data.HomeReducer.updateInviteCodeData.message, [
           {
             text: "Ok",
@@ -185,11 +173,13 @@ export default InviteCode = (props) => {
 
   // call when you want to share on social media via link
   const onshareApp = async () => {
-  const  messageToShow = AppConstant.constant.INVITE_CODE_SHARE+ " "+user.user_detail.invite_code
+    const messageToShow =
+      AppConstant.constant.INVITE_CODE_SHARE +
+      " " +
+      user.user_detail.invite_code;
     try {
       const result = await Share.share({
-        message:
-          messageToShow,
+        message: messageToShow,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -278,7 +268,7 @@ export default InviteCode = (props) => {
           </View>
           <View style={styles.inputView}>
             <TextInputView
-            //  error={error.inviteCodeErr}
+              //  error={error.inviteCodeErr}
               icon={require("../../assets/icons/invite_code.png")}
               placeholder="Invite Code"
               value={inviteCode}
@@ -287,13 +277,9 @@ export default InviteCode = (props) => {
                 setinviteCode(e);
               }}
             />
-{error.inviteCodeErr ? (
-  <Text style={styles.error}>
-                {error.inviteCodeErr}
-              </Text>
-             ) : null}
-
-            
+            {error.inviteCodeErr ? (
+              <Text style={styles.error}>{error.inviteCodeErr}</Text>
+            ) : null}
 
             <View style={styles.confirmButton}>
               <Button color="#FFF" onPress={submitForm}>
@@ -347,11 +333,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   error: {
-    color:AppColor.colors.RED,
-  // paddingTop: hp(-10),
+    color: AppColor.colors.RED,
     textAlign: "center",
     fontFamily: "MuseoSlab-500",
-   
   },
   confirmButton: {
     paddingTop: hp("1%"),
@@ -375,15 +359,12 @@ const styles = StyleSheet.create({
   inputView: {
     // flex: 1,
     paddingHorizontal: 30,
-    // backgroundColor:'pink',
-    //paddingTop: hp("5%"),
   },
   inputViewImage: {
     flex: 1,
   },
   scrollViewStyle: {
     flex: 1,
-    //backgroundColor:'green'
   },
   titleView: {
     margin: 20,
@@ -404,7 +385,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "MuseoSlab-500",
   },
- 
+
   back: {
     position: "absolute",
     top: 25,

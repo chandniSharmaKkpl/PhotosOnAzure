@@ -15,7 +15,8 @@ import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIc
 import {notifyMessage} from '../../Component/AlertView';
 
 const deleteClick = (props) => {
-  if (props.itemZoom.owner_id == props.user_id) {
+  // console.log("props.itemzoon", props.itemZoom.owner_id === props.itemZoom.user_id);
+  if (props.itemZoom.owner_id === props.itemZoom.user_id) {
     Alert.alert(
       AppConstants.constant.ALERT,
       AppConstants.constant.DO_YOU_WANT_TO_DELETE_ONE_SELECTED_MEDIA,
@@ -43,6 +44,7 @@ const deleteClick = (props) => {
 };
 
 const ZoomView = (props) => {
+  // alert(props)
   const logOutZoomState = (event, gestureState, zoomableViewEventObject) => {};
   return (
     <View style={{ flex: 1, backgroundColor: AppColor.colors.THEME_BLUE }}>
@@ -55,13 +57,13 @@ const ZoomView = (props) => {
           paddingRight: wp("1%"),
         }}
       >
-        {props.isaccessible == 0 ? null : (
+        {props.isaccessible === 0 ? null : (
           <IconMaterialCommunity
             onPress={() => deleteClick(props)}
             name="delete-circle"
             size={35}
             color={AppColor.colors.RED}
-            style={{}}
+            style={{alignSelf: "flex-end", margin: "2%"}}
           />
         )}
 

@@ -1,6 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
 const { height, width } = Dimensions.get("screen");
-import { AppConstant } from "../../Theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,9 +16,8 @@ const styles = StyleSheet.create({
   logo: {
     height: 100,
     width: "100%",
-    marginTop:'10%',
-    marginBottom: '8%',
-   // backgroundColor:'yellow'
+    marginTop: "10%",
+    marginBottom: "8%",
   },
   scrollViewStyle: {
     flex: 1,
@@ -31,8 +29,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     textAlign: "center",
     fontSize: 30,
-    fontFamily: 'MuseoSlab-500'
-
+    fontFamily: "MuseoSlab-500",
   },
   inputView: {
     flex: 1,
@@ -106,7 +103,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 3,
     overflow: "hidden",
-   
   },
   titleviewstyle: {
     marginVertical: height * 0.01,
@@ -114,7 +110,7 @@ const styles = StyleSheet.create({
   choosefilestyle: {
     fontSize: 18,
     fontFamily: "MuseoSlab-500",
-    color: 'black',
+    color: "black",
     paddingTop: 18,
     paddingBottom: 18,
     marginStart: 20,
@@ -122,12 +118,11 @@ const styles = StyleSheet.create({
   lineStyle: {
     height: height * 0.002,
     width: "100%",
-    backgroundColor: 'black',
+    backgroundColor: "black",
     opacity: 0.6,
   },
   renderMimetypeImagemainView: {
     flex: 1,
-    // marginBottom: width * 0.015,
   },
   viewPopupStyle: {
     flexDirection: "row",
@@ -135,7 +130,7 @@ const styles = StyleSheet.create({
     marginStart: 22,
   },
   textStylePopup: {
-    color: 'black',
+    color: "black",
     fontSize: 16,
     fontFamily: "MuseoSlab-500Italic",
     fontWeight: "400",
@@ -144,13 +139,13 @@ const styles = StyleSheet.create({
   lineStyle1: {
     height: 1,
     width: "100%",
-    backgroundColor: 'black',
+    backgroundColor: "black",
     opacity: 0.4,
   },
   imagePopupStyle: {
     height: width * 0.05,
     width: width * 0.05,
-    resizeMode: 'contain'
+    resizeMode: "contain",
   },
 });
 

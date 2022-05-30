@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  Dimensions,
-  Image,
-  ImageBackground,
   StatusBar,
-  SafeAreaView,
   ScrollView,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
-  FlatList,
   BackHandler
 } from "react-native";
 import styles from "../PrivacySecurity/style";
