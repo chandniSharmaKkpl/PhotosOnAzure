@@ -412,7 +412,7 @@ const AlbumDetailScreen = (props) => {
     // let getfinalTitle = getTimeStemp(title);
 
     console.log("413------->i am in callAPItoUploadImage=>", data);
-    
+
     params.append("sessid", user.sessid);
     params.append("name", istitle);
     params.append("code_name", route.params.albumdetail.code_name);
@@ -421,8 +421,9 @@ const AlbumDetailScreen = (props) => {
     });
 
     console.log("420------->i am in callAPItoUploadImage=>", params);
-
-    dispatch(updateAlbumImageUpload(params));
+    setTimeout(() => {
+      dispatch(updateAlbumImageUpload(params));
+    }, 100);
     props.navigation.navigate("Home");
   };
 
@@ -481,6 +482,7 @@ const AlbumDetailScreen = (props) => {
   const moveBack = () => {
     route.params.onReturn("Chandni ");
     props.navigation.goBack();
+    console.log("props.navigation.goBack --->", props.navigation);
   };
 
   const onClickUpdate = () => {
@@ -494,7 +496,7 @@ const AlbumDetailScreen = (props) => {
       callAPItoUploadImage(imageUpload);
       arrayImages.forEach((element, index) => {
         let dateValue = arrayAllDates[index];
-        
+
         let arrayImgOfDate = element[dateValue];
         // console.log("arrayImgOfDate =>", arrayImgOfDate);
         // arrayImgOfDate.forEach((element1,index) => {

@@ -32,6 +32,7 @@ const AlbumStack = () => {
               headerTransparent: true,
             }}
           />
+          <Stack.Screen name="AddNewAlbum" component={AddNewAlbum} /> 
         </Stack.Navigator>
       </NavigationContainer>
     </>

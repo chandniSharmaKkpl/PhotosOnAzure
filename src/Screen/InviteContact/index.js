@@ -288,6 +288,7 @@ export const InviteContact = (props) => {
   };
 
   const setInviteContactData = () => {
+    // console.log("setInviteContactData ->",data.HomeReducer.sendAppInviteResponse);
     if (
       data.HomeReducer.sendAppInviteResponse.responseCode ===
       AppConstants.constant.SUCCESS
@@ -304,7 +305,7 @@ export const InviteContact = (props) => {
         var dict = data.HomeReducer.sendAppInviteResponse;
         dict.message = "";
         data.HomeReducer.sendAppInviteResponse = dict;
-        console.log(" `", message);
+        console.log("===>", message);
         notifyMessage(message);
       }
     }
@@ -312,6 +313,7 @@ export const InviteContact = (props) => {
 
   const checkInviteResponseCode = () => {
     if (data.HomeReducer && data.HomeReducer.sendAppInviteResponse) {
+      console.log("checkInviteResponseCode-=-=-=>", data.HomeReducer.sendAppInviteResponse );
       if (
         data.HomeReducer.sendAppInviteResponse.errorCode &&
         data.HomeReducer.sendAppInviteResponse.errorCode ===

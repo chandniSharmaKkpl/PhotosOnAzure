@@ -46,6 +46,12 @@ export default function HomeNavigation(props) {
         name="AlbumScreen"
         component={AlbumScreen}
       />
+
+       <Tab.Screen
+        options={{ tabBarVisible: false }}
+        name="CameraIcon"
+        component={CameraIcon}
+      />
       <Tab.Screen
         options={{ tabBarVisible: false }}
         name="AddPhotoToAlbum"
@@ -73,11 +79,7 @@ export default function HomeNavigation(props) {
         name="AlredyInviteContact"
         component={AlredyInviteContact}
       />
-      <Tab.Screen
-        options={{ tabBarVisible: false }}
-        name="CameraIcon"
-        component={CameraIcon}
-      />
+     
     </Tab.Navigator>
   );
 }

@@ -1,19 +1,10 @@
 import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  Pressable,
-  Alert,
-  Keyboard,
-  Platform,
-} from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import styles from "../../Screen/HomeScreen/style";
-import { Avatar, Headline, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import FastImage from "react-native-fast-image";
 import VideoCard from "../../Component/VideoCard";
-const { height, width } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 import AppConstants from "../../Theme/AppConstant";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import IconIonicons from "react-native-vector-icons/Ionicons";
@@ -35,7 +26,6 @@ export const AlbumCard = (props) => {
     moveToAlbumDetail,
     isSharedAlbum,
   } = props;
-
 
   const onClickMarks = () => {
     // Assigning reverse value of isCheck because state is updating on after render
@@ -81,14 +71,12 @@ export const AlbumCard = (props) => {
     >
       <TouchableOpacity
         key={index}
-        onLongPress={
-          () =>
-            isSharedAlbum
-              ? notifyMessage(
-                  AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
-                )
-              : setIsLongPress(!isLongPress)
-          // setIsCheck(false)
+        onLongPress={() =>
+          isSharedAlbum
+            ? notifyMessage(
+                AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
+              )
+            : setIsLongPress(!isLongPress)
         }
         onPress={moveToAlbumDetail}
         style={[styles.cellView, { backgroundColor: theme.colors.primary }]}
@@ -100,7 +88,6 @@ export const AlbumCard = (props) => {
                 style={styles.image}
                 source={{
                   uri: imageUrl,
-                  //headers: { Authorization: 'someAuthToken' },
                   priority: FastImage.priority.normal,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -109,11 +96,7 @@ export const AlbumCard = (props) => {
           ) : (
             <View style={[styles.image, { justifyContent: "center" }]}>
               <View style={styles.video}>
-                <VideoCard
-                  // style={styles.image}
-                  volume={0}
-                  videoUrl={imageUrl}
-                ></VideoCard>
+                <VideoCard volume={0} videoUrl={imageUrl}></VideoCard>
               </View>
               <TouchableOpacity
                 style={[
@@ -126,14 +109,12 @@ export const AlbumCard = (props) => {
                     left: 0,
                   },
                 ]}
-                onLongPress={
-                  () =>
-                    isSharedAlbum
-                      ? notifyMessage(
-                          AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
-                        )
-                      : setIsLongPress(!isLongPress)
-                  // setIsCheck(false)
+                onLongPress={() =>
+                  isSharedAlbum
+                    ? notifyMessage(
+                        AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
+                      )
+                    : setIsLongPress(!isLongPress)
                 }
                 onPress={moveToAlbumDetail}
               />
