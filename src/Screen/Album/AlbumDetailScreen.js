@@ -498,18 +498,18 @@ const AlbumDetailScreen = (props) => {
         let dateValue = arrayAllDates[index];
 
         let arrayImgOfDate = element[dateValue];
-        // console.log("arrayImgOfDate =>", arrayImgOfDate);
-        // arrayImgOfDate.forEach((element1,index) => {
-        //   if (element1.status === AppConstants.constant.NEW_ADDED) {
-        //     isNewElementAdded = true;
-        //   }
-        // });
+         console.log("arrayImgOfDate =>", arrayImgOfDate);
+        arrayImgOfDate.forEach((element1,index) => {
+          if (element1.status === AppConstants.constant.NEW_ADDED) {
+            isNewElementAdded = true;
+          }
+        });
       });
-      // if (!isNewElementAdded) {
-      //   console.log("isNewElementAdded  ==============>");
+      if (!isNewElementAdded) {
+        console.log("isNewElementAdded  ==============>");
 
-      //   moveBack();
-      // }
+        moveBack();
+      }
     } else {
       notifyMessage(AppConstants.constant.ALBUM_IMAGE_VALIDATION);
       return;
