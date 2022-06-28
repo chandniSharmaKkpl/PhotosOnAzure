@@ -33,6 +33,8 @@ const AlbumStack = () => {
             }}
           />
           <Stack.Screen name="AddNewAlbum" component={AddNewAlbum} /> 
+          <Stack.Screen name="AlbumDetailScreen" component={AlbumDetailScreen} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </>

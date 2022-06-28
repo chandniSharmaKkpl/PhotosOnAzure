@@ -480,9 +480,10 @@ const AlbumDetailScreen = (props) => {
   };
 
   const moveBack = () => {
-    route.params.onReturn("Chandni ");
+
+   route.params.onReturn("Chandni ");
     props.navigation.goBack();
-    console.log("props.navigation.goBack --->", props.navigation);
+    console.log("props.navigation.goBack --->", route);
   };
 
   const onClickUpdate = () => {
@@ -492,7 +493,6 @@ const AlbumDetailScreen = (props) => {
     if (arrayImages.length > 0) {
       // We are uploading all data which we select from gallery to Azure
       var isNewElementAdded = false;
-      console.log("imageUpload  =>", imageUpload);
       callAPItoUploadImage(imageUpload);
       arrayImages.forEach((element, index) => {
         let dateValue = arrayAllDates[index];
@@ -505,9 +505,11 @@ const AlbumDetailScreen = (props) => {
         //   }
         // });
       });
-      if (!isNewElementAdded) {
-        moveBack();
-      }
+      // if (!isNewElementAdded) {
+      //   console.log("isNewElementAdded  ==============>");
+
+      //   moveBack();
+      // }
     } else {
       notifyMessage(AppConstants.constant.ALBUM_IMAGE_VALIDATION);
       return;
@@ -543,45 +545,7 @@ const AlbumDetailScreen = (props) => {
       </View>
     );
   };
-  const renderDates1 = ({ item, index }) => {
-    let arrayData = [];
-    if (arrayImages.length > index) {
-      arrayData = arrayImages[index][item];
-    }
-    var oneDate = moment(item).format("MMMM DD, YYYY");
-
-    return (
-      <View key={index}>
-        <Text style={styles.textDate}>{oneDate}</Text>
-        {arrayData && arrayData.length > 0 ? (
-          <MasonryList
-            //horizontal={true}
-            innerRef={flatListRef}
-            contentContainerStyle={{
-              paddingHorizontal: 24,
-              alignSelf: "stretch",
-            }}
-            data={distinctLibraryArray(arrayData)}
-            //data={arrayData}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={3}
-            extraData={arrayImages}
-            showsVerticalScrollIndicator={false}
-            renderItem={renderList}
-            // refreshing={isLoadingNext}
-            // onRefresh={() => refetch({first: ITEM_CNT})}
-            onEndReachedThreshold={0.1}
-            // ListFooterComponent={isaccess == 1 ? renderFooter : null}
-            onEndReached={() => {
-              let dataToSet = currentPage + 1;
-              setCurrentPage(dataToSet);
-              handleLoadMore(dataToSet);
-            }}
-          />
-        ) : null}
-      </View>
-    );
-  };
+ 
 
   const renderList = (arrayData) => {
     return (

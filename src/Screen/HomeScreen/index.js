@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
 import {
@@ -71,7 +71,6 @@ import SubscriptionError from "../../Component/SubscriptionError";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { useRoute, useNavigationState } from "@react-navigation/native";
 import { notifyMessage } from "../../Component/AlertView";
-import { set } from "date-fns/esm";
 
 export function HomeScreen(props) {
   var countPickerSelectedImage = 0; // How many images selected by image picker in 1 time open picker
@@ -126,7 +125,6 @@ export function HomeScreen(props) {
   const dispatch = useDispatch(); // Calling api
 
   const flatListRef = useRef(); // Create ref to scroll flatlist top once new data added from picker
-  
 
   React.useEffect(() => {
     if (user && user.conf_key) {
@@ -143,44 +141,33 @@ export function HomeScreen(props) {
       return;
     }
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    
-    const unsubscribe = props.navigation.addListener("focus", () => {
-      console.log("    1111   callApiToGetOwnAlbumData ", isLibrary, pageCountOwnAlbum);
 
+    const unsubscribe = props.navigation.addListener("focus", () => {
       removeEditMode();
       setSearchAlbumName("");
-      setIsFetching(true)
+      setIsFetching(true);
       setIsAlbumDropDownOpen(false);
-     setIsLibrary(false);
-      console.log("  2222     callApiToGetOwnAlbumData ", isLibrary, pageCountOwnAlbum);
+     // setIsLibrary(true);
+
       if (isLibrary) {
         // Calling api to get library data.
         setPageCountLibrary(1);
         arrayLibrary.length = 0;
         callApiToGetLibraryData();
       } else {
-        console.log("  3333     callApiToGetOwnAlbumData ", isLibrary, pageCountOwnAlbum);
-
-        setpageCountOwnAlbum(1);
         arrayAlbumOwn.length = 0; // Make empty so show new data
         callApiToGetOwnAlbumData();
-
       }
-      
+
       if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
         callApiToGetOwnAlbumData();
       }
-      if (data.HomeReducer?.updateAlbumUploadImg?.data?.message === "Album added successfully" ){
-        callApiToGetOwnAlbumData();
-      }
-  
-      });
-     
-      return () => {
-        
-        BackHandler.removeEventListener(
-          "hardwareBackPress",
-          handleBackButtonClick
+    });
+
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
       );
       unsubscribe;
     };
@@ -268,12 +255,17 @@ export function HomeScreen(props) {
     }
     return result;
   };
+
   // For albumcounter
   React.useEffect(() => {
+    console.log("pageCountOwnAlbum ==> ", pageCountOwnAlbum);
     callApiToGetOwnAlbumData();
   }, [pageCountOwnAlbum]);
 
-
+  // For Dashboard api update
+  React.useEffect(() => {
+    if (data.HomeReducer.updateAlbumUploadImg.data) callApiToGetOwnAlbumData();
+  }, [data.HomeReducer.updateAlbumUploadImg.data]);
 
   // For albumcounter
   React.useEffect(() => {
@@ -291,10 +283,15 @@ export function HomeScreen(props) {
   ]);
   const refreshAlbumList = () => {
     setpageCountOwnAlbum(1);
-    setIsFetching(true); 
-    console.log("  444     callApiToGetOwnAlbumData ", isLibrary, pageCountOwnAlbum);
+    setIsFetching(true);
+    setIsLibrary(false)
+    console.log(
+      "  444     callApiToGetOwnAlbumData ",
+      isLibrary,
+      pageCountOwnAlbum
+    );
     arrayAlbumOwn.length = 0; // Make empty so show new data
-    callApiToGetOwnAlbumData();
+    // callApiToGetOwnAlbumData();
   };
 
   // Initialy check
@@ -675,7 +672,7 @@ export function HomeScreen(props) {
               onPressFirstTab={() => {
                 setIsLibrary(true);
                 setIsSharedAlbum(false);
-
+                console.log("libraryResponse --->", libraryResponse);
                 if (libraryResponse && libraryResponse.data)
                   if (
                     libraryResponse.data.totalPages >= pageCountLibrary &&
@@ -851,7 +848,7 @@ export function HomeScreen(props) {
   const moveToAlbumDetail = (item) => {
     var itemAccess = "";
     dispatch(albumIdInDetailToGet(item.album_id));
-    dispatch(albumIdInDetailToGet(item.album_id));
+    // dispatch(albumIdInDetailToGet(item.album_id));
     if (isSharedAlbum) {
       itemAccess = item.access;
     } else {
@@ -863,7 +860,7 @@ export function HomeScreen(props) {
       albumdetail: item,
       access: itemAccess,
       onReturn: () => {
-        refreshAlbumList(data);
+        // refreshAlbumList(data);
       },
     });
   };
@@ -998,7 +995,6 @@ export function HomeScreen(props) {
         setArrayAlbumOwn([]);
       }
       setpageCountOwnAlbum(1);
-
       callApiToGetOwnAlbumData(dateString, "selectedDate", 1);
     }
   };
@@ -1013,7 +1009,7 @@ export function HomeScreen(props) {
   };
 
   const callbackFunction = (childData) => {
-    refreshAlbumList(data);
+    refreshAlbumList();
   };
 
   const onClickRedButtonSearch = () => {
@@ -1146,7 +1142,6 @@ export function HomeScreen(props) {
     if (selectedDate && selectedDate.length > 0) {
       dispatch(
         listsOwnAlbum({
-
           sessid: user.sessid ? user.sessid : "",
           date: selectedDate,
           page: pageCount,
@@ -1218,6 +1213,7 @@ export function HomeScreen(props) {
   const callApiToGetLibraryData = useCallback(
     (selectedDate, from) => {
       setIsApiCall(true);
+      console.log("callApiToGetLibraryData ------>", pageCountLibrary);
 
       if (from === "selectedDate" && selectedDate && selectedDate.length > 0) {
         dispatch(
@@ -1253,9 +1249,14 @@ export function HomeScreen(props) {
   );
 
   // For pagination
-  const loadMoreData = () => {
+  const loadMoreData = (e) => {
+    if (e.distanceFromEnd < 0) {
+      return;
+    }
     if (isLibrary) {
       let dataToset = pageCountLibrary + 1;
+      console.log("dataToSet PageCount ---->", dataToset, e);
+
       setPageCountLibrary(dataToset);
       if (libraryResponse && libraryResponse.data) {
         if (
@@ -1298,6 +1299,7 @@ export function HomeScreen(props) {
 
   const setData = () => {
     if (isLibrary) {
+      console.log("isLibrary:::::--->", data.HomeReducer.library);
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
@@ -1320,6 +1322,10 @@ export function HomeScreen(props) {
               setArrayLibrary(data.HomeReducer.library.data.data);
             }
           }
+          console.log(
+            "setLibraryResponse::::setLibraryResponse:::---->",
+            data.HomeReducer.library
+          );
           setArrayLibraryDates(data.HomeReducer.library.data.dates);
           setLibraryResponse(data.HomeReducer.library);
         }
@@ -1712,8 +1718,7 @@ export function HomeScreen(props) {
               renderItem={isLibrary ? renderLibraryList : renderAlbumList}
               ListHeaderComponent={renderHeader()}
               extraData={
-                isFetching || 
-                isLibrary
+                isFetching || isLibrary
                   ? distictLibraryArray(arrayLibrary)
                   : isSharedAlbum
                   ? distictShareAlbumArray(arrayAlbumShared)
@@ -1722,10 +1727,8 @@ export function HomeScreen(props) {
               style={{ width: "100%" }}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ padding: 20 }}
-              onEndReachedThreshold={0.01}
-              onEndReached={({ distanceFromEnd }) => {
-                loadMoreData();
-              }}
+              onEndReachedThreshold={0.5}
+              onEndReached={loadMoreData}
               keyExtractor={(item, index) =>
                 isLibrary
                   ? item.user_media_id
@@ -1734,7 +1737,10 @@ export function HomeScreen(props) {
                   : item.album_id
               }
             />
-           <Pressable onPress={isLibrary ? selectImage : moveToAddAlbum} style={styles.invitebuttonview}>
+            <Pressable
+              onPress={isLibrary ? selectImage : moveToAddAlbum}
+              style={styles.invitebuttonview}
+            >
               <View style={styles.addNewBtn}>
                 <Image
                   resizeMode="contain"
