@@ -291,7 +291,7 @@ export function HomeScreen(props) {
       pageCountOwnAlbum
     );
     arrayAlbumOwn.length = 0; // Make empty so show new data
-    // callApiToGetOwnAlbumData();
+     callApiToGetOwnAlbumData();
   };
 
   // Initialy check
@@ -1637,7 +1637,8 @@ export function HomeScreen(props) {
     ];
 
     // ** Pushing an empty item so i can show add button in the place of it.  */
-    distinctArray.push({});
+   
+    console.log(" distict array -----", distinctArray,"\n Data receive form api ", data);
     return distinctArray;
   };
 
@@ -1645,7 +1646,7 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-    distinctArray.push({});
+   
     return distinctArray;
   };
 
@@ -1653,7 +1654,6 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-    distinctArray.push({});
     return distinctArray;
   };
 

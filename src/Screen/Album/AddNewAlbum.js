@@ -282,6 +282,9 @@ const AddNewAlbum = (props) => {
       alert("Please Insert Title");
       return;
     }
+
+    console.log(" &&&&&&&&&&&& data", data);
+
     const params = new FormData();
 
     let getfinalTitle = getTimeStemp(title ? title : "Test");
@@ -301,6 +304,7 @@ const AddNewAlbum = (props) => {
         // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
+      console.log(" ************** param", params);
     });
     dispatch(uploadImgAddNewAlbum(params));
   };

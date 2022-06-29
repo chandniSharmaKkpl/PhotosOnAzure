@@ -419,7 +419,6 @@ const AlbumDetailScreen = (props) => {
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
-
     console.log("420------->i am in callAPItoUploadImage=>", params);
     setTimeout(() => {
       dispatch(updateAlbumImageUpload(params));
@@ -507,7 +506,6 @@ const AlbumDetailScreen = (props) => {
       });
       if (!isNewElementAdded) {
         console.log("isNewElementAdded  ==============>");
-
         moveBack();
       }
     } else {

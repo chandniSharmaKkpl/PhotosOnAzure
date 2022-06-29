@@ -420,7 +420,7 @@ export const listAllMedia = (data) => (dispatch) => {
       data: data,
     })
       .then((response) => {
-        dispatch({ type: LIST_ALL_MEDIA_SUCCESS, payload: response.data });
+        dispatch({ type: LIST_ALL_MEDIA_SUCCESS, payload: response?.data });
       })
       .catch((error) => {
         dispatch({ type: LIST_ALL_MEDIA_FAILURE, payload: error });
