@@ -1,19 +1,9 @@
 import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  Pressable,
-  Alert,
-  Keyboard,
-  Platform,
-} from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import styles from "../../Screen/HomeScreen/style";
-import { Avatar, Headline, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import FastImage from "react-native-fast-image";
-import VideoCard from "../../Component/VideoCard";
-const { height, width } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 import AppConstants from "../../Theme/AppConstant";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import IconIonicons from "react-native-vector-icons/Ionicons";
@@ -72,11 +62,14 @@ export const AlbumCard = (props) => {
     >
       <TouchableOpacity
         key={index}
-        onLongPress={() =>
-          isSharedAlbum
-            ? notifyMessage(AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS)
-            : setIsLongPress(!isLongPress)
-              // setIsCheck(false)
+        onLongPress={
+          () =>
+            isSharedAlbum
+              ? notifyMessage(
+                  AppConstants.constant.YOU_CAN_DELETE_ONLY_OWN_ALBUMS
+                )
+              : setIsLongPress(!isLongPress)
+          // setIsCheck(false)
         }
         onPress={moveToAlbumDetail}
         style={[
@@ -104,9 +97,9 @@ export const AlbumCard = (props) => {
         <TouchableOpacity
           style={styles.buttonTransparantShare}
           onLongPress={() => {
-          //Always open non selected checkbox in long press 
+            //Always open non selected checkbox in long press
 
-            setIsCheck(false); 
+            setIsCheck(false);
             item.isCheck = false;
 
             setIsLongPress(!isLongPress);

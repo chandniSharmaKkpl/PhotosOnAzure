@@ -12,7 +12,7 @@ import {
   Platform,
   Pressable,
   BackHandler,
-  Linking
+  Linking,
 } from "react-native";
 import styles from "./style";
 import stylesAlbum from "../Album/style";
@@ -27,7 +27,7 @@ import AuthContext from "../../context/AuthContext";
 import { useTheme, Avatar } from "react-native-paper";
 import { checkStringContainsSpecialChar } from "../../common";
 import Contacts from "react-native-contacts";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { removeCurrentUser } from "../../database/localDB";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { notifyMessage } from "../../Component/AlertView";
@@ -54,15 +54,15 @@ export const AlredyInviteContact = (props) => {
 
   var countBack = 0;
 
-  const getCounter = async () => {
+  const getCounterAndroid = async () => {
     try {
       const value = await AsyncStorage.getItem("Permission");
-      if(value !== null) {
+      if (value !== null) {
         // value previously stored
         const clickCount = JSON.parse(value).requestCount;
         return clickCount;
-      }else{
-        return 0
+      } else {
+        return 0;
       }
       // return value?.requestCount || 0
     } catch (error) {
@@ -71,12 +71,12 @@ export const AlredyInviteContact = (props) => {
     }
   };
 
-  const setCounter = async (value) => {
+  const setCounterAndroid = async (value) => {
     try {
       const ContactPermission = {
         requestCount: value,
       };
-      const jsonValue = JSON.stringify(ContactPermission)
+      const jsonValue = JSON.stringify(ContactPermission);
       await AsyncStorage.setItem("Permission", jsonValue);
     } catch (error) {
       console.log(error);
@@ -159,7 +159,7 @@ export const AlredyInviteContact = (props) => {
 
   const requestReadContactPermissionAndroid = async () => {
     try {
-      const preCount = await getCounter();
+      const preCount = await getCounterAndroid();
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS
       );
@@ -169,7 +169,7 @@ export const AlredyInviteContact = (props) => {
         setSearchText("");
         props.navigation.navigate("InviteContact");
       } else {
-        setCounter(preCount + 1);
+        setCounterAndroid(preCount + 1);
         if (preCount >= 2) {
           Alert.alert(
             AppConstants.constant.ALERT,
@@ -178,7 +178,7 @@ export const AlredyInviteContact = (props) => {
             [
               {
                 text: AppConstants.constant.CANCEL,
-                onPress: () => countBack = 0,
+                onPress: () => (countBack = 0),
                 style: "cancel",
               },
               {
@@ -198,9 +198,10 @@ export const AlredyInviteContact = (props) => {
     }
   };
 
-  const requestReadContactPermissionIos = () => {
+  const requestReadContactPermissionIos = async () => {
     try {
       Contacts.checkPermission().then((permission) => {
+        console.log("permission =>", permission);
         // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
 
         if (permission === "authorized") {
@@ -213,13 +214,41 @@ export const AlredyInviteContact = (props) => {
     } catch (error) {}
   };
 
-  const againContactRequest = () => {
-    Contacts.requestPermission().then((permission) => {
-      if (permission === "authorized") {
-        setSearchText("");
-        props.navigation.navigate("InviteContact");
-      }
-    });
+  const againContactRequest = async () => {
+    try {
+      const preCount = await getCounterAndroid();
+
+      Contacts.requestPermission().then((permission) => {
+        if (permission === "authorized") {
+          setSearchText("");
+          props.navigation.navigate("InviteContact");
+        } else {
+          console.log("hello");
+          setCounterAndroid(preCount + 1);
+          if (preCount >= 1) {
+            Alert.alert(
+              AppConstants.constant.ALERT,
+              AppConstants.constant.USER_GO_TO_SETTING,
+
+              [
+                {
+                  text: AppConstants.constant.CANCEL,
+                  onPress: () => (countBack = 0),
+                  style: "cancel",
+                },
+                {
+                  text: AppConstants.constant.OK,
+                  onPress: () => Linking.openSettings(),
+                },
+              ],
+              {
+                cancelable: false,
+              }
+            );
+          }
+        }
+      });
+    } catch (error) {}
   };
   // distict contacts
   const distictContact = (data) => {

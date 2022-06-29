@@ -45,13 +45,13 @@ export const LoginWithEmail = (props) => {
     // password: "Test@1234",
 
     email: "winofv1@mailinator.com",
-    password: "Test@1234",
+    password: "Test@1234  ",
 
     // email: "poojakumari.aelius@mailnator.com",
     // password: "Pooja@2021 ",
 
-    email: "test2@yopmail.com",   
-    password: "Test@123 ",
+    email: "test3@yopmail.com",  
+     password: "Test@123",
 
     email: "",
     password: "" ,
@@ -70,7 +70,7 @@ export const LoginWithEmail = (props) => {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    let isUserAvailable = false;
+    let isUserAvailable = false;  
     // Check if user is available in local db then redirect him to the drawer view
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 

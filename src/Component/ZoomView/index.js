@@ -15,8 +15,7 @@ import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIc
 import {notifyMessage} from '../../Component/AlertView';
 
 const deleteClick = (props) => {
-  // console.log("props.itemzoon", props.itemZoom.owner_id === props.itemZoom.user_id);
-  if (props.itemZoom.owner_id === props.itemZoom.user_id) {
+  if (props.itemZoom.owner_id == props.itemZoom.user_id || props.itemZoom.owner_id == props.user_id) {
     Alert.alert(
       AppConstants.constant.ALERT,
       AppConstants.constant.DO_YOU_WANT_TO_DELETE_ONE_SELECTED_MEDIA,

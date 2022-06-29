@@ -420,7 +420,7 @@ export const listAllMedia = (data) => (dispatch) => {
       data: data,
     })
       .then((response) => {
-        dispatch({ type: LIST_ALL_MEDIA_SUCCESS, payload: response.data });
+        dispatch({ type: LIST_ALL_MEDIA_SUCCESS, payload: response?.data });
       })
       .catch((error) => {
         dispatch({ type: LIST_ALL_MEDIA_FAILURE, payload: error });
@@ -481,6 +481,7 @@ export const getdMedialistbyAlbum = (param) => (dispatch) => {
 };
 
 export const sendappinvitation = (param) => (dispatch) => {
+  console.log("sendappinvitation - param -->", param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: SEND_APP_INVITATION_REQUEST, payload: {} });
 
@@ -495,6 +496,7 @@ export const sendappinvitation = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("SEND_APP_INVITATION_SUCCESS - response -->", response);
         dispatch({ type: SEND_APP_INVITATION_SUCCESS, payload: response.data });
       })
       .catch((error) => {
@@ -593,6 +595,7 @@ export const listsOwnAlbumOnSharedView = (param) => (dispatch) => {
 //   Calling api for getting own album data on Album view
 
 export const listsOwnAlbumOnAlbumScreen = (param) => (dispatch) => {
+  console.log(" listsOwnAlbumOnAlbumScreen ------->", param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: OWN_ALBUM_ALBUM_VIEW_REQUEST, payload: {} });
 
@@ -622,7 +625,8 @@ export const listsOwnAlbumOnAlbumScreen = (param) => (dispatch) => {
 //   Calling api for getting own album data home view
 
 export const listsOwnAlbum = (param) => (dispatch) => {
-  console.log("listsOwnAlbum =>" , param);
+
+  console.log(" listsOwnAlbumOnHomeScreen ------->", param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: OWN_ALBUM_REQUEST, payload: {} });
 

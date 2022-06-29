@@ -7,6 +7,41 @@ import {
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
+  invitebuttonview: {
+    position: "absolute",
+    right: 5,
+    bottom: 20,
+    padding: 15,
+    borderRadius: 15,
+    backgroundColor: "red",
+    marginRight: 25,
+    shadowColor: '#103458',
+		shadowOffset: {
+			width: 0,
+			height: 0
+		},
+		shadowOpacity: 22,
+		shadowRadius: 4.65,
+    
+		elevation: 5,
+  },
+  addNewBtn : {
+    justifyContent: 'space-around',
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  addPlusIconView: {
+    width: 20,
+    height: 20,
+    // marginRight: 4,
+  },
+  invitebuttontext: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 12,
+    fontFamily: "MuseoSlab-500",
+    justifyContent: 'center',
+  },
   textBottom: {
     color: "#fff",
     fontFamily: "MuseoSlab-500",

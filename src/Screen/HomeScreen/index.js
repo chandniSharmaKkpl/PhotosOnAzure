@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
 import {
@@ -143,34 +143,28 @@ export function HomeScreen(props) {
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     const unsubscribe = props.navigation.addListener("focus", () => {
-
       removeEditMode();
       setSearchAlbumName("");
+      setIsFetching(true);
       setIsAlbumDropDownOpen(false);
-      // setIsLibrary(true);
+     // setIsLibrary(true);
+
       if (isLibrary) {
         // Calling api to get library data.
         setPageCountLibrary(1);
         arrayLibrary.length = 0;
         callApiToGetLibraryData();
       } else {
-        setpageCountOwnAlbum(1);
         arrayAlbumOwn.length = 0; // Make empty so show new data
-        callApiToGetOwnAlbumData("", "", 1);
-      }
-      
-      if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
         callApiToGetOwnAlbumData();
       }
-      if (data.HomeReducer.uploadImagesAddNewAlbum?.message === "Album added successfully"){
-        console.log("isCompare data.HomeReducer.uploadImagesAddNewAlbum.message ==>", data.HomeReducer.uploadImagesAddNewAlbum?.message);
+
+      if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
         callApiToGetOwnAlbumData();
       }
     });
 
-
     return () => {
-
       BackHandler.removeEventListener(
         "hardwareBackPress",
         handleBackButtonClick
@@ -261,12 +255,17 @@ export function HomeScreen(props) {
     }
     return result;
   };
+
   // For albumcounter
   React.useEffect(() => {
+    console.log("pageCountOwnAlbum ==> ", pageCountOwnAlbum);
     callApiToGetOwnAlbumData();
   }, [pageCountOwnAlbum]);
 
-
+  // For Dashboard api update
+  React.useEffect(() => {
+    if (data.HomeReducer.updateAlbumUploadImg.data) callApiToGetOwnAlbumData();
+  }, [data.HomeReducer.updateAlbumUploadImg.data]);
 
   // For albumcounter
   React.useEffect(() => {
@@ -284,6 +283,15 @@ export function HomeScreen(props) {
   ]);
   const refreshAlbumList = () => {
     setpageCountOwnAlbum(1);
+    setIsFetching(true);
+    setIsLibrary(false)
+    console.log(
+      "  444     callApiToGetOwnAlbumData ",
+      isLibrary,
+      pageCountOwnAlbum
+    );
+    arrayAlbumOwn.length = 0; // Make empty so show new data
+     callApiToGetOwnAlbumData();
   };
 
   // Initialy check
@@ -664,7 +672,7 @@ export function HomeScreen(props) {
               onPressFirstTab={() => {
                 setIsLibrary(true);
                 setIsSharedAlbum(false);
-
+                console.log("libraryResponse --->", libraryResponse);
                 if (libraryResponse && libraryResponse.data)
                   if (
                     libraryResponse.data.totalPages >= pageCountLibrary &&
@@ -792,6 +800,7 @@ export function HomeScreen(props) {
   };
 
   const renderLibraryList = ({ item, index }) => {
+    // console.log("renderLibraryList ->", item.uri);
     if (item.file_name) {
       let containerName =
         user && user.user_detail ? user.user_detail.container_name : "";
@@ -820,26 +829,26 @@ export function HomeScreen(props) {
         />
       );
     } else {
-      return (
-        <Pressable
-          onPress={isLibrary ? selectImage : moveToAddAlbum}
-          style={styles.footerContainerView}
-        >
-          <Image
-            resizeMode="contain"
-            style={styles.addView}
-            source={require("../../assets/icons/plus.png")}
-          />
-          <Text style={styles.textBottom}>{"Select Photos/Videos"}</Text>
-        </Pressable>
-      );
+      // return (
+      //   // <Pressable
+      //   //   onPress={isLibrary ? selectImage : moveToAddAlbum}
+      //   //   style={styles.footerContainerView}
+      //   // >
+      //   //   <Image
+      //   //     resizeMode="contain"
+      //   //     style={styles.addView}
+      //   //     source={require("../../assets/icons/plus.png")}
+      //   //   />
+      //   //   <Text style={styles.textBottom}>{"Select Photos/Videos"}</Text>
+      //   // </Pressable>
+      // );
     }
   };
 
   const moveToAlbumDetail = (item) => {
     var itemAccess = "";
     dispatch(albumIdInDetailToGet(item.album_id));
-    dispatch(albumIdInDetailToGet(item.album_id));
+    // dispatch(albumIdInDetailToGet(item.album_id));
     if (isSharedAlbum) {
       itemAccess = item.access;
     } else {
@@ -851,7 +860,7 @@ export function HomeScreen(props) {
       albumdetail: item,
       access: itemAccess,
       onReturn: () => {
-        refreshAlbumList(data);
+        // refreshAlbumList(data);
       },
     });
   };
@@ -885,16 +894,17 @@ export function HomeScreen(props) {
         />
       );
     } else {
-      return (
-        <Pressable onPress={moveToAddAlbum} style={styles.footerContainerView}>
-          <Image
-            resizeMode="contain"
-            style={styles.addView}
-            source={require("../../assets/icons/plus.png")}
-          />
-          <Text style={styles.textBottom}>{"New Album"}</Text>
-        </Pressable>
-      );
+      // return (
+      //   <></>
+      //   // <Pressable onPress={moveToAddAlbum} style={styles.footerContainerView}>
+      //   //   <Image
+      //   //     resizeMode="contain"
+      //   //     style={styles.addView}
+      //   //     source={require("../../assets/icons/plus.png")}
+      //   //   />
+      //   //   <Text style={styles.textBottom}>{"New Album"}</Text>
+      //   // </Pressable>
+      // );
     }
   };
 
@@ -985,7 +995,6 @@ export function HomeScreen(props) {
         setArrayAlbumOwn([]);
       }
       setpageCountOwnAlbum(1);
-
       callApiToGetOwnAlbumData(dateString, "selectedDate", 1);
     }
   };
@@ -1000,7 +1009,7 @@ export function HomeScreen(props) {
   };
 
   const callbackFunction = (childData) => {
-    refreshAlbumList(data);
+    refreshAlbumList();
   };
 
   const onClickRedButtonSearch = () => {
@@ -1133,7 +1142,6 @@ export function HomeScreen(props) {
     if (selectedDate && selectedDate.length > 0) {
       dispatch(
         listsOwnAlbum({
-
           sessid: user.sessid ? user.sessid : "",
           date: selectedDate,
           page: pageCount,
@@ -1205,6 +1213,7 @@ export function HomeScreen(props) {
   const callApiToGetLibraryData = useCallback(
     (selectedDate, from) => {
       setIsApiCall(true);
+      console.log("callApiToGetLibraryData ------>", pageCountLibrary);
 
       if (from === "selectedDate" && selectedDate && selectedDate.length > 0) {
         dispatch(
@@ -1240,9 +1249,14 @@ export function HomeScreen(props) {
   );
 
   // For pagination
-  const loadMoreData = () => {
+  const loadMoreData = (e) => {
+    if (e.distanceFromEnd < 0) {
+      return;
+    }
     if (isLibrary) {
       let dataToset = pageCountLibrary + 1;
+      console.log("dataToSet PageCount ---->", dataToset, e);
+
       setPageCountLibrary(dataToset);
       if (libraryResponse && libraryResponse.data) {
         if (
@@ -1285,6 +1299,7 @@ export function HomeScreen(props) {
 
   const setData = () => {
     if (isLibrary) {
+      console.log("isLibrary:::::--->", data.HomeReducer.library);
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
@@ -1307,6 +1322,10 @@ export function HomeScreen(props) {
               setArrayLibrary(data.HomeReducer.library.data.data);
             }
           }
+          console.log(
+            "setLibraryResponse::::setLibraryResponse:::---->",
+            data.HomeReducer.library
+          );
           setArrayLibraryDates(data.HomeReducer.library.data.dates);
           setLibraryResponse(data.HomeReducer.library);
         }
@@ -1618,7 +1637,8 @@ export function HomeScreen(props) {
     ];
 
     // ** Pushing an empty item so i can show add button in the place of it.  */
-    distinctArray.push({});
+   
+    console.log(" distict array -----", distinctArray,"\n Data receive form api ", data);
     return distinctArray;
   };
 
@@ -1626,7 +1646,7 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-    distinctArray.push({});
+   
     return distinctArray;
   };
 
@@ -1634,7 +1654,6 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-    distinctArray.push({});
     return distinctArray;
   };
 
@@ -1699,7 +1718,7 @@ export function HomeScreen(props) {
               renderItem={isLibrary ? renderLibraryList : renderAlbumList}
               ListHeaderComponent={renderHeader()}
               extraData={
-                isLibrary
+                isFetching || isLibrary
                   ? distictLibraryArray(arrayLibrary)
                   : isSharedAlbum
                   ? distictShareAlbumArray(arrayAlbumShared)
@@ -1708,10 +1727,8 @@ export function HomeScreen(props) {
               style={{ width: "100%" }}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ padding: 20 }}
-              onEndReachedThreshold={0.01}
-              onEndReached={({ distanceFromEnd }) => {
-                loadMoreData();
-              }}
+              onEndReachedThreshold={0.5}
+              onEndReached={loadMoreData}
               keyExtractor={(item, index) =>
                 isLibrary
                   ? item.user_media_id
@@ -1720,7 +1737,21 @@ export function HomeScreen(props) {
                   : item.album_id
               }
             />
-
+            <Pressable
+              onPress={isLibrary ? selectImage : moveToAddAlbum}
+              style={styles.invitebuttonview}
+            >
+              <View style={styles.addNewBtn}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.addPlusIconView}
+                  source={require("../../assets/icons/plus.png")}
+                />
+                {/* <Text numberOfLines={1} style={[styles.invitebuttontext]}>
+                 
+                </Text> */}
+              </View>
+            </Pressable>
             {loading || data.HomeReducer.isRequesting ? <Spinner /> : null}
           </>
         )}

@@ -37,7 +37,7 @@ export const MediaCard = (props) => {
     isVideoFullScreen,
   } = props;
 
-  
+
   const onClickMarks = () => {
     // Assigning reverse value of isCheck because state is updating on after render 
 
