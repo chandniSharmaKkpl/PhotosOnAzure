@@ -33,9 +33,11 @@ export const updateProfile = (param) => (dispatch) => {
     data: param,
   })
     .then((response) => {
+      console.log("EDIT_PROFILE_SUCCESS ===>", response.data);
       dispatch({ type: EDIT_PROFILE_SUCCESS, payload: response.data });
     })
     .catch((error) => {
+      console.log("EDIT_PROFILE_FAILURE ===>", error);
       dispatch({ type: EDIT_PROFILE_FAILURE, payload: error });
     });
   }

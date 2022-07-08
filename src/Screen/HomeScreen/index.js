@@ -22,14 +22,9 @@ import TabSwitch from "../../Component/auth/TabSwitch";
 import ZoomView from "../../Component/ZoomView";
 import AppConstants from "../../Theme/AppConstant";
 import AuthContext from "../../context/AuthContext";
-import {
-  azureblobfetch,
-  initAzureBlob,
-} from "react-native-azure-blob-storage-manager/azurblobstorage";
-import Upload from "react-native-background-upload";
+import { initAzureBlob } from "react-native-azure-blob-storage-manager/azurblobstorage";
 import StorageQuota from "../../fragment/dashboard/StorageQuota";
 import {
-  uploadMedia,
   listAllMedia,
   listAllMediaSuccess,
   listsOwnAlbum,
@@ -46,11 +41,7 @@ import {
   albumIdInDetailToGet,
   uploadImg,
 } from "../../Redux-api/actions/Home";
-import {
-  CurrentDate,
-  decryptKey,
-  checkStringContainsSpecialChar,
-} from "../../common";
+import { decryptKey, checkStringContainsSpecialChar } from "../../common";
 import FastImage from "react-native-fast-image";
 import ImagePicker from "react-native-image-crop-picker";
 import CalendarView from "../../Component/Calendar";
@@ -147,7 +138,7 @@ export function HomeScreen(props) {
       setSearchAlbumName("");
       setIsFetching(true);
       setIsAlbumDropDownOpen(false);
-     // setIsLibrary(true);
+      // setIsLibrary(true);
 
       if (isLibrary) {
         // Calling api to get library data.
@@ -270,10 +261,6 @@ export function HomeScreen(props) {
   // For albumcounter
   React.useEffect(() => {
     if (data.HomeReducer.deleteUserMediaAlbumDetail.data === true) {
-      // console.log(
-      //   "data.HomeReducer.deleteUserMediaAlbumDetail ==>",
-      //   data.HomeReducer.deleteUserMediaAlbumDetail
-      // );
       callApiToGetOwnAlbumData();
     }
   }, [
@@ -284,14 +271,9 @@ export function HomeScreen(props) {
   const refreshAlbumList = () => {
     setpageCountOwnAlbum(1);
     setIsFetching(true);
-    setIsLibrary(false)
-    console.log(
-      "  444     callApiToGetOwnAlbumData ",
-      isLibrary,
-      pageCountOwnAlbum
-    );
+    setIsLibrary(false);
     arrayAlbumOwn.length = 0; // Make empty so show new data
-     callApiToGetOwnAlbumData();
+    callApiToGetOwnAlbumData();
   };
 
   // Initialy check
@@ -672,7 +654,6 @@ export function HomeScreen(props) {
               onPressFirstTab={() => {
                 setIsLibrary(true);
                 setIsSharedAlbum(false);
-                console.log("libraryResponse --->", libraryResponse);
                 if (libraryResponse && libraryResponse.data)
                   if (
                     libraryResponse.data.totalPages >= pageCountLibrary &&
@@ -800,7 +781,6 @@ export function HomeScreen(props) {
   };
 
   const renderLibraryList = ({ item, index }) => {
-    // console.log("renderLibraryList ->", item.uri);
     if (item.file_name) {
       let containerName =
         user && user.user_detail ? user.user_detail.container_name : "";
@@ -866,7 +846,6 @@ export function HomeScreen(props) {
   };
 
   const renderAlbumList = ({ item, index }) => {
-    // console.log("renderAlbumList =>", item.name, index);
     if (item.name) {
       let containerName = "";
       if (isSharedAlbum) {
@@ -1137,7 +1116,6 @@ export function HomeScreen(props) {
     pageCount,
     textToSearch
   ) => {
-    console.log();
     setIsApiCall(true);
     if (selectedDate && selectedDate.length > 0) {
       dispatch(
@@ -1213,8 +1191,6 @@ export function HomeScreen(props) {
   const callApiToGetLibraryData = useCallback(
     (selectedDate, from) => {
       setIsApiCall(true);
-      console.log("callApiToGetLibraryData ------>", pageCountLibrary);
-
       if (from === "selectedDate" && selectedDate && selectedDate.length > 0) {
         dispatch(
           listAllMedia({
@@ -1255,8 +1231,6 @@ export function HomeScreen(props) {
     }
     if (isLibrary) {
       let dataToset = pageCountLibrary + 1;
-      console.log("dataToSet PageCount ---->", dataToset, e);
-
       setPageCountLibrary(dataToset);
       if (libraryResponse && libraryResponse.data) {
         if (
@@ -1299,7 +1273,6 @@ export function HomeScreen(props) {
 
   const setData = () => {
     if (isLibrary) {
-      console.log("isLibrary:::::--->", data.HomeReducer.library);
       if (
         data.HomeReducer.library &&
         data.HomeReducer.library.responseCode &&
@@ -1322,10 +1295,6 @@ export function HomeScreen(props) {
               setArrayLibrary(data.HomeReducer.library.data.data);
             }
           }
-          console.log(
-            "setLibraryResponse::::setLibraryResponse:::---->",
-            data.HomeReducer.library
-          );
           setArrayLibraryDates(data.HomeReducer.library.data.dates);
           setLibraryResponse(data.HomeReducer.library);
         }
@@ -1637,8 +1606,7 @@ export function HomeScreen(props) {
     ];
 
     // ** Pushing an empty item so i can show add button in the place of it.  */
-   
-    console.log(" distict array -----", distinctArray,"\n Data receive form api ", data);
+
     return distinctArray;
   };
 
@@ -1646,7 +1614,7 @@ export function HomeScreen(props) {
     const distinctArray = [
       ...new Map(data.map((x) => [x["album_id"], x])).values(),
     ];
-   
+
     return distinctArray;
   };
 

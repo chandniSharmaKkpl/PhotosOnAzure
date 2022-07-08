@@ -249,6 +249,7 @@ export default EditProfile = (props) => {
       });
       data.AuthReducer.isRequesting ? setLoading(false) : setLoading(false);
       setIsApiCall(true);
+      console.log("params ===>", params);
       dispatch(updateProfile(params));
     }
   };

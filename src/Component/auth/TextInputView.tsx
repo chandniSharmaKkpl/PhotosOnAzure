@@ -64,6 +64,8 @@ export default function TextInputView({
 					autoCapitalize="none"
 					placeholderTextColor="white"
 					textAlign={'center'}
+					
+
 				/>
 				 
 				</View>
@@ -172,6 +174,7 @@ const styles = StyleSheet.create({
 		includeFontPadding:false,
 	//	paddingBottom: 0, 
 		height:'100%',
+		width:"100%"
 	},
 	textInputStyleIos: {
 		width: '100%',

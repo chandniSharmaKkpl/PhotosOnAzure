@@ -571,7 +571,6 @@ export const CameraIcon = (props) => {
 
   // RENDER FLATLIST OF SELECTED / CAPTURED MEDIA
   const renderList = ({ item, index }) => {
-    console.log("item.filepath =>", item.filePath);
     return (
       <View style={[styles.cellView, { backgroundColor: "#0E365D" }]}>
         {item.mediaType.includes("video") ? (
@@ -708,7 +707,6 @@ export const CameraIcon = (props) => {
   // SAVE MEDIA TO ALBUM BEFORE CHECK SELECTED / CAPTURED MEDIA LIST AND ADD LOADER
   const saveMediatoAlbum = () => {
     setLoading(true);
-    console.log(arrayLibraryLocalData.length);
     if (arrayLibraryLocalData.length > 0) {
       /// FOR ADD IMAGES TO LOCAL DEVICE
       setmediaonAlbum();

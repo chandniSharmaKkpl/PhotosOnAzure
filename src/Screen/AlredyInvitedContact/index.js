@@ -201,7 +201,6 @@ export const AlredyInviteContact = (props) => {
   const requestReadContactPermissionIos = async () => {
     try {
       Contacts.checkPermission().then((permission) => {
-        console.log("permission =>", permission);
         // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
 
         if (permission === "authorized") {
@@ -223,7 +222,6 @@ export const AlredyInviteContact = (props) => {
           setSearchText("");
           props.navigation.navigate("InviteContact");
         } else {
-          console.log("hello");
           setCounterAndroid(preCount + 1);
           if (preCount >= 1) {
             Alert.alert(

@@ -365,7 +365,6 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("uploadImgAddNewAlbum ==>",response.data );
         dispatch({
           type: ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS,
           payload: response.data,
@@ -379,7 +378,6 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
 
 export const updateAlbumImageUpload = (param) => (dispatch) => {
   {
-      console.log("UPDATE_ALB_UPLOAD_IMAGE_REQUEST ==>" );
     dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
       Accept: "application/json",
@@ -393,7 +391,6 @@ export const updateAlbumImageUpload = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("Upload response ===>", response);
         dispatch({
           type: UPDATE_ALB_UPLOAD_IMAGE_SUCCESS,
           payload: response.data,
@@ -481,7 +478,6 @@ export const getdMedialistbyAlbum = (param) => (dispatch) => {
 };
 
 export const sendappinvitation = (param) => (dispatch) => {
-  console.log("sendappinvitation - param -->", param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: SEND_APP_INVITATION_REQUEST, payload: {} });
 
@@ -496,7 +492,6 @@ export const sendappinvitation = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("SEND_APP_INVITATION_SUCCESS - response -->", response);
         dispatch({ type: SEND_APP_INVITATION_SUCCESS, payload: response.data });
       })
       .catch((error) => {
@@ -548,13 +543,9 @@ export const uploadMedia = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("uploadMedia===response", response.data);
-
         dispatch({ type: UPLOAD_MEDIA_SUCCESS, payload: response.data });
       })
       .catch((error) => {
-        console.log("uploadMedia===error  ", error);
-
         dispatch({ type: UPLOAD_MEDIA_FAILURE, payload: error });
       });
   } else {
@@ -595,7 +586,6 @@ export const listsOwnAlbumOnSharedView = (param) => (dispatch) => {
 //   Calling api for getting own album data on Album view
 
 export const listsOwnAlbumOnAlbumScreen = (param) => (dispatch) => {
-  console.log(" listsOwnAlbumOnAlbumScreen ------->", param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: OWN_ALBUM_ALBUM_VIEW_REQUEST, payload: {} });
 
@@ -625,8 +615,6 @@ export const listsOwnAlbumOnAlbumScreen = (param) => (dispatch) => {
 //   Calling api for getting own album data home view
 
 export const listsOwnAlbum = (param) => (dispatch) => {
-
-  console.log(" listsOwnAlbumOnHomeScreen ------->", param);
   if (globals.isInternetConnected == true) {
     dispatch({ type: OWN_ALBUM_REQUEST, payload: {} });
 
@@ -640,8 +628,6 @@ export const listsOwnAlbum = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
-        console.log("OWN_ALBUM_SUCCESS - ", response.data);
-
         dispatch({ type: OWN_ALBUM_SUCCESS, payload: response.data });
       })
       .catch((error) => {
@@ -804,15 +790,12 @@ export const deleteUserMediaAlbumDetail = (data) => (dispatch) => {
       data: data,
     })
       .then((response) => {
-         console.log('deleteUserMediaAlbumDetail',response.data);
         dispatch({
           type: DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS,
           payload: response.data,
         });
       })
       .catch((error) => {
-        consol.log("deleteUserMediaAlbumDetail  ==>", error)
-
         dispatch({
           type: DELETE_USER_MEDIA_ALBUM_DETAIL_FAILURE,
           payload: error,
@@ -840,12 +823,9 @@ export const deleteAlbum = (data) => (dispatch) => {
     })
       .then((response) => {
         dispatch({ type: DELETE_ALBUM_SUCCESS, payload: response.data });
-        consol.log("DELETE_ALBUM_SUCCESS  ==>", response.data)
       })
 
       .catch((error) => {
-        consol.log("DELETE_ALBUM_FAILURE  ==>", error)
-
         dispatch({ type: DELETE_ALBUM_FAILURE, payload: error });
       });
   } else {

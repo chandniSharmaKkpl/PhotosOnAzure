@@ -82,7 +82,6 @@ export const InviteContact = (props) => {
     if (searchText && searchText.length !== 0) {
       if (searchText) {
         const newData = masterDataSource.filter(function (item) {
-          console.log("Invite ==> ", searchText, "  ==>", item);
           let final_names =
             Platform.OS == "ios"
               ? item.familyName + " " + item.givenName
@@ -118,7 +117,6 @@ export const InviteContact = (props) => {
       AppConstant.constant.INVITE_CODE_SHARE +
       " " +
       user.user_detail.invite_code;
-    console.log("messageToShow ==>", messageToShow);
     try {
       const result = await Share.share({
         message: messageToShow,
@@ -134,12 +132,10 @@ export const InviteContact = (props) => {
       }
     } catch (error) {
       notifyMessage(error.message);
-      console.log("notifyMessage", error.message);
     }
   };
 
   const onInviteApicall = (item) => {
-    console.log("onInviteApicall", item);
     let phoneNumberGet =
       item &&
       item.phoneNumbers &&
@@ -152,8 +148,6 @@ export const InviteContact = (props) => {
     let phoneNumberTemp = phoneNumberGet
       ? phoneNumberGet.replace(/[^\w\s]/gi, "")
       : null;
-
-    console.log("phoneNumberTemp  =>", phoneNumberTemp);
 
     if (phoneNumberTemp && phoneNumberTemp.length > 0) {
       let currentCountry = RNLocalize.getCountry();
@@ -288,7 +282,6 @@ export const InviteContact = (props) => {
   };
 
   const setInviteContactData = () => {
-    // console.log("setInviteContactData ->",data.HomeReducer.sendAppInviteResponse);
     if (
       data.HomeReducer.sendAppInviteResponse.responseCode ===
       AppConstants.constant.SUCCESS
@@ -305,7 +298,6 @@ export const InviteContact = (props) => {
         var dict = data.HomeReducer.sendAppInviteResponse;
         dict.message = "";
         data.HomeReducer.sendAppInviteResponse = dict;
-        console.log("===>", message);
         notifyMessage(message);
       }
     }
@@ -313,7 +305,6 @@ export const InviteContact = (props) => {
 
   const checkInviteResponseCode = () => {
     if (data.HomeReducer && data.HomeReducer.sendAppInviteResponse) {
-      console.log("checkInviteResponseCode-=-=-=>", data.HomeReducer.sendAppInviteResponse );
       if (
         data.HomeReducer.sendAppInviteResponse.errorCode &&
         data.HomeReducer.sendAppInviteResponse.errorCode ===

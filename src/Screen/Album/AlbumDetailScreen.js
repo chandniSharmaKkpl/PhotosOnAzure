@@ -199,7 +199,6 @@ const AlbumDetailScreen = (props) => {
   );
 
   const callApiToDelete = (arrayDeleteItems) => {
-    // console.log("arrayDeleteItems  ===>, res ===>", arrayDeleteItems);
     setIsLongPress(false);
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
@@ -284,7 +283,6 @@ const AlbumDetailScreen = (props) => {
               size: data1.size,
               type: data1.mime,
             };
-            console.log("source =>", source);
             tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
@@ -411,15 +409,12 @@ const AlbumDetailScreen = (props) => {
     const params = new FormData();
     // let getfinalTitle = getTimeStemp(title);
 
-    console.log("413------->i am in callAPItoUploadImage=>", data);
-
     params.append("sessid", user.sessid);
     params.append("name", istitle);
     params.append("code_name", route.params.albumdetail.code_name);
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
-    console.log("420------->i am in callAPItoUploadImage=>", params);
     setTimeout(() => {
       dispatch(updateAlbumImageUpload(params));
     }, 100);
@@ -479,10 +474,8 @@ const AlbumDetailScreen = (props) => {
   };
 
   const moveBack = () => {
-
-   route.params.onReturn("Chandni ");
+    route.params.onReturn("Chandni ");
     props.navigation.goBack();
-    console.log("props.navigation.goBack --->", route);
   };
 
   const onClickUpdate = () => {
@@ -497,15 +490,13 @@ const AlbumDetailScreen = (props) => {
         let dateValue = arrayAllDates[index];
 
         let arrayImgOfDate = element[dateValue];
-         console.log("arrayImgOfDate =>", arrayImgOfDate);
-        arrayImgOfDate.forEach((element1,index) => {
+        arrayImgOfDate.forEach((element1, index) => {
           if (element1.status === AppConstants.constant.NEW_ADDED) {
             isNewElementAdded = true;
           }
         });
       });
       if (!isNewElementAdded) {
-        console.log("isNewElementAdded  ==============>");
         moveBack();
       }
     } else {
@@ -543,7 +534,6 @@ const AlbumDetailScreen = (props) => {
       </View>
     );
   };
- 
 
   const renderList = (arrayData) => {
     return (

@@ -283,8 +283,6 @@ const AddNewAlbum = (props) => {
       return;
     }
 
-    console.log(" &&&&&&&&&&&& data", data);
-
     const params = new FormData();
 
     let getfinalTitle = getTimeStemp(title ? title : "Test");
@@ -304,7 +302,6 @@ const AddNewAlbum = (props) => {
         // type: "image/jpeg"
       };
       params.append("album_media[" + index + "]", source);
-      console.log(" ************** param", params);
     });
     dispatch(uploadImgAddNewAlbum(params));
   };
@@ -450,8 +447,6 @@ const AddNewAlbum = (props) => {
   const callbackFunction = (childData) => {};
 
   const moveBack = () => {
-    console.log("------------> itisfrom ------------> ", route.params.itisfrom);
-
     setTitle("");
     if (route.params.itisfrom == "Album") {
       props.navigation.goBack();
@@ -461,9 +456,9 @@ const AddNewAlbum = (props) => {
     }
     props.navigation.reset({
       index: 0,
-      routes: [{ name: 'HomeStack' }]
-   })
-    
+      routes: [{ name: "HomeStack" }],
+    });
+
     //   if (route.params.itisfrom == "camera") {
     //     props.navigation.reset({
     //       index: 0,
@@ -472,7 +467,6 @@ const AddNewAlbum = (props) => {
     //   } else {
     //     props.navigation.navigate("HomeStack", { from: "addNewAlbum" });
     //   }
-    
   };
 
   const alertWithMessage = (isLogout, message) => {
@@ -673,7 +667,6 @@ const AddNewAlbum = (props) => {
             data.HomeReducer.uploadmedia = dict;
             // dispatch(uploadMediaSuccess([]));
             moveBack();
-           
           } else {
           }
           // props.navigation.goBack();
