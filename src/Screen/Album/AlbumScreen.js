@@ -83,8 +83,6 @@ const AlbumScreen = (props) => {
 
   var countBack = 0;
 
- 
-  
   React.useEffect(() => {
     // requestReadContactPermission();
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -832,7 +830,7 @@ const AlbumScreen = (props) => {
   const refreshAlbumList = (data) => {
     setpageCountOwnAlbum(1);
     arrayAlbumOwn.length = 0; // Make empty so show new data
-   callApiToGetOwnAlbumData("", 1);
+    callApiToGetOwnAlbumData("", 1);
   };
 
   // For search text

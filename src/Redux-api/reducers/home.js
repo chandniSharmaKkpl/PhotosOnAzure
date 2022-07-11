@@ -715,7 +715,6 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS: {
-      // console.log("DELETE_USER_MEDIA_ALBUM_DETAIL_SUCCESS  ===>",action.payload);
       return {
         ...state,
         deleteUserMediaAlbumDetail: action.payload,
@@ -843,7 +842,6 @@ const HomeReducer = (state = initialState, action) => {
       };
     }
     case ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS: {
-      console.log("ADD_NEW_ALB_UPLOAD_IMAGE_SUCCESS =>", action.payload);
       return {
         ...state,
         uploadImagesAddNewAlbum: action.payload,

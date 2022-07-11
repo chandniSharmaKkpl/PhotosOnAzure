@@ -5,6 +5,7 @@ import { useTheme } from 'react-native-paper'
 import Button from './Button';
 
 import {AppColor} from '../../Theme'
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
 
 
 
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
 	},
 	btn: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	activeBtn: {
 		borderRadius: 20,
@@ -73,13 +74,13 @@ const styles = StyleSheet.create({
 	},
 	textActive: {
 		color: "white",
-		fontFamily: 'MuseoSlab-700'
-
+		fontFamily: 'MuseoSlab-700',
+		fontSize: DeviceInfo.isTablet() ? 20 : 13
 	},
 	textInActive: {
 		color: AppColor.colors.THEME_BLUE,
-		fontFamily: 'MuseoSlab-700'
-
+		fontFamily: 'MuseoSlab-700',
+		fontSize: DeviceInfo.isTablet() ? 20 : 13
 	}
 })
 

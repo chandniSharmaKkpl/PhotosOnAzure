@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
 import { AppColor } from "../../Theme";
-
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
 const { height, width } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
@@ -148,9 +148,9 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   shareIcon: {
-    width: 20,
-    margin: 5,
-    height: 20,
+    width: Platform.OS === 'ios' ?  DeviceInfo.isTablet() ? 40 : 20 : DeviceInfo.isTablet() ? 30 : 20 ,
+    margin: Platform.OS === 'ios' ?  DeviceInfo.isTablet() ? 20 : 5 : DeviceInfo.isTablet() ? 12 : 5 ,
+    height: Platform.OS === 'ios' ?  DeviceInfo.isTablet() ? 40 : 20 : DeviceInfo.isTablet() ? 30 : 20 
   },
 });
 

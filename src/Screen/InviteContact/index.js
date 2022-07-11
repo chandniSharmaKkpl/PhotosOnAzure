@@ -33,6 +33,7 @@ const width = Dimensions.get("screen").width;
 import * as RNLocalize from "react-native-localize";
 import { checkStringContainsSpecialChar } from "../../common";
 import { notifyMessage } from "../../Component/AlertView";
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
 
 export const InviteContact = (props) => {
   let [contacts, setContacts] = useState([]); ////Invite contact list
@@ -191,13 +192,13 @@ export const InviteContact = (props) => {
           <View style={{ marginLeft: 5 }}>
             <Text
               numberOfLines={1}
-              style={[stylesAlbum.albumText, { fontSize: 18 }]}
+              style={[stylesAlbum.albumText, { fontSize: DeviceInfo.isTablet() ? 24 : 12  }]}
             >
               {Platform.OS == "ios" ? final_name : item.displayName}
             </Text>
             <Text
               numberOfLines={1}
-              style={(styles.createText, { color: "#0E365D", fontSize: 12 })}
+              style={(styles.createText, { color: "#0E365D", fontSize: DeviceInfo.isTablet() ? 20 : 12 })}
             >
               {item &&
               item.phoneNumbers.length > 0 &&

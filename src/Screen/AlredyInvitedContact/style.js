@@ -2,6 +2,8 @@ import { StyleSheet, Dimensions, Platform } from "react-native";
 import { AppColor } from "../../Theme";
 
 const { height, width } = Dimensions.get("screen");
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
+    
 
 const styles = StyleSheet.create({
   buttonSave: {
@@ -45,11 +47,12 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical : DeviceInfo.isTablet() ? 6 : 0,
   },
   invitecontactbuttontext: {
     color: "white",
     fontWeight: "400",
-    fontSize: 14,
+    fontSize: DeviceInfo.isTablet() ? 20 : 14,
     fontFamily: "MuseoSlab-300",
   },
   sharebutton: {

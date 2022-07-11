@@ -139,8 +139,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         vectorDrawables.useSupportLibrary = true
-        versionCode 5
-        versionName "1.0"
+        versionCode 6
+        versionName "1.1"
         missingDimensionStrategy ('store', 'play')
         minSdkVersion 21
         multiDexEnabled true
@@ -209,7 +209,8 @@ dependencies {
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-image-picker')
     implementation 'com.android.support:multidex:2.0.1' //enter the latest multidex version
-
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.10.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.0'
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

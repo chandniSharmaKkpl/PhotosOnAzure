@@ -37,6 +37,8 @@ const VideoCard = (props) => {
     setPlayerState(playerState);
   };
 
+  const onError = (error) => console.error("error.debugDescription" , error);
+
   const onReplay = () => {
     //Handler for Replay
     setPlayerState(PLAYER_STATES.PLAYING);
@@ -64,7 +66,7 @@ const VideoCard = (props) => {
 
   const onEnd = () => setPlayerState(PLAYER_STATES.ENDED);
 
-  const onError = () => alert('Oh! ', error);
+  // const onError = () => alert('Oh! ', error);
 
   const exitFullScreen = () => {
     alert('Exit full screen');
@@ -99,10 +101,10 @@ const VideoCard = (props) => {
         onFullScreen={isFullScreen}
         source={{
           uri:props.videoUrl
-           // 'https://assets.mixkit.co/videos/download/mixkit-countryside-meadow-4075.mp4',
         }}
         style={[styles.mediaPlayer,props.style]}
         volume={props.volume}
+        onError={onError}
       />
       <MediaControls
         duration={duration}
