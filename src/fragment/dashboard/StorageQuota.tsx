@@ -7,6 +7,7 @@ import { Caption, Subheading, useTheme, ProgressBar } from 'react-native-paper'
 import { AppColor } from '../../Theme'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { IApContext } from "../../Component/InAppPurchase/IAPController";
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
 
 
 export default function StorageQuota(props): JSX.Element {
@@ -99,19 +100,21 @@ textUsed:{
 		alignItems: 'flex-start'
 	},
 	avalibleStorageText: {
-		color: '#fff'
+		color: '#fff',
+		fontSize: DeviceInfo.isTablet() ? 18 : 14
 	},
 	storageValue: {
 		color: '#FFF',
 		//backgroundColor:'green',
 		paddingBottom:'2%',
-		fontSize:13,
+		fontSize: DeviceInfo.isTablet() ? 16 : 12,
 		fontFamily: 'MuseoSlab-500'
 
 	},
 	upgradeText: {
 		color: '#fff',
-		fontFamily: 'MuseoSlab-700'
+		fontFamily: 'MuseoSlab-700',
+		fontSize: DeviceInfo.isTablet() ? 16 : 12
 
 	},
 	quotaMeta: {

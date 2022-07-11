@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get('screen');
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
 
 
 
@@ -84,12 +85,12 @@ const styles = StyleSheet.create({
        //backgroundColor:'blue'
 },
    leftIcon:{
-       height:20,
-       width:20
+       height: DeviceInfo.isTablet() ? 34 : 20,
+       width:DeviceInfo.isTablet() ? 34 : 20
    },
    titleIcon:{
-    height:45,
-    width:55,
+    height:DeviceInfo.isTablet() ? 60 : 45,
+    width: DeviceInfo.isTablet() ? 70 : 55,
     tintColor:'#fff'
    },
    righticonleftView:{
@@ -102,15 +103,15 @@ const styles = StyleSheet.create({
    },
    rightIcon:{
     marginLeft:'4%',
-    height:20,
-    width:20,
+    height: DeviceInfo.isTablet() ? 34 : 20,
+    width: DeviceInfo.isTablet() ? 34 : 20,
     tintColor:'#fff',
    //backgroundColor:'pink'
    },
    rightIconNotification:{
    // margin:'4%',
-    height:20,
-    width:20,
+    height: DeviceInfo.isTablet() ? 30 : 20,
+    width: DeviceInfo.isTablet() ? 30 : 20,
     tintColor:'#fff',
     // backgroundColor:'orange'
    },

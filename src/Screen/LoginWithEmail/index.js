@@ -25,6 +25,7 @@ import { loginUser } from "../../Redux-api/actions/LoginActions";
 import { isEmailValid, isMobileNumberValid } from "../../helpers/validations";
 import { notifyMessage } from "../../Component/AlertView";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DeviceInfo, { getDeviceId } from "react-native-device-info";
 
 export const LoginWithEmail = (props) => {
   //var isClickEye = false;
@@ -45,17 +46,16 @@ export const LoginWithEmail = (props) => {
     // password: "Test@1234",
 
     email: "winofv1@mailinator.com",
-    password: "Test@1234 ",
+    password: "Test@1234   ",
 
     // email: "poojakumari.aelius@mailnator.com",
     // password: "Pooja@2021 ",
 
-    email: "test3@yopmail.com",  
+    email: "test3@yopmail.com",
      password: "Test@123   ",
 
-    // email: "",
-    // password: "" ,
-
+    email: "",
+    password: "" ,
   });
 
   const [error, setError] = React.useState({
@@ -70,7 +70,7 @@ export const LoginWithEmail = (props) => {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    let isUserAvailable = false;  
+    let isUserAvailable = false;
     // Check if user is available in local db then redirect him to the drawer view
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
@@ -423,11 +423,13 @@ const styles = StyleSheet.create({
   },
   titleView: {
     margin: 20,
+    flex: 1,
   },
   titleStyle: {
     color: "#FFF",
     textAlign: "center",
-    fontSize: 30,
+    fontSize: DeviceInfo.isTablet() ? 50 : 30,
+    padding: DeviceInfo.isTablet() ? 20 : 0,
   },
   inputView: {
     flex: 1,
@@ -438,8 +440,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   rememberIcon: {
-    height: 16,
-    width: 16,
+    height: DeviceInfo.isTablet() ? 26 : 16,
+    width: DeviceInfo.isTablet() ? 26 : 16,
     alignSelf: "center",
   },
   loginButtonView: {
@@ -462,13 +464,14 @@ const styles = StyleSheet.create({
   rememberMeText: {
     color: "#FFF",
     paddingLeft: 10,
+    fontSize: DeviceInfo.isTablet() ? 22 : 14,
   },
   dontHaveAccount: {
     color: "#FFF",
-    fontSize: 14,
+    fontSize: DeviceInfo.isTablet() ? 22 : 14,
   },
   createNewAccountText: {
-    fontSize: 18,
+    fontSize: DeviceInfo.isTablet() ? 26 : 18,
     marginTop: 10,
   },
   error: {

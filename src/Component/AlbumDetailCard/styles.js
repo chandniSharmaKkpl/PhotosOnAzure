@@ -5,6 +5,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
+
 
 const styles = StyleSheet.create({
   textBottom:{ 
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
   },
   
   cellView: {
-  width: Platform.OS === 'android'? width * 0.40: width * 0.40,
+  width: DeviceInfo.isTablet() ? width * 0.44: width * 0.40,
     // width: width*0.8 ,
     margin: width * 0.02,
    // marginBottom:50,

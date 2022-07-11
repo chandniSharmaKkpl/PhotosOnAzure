@@ -1,46 +1,59 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 const { height, width } = Dimensions.get("screen");
 import { AppColor } from "../../Theme";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import DeviceInfo, { getDeviceId } from "react-native-device-info";
 
 const styles = StyleSheet.create({
   invitebuttonview: {
     position: "absolute",
-    right: 5,
+    right: DeviceInfo.isTablet() ? 16 : 5,
     bottom: 20,
     padding: 15,
     borderRadius: 15,
     backgroundColor: "red",
     marginRight: 25,
-    shadowColor: '#103458',
-		shadowOffset: {
-			width: 0,
-			height: 0
-		},
-		shadowOpacity: 22,
-		shadowRadius: 4.65,
-    
-		elevation: 5,
+    shadowColor: "#103458",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 22,
+    shadowRadius: 4.65,
+    elevation: 5,
   },
-  addNewBtn : {
-    justifyContent: 'space-around',
+  addNewBtn: {
+    justifyContent: "space-around",
     flexDirection: "row",
     alignItems: "center",
   },
   addPlusIconView: {
-    width: 20,
-    height: 20,
-    // marginRight: 4,
+    width:
+      Platform.OS === "ios"
+        ? DeviceInfo.isTablet()
+          ? 50
+          : 20
+        : DeviceInfo.isTablet()
+        ? 40
+        : 20,
+    height:
+      Platform.OS === "ios"
+        ? DeviceInfo.isTablet()
+          ? 50
+          : 20
+        : DeviceInfo.isTablet()
+        ? 40
+        : 20,
   },
   invitebuttontext: {
     color: "white",
     fontWeight: "600",
     fontSize: 12,
     fontFamily: "MuseoSlab-500",
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   textBottom: {
     color: "#fff",
@@ -94,6 +107,7 @@ const styles = StyleSheet.create({
     padding: "3%",
     color: AppColor.colors.WHITE,
     fontFamily: "MuseoSlab-700",
+    fontSize: DeviceInfo.isTablet() ? 18 : 14,
   },
   viewLoader: {
     padding: 10,
@@ -149,8 +163,14 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   cellView: {
-    width: width * 0.41,
-
+    width:
+      Platform.OS === "ios"
+        ? DeviceInfo.isTablet()
+          ? width * 0.44
+          : width * 0.41
+        : DeviceInfo.isTablet()
+        ? width * 0.43
+        : width * (0.41).toExponential,
     marginHorizontal: width * 0.02,
     marginVertical: width * 0.02,
     height: height * 0.15,
@@ -281,7 +301,7 @@ const styles = StyleSheet.create({
     fontFamily: "MuseoSlab-300",
   },
   hiText: {
-    fontSize: 20,
+    fontSize: DeviceInfo.isTablet() ? 22 : 20,
     fontWeight: "normal",
     color: AppColor.colors.THEME_BLUE,
     fontFamily: "MuseoSlab-500",
@@ -354,6 +374,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     padding: "1%",
+    fontSize: DeviceInfo.isTablet() ? 20 : 12,
   },
 });
 

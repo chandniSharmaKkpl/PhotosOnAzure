@@ -3,7 +3,7 @@ import { AppColor } from "../../Theme";
 import * as globals from "../../Utils/globals";
 
 const { height, width } = Dimensions.get("screen");
-
+import DeviceInfo, {getDeviceId} from 'react-native-device-info';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -240,15 +240,15 @@ const styles = StyleSheet.create({
   invitebuttontext: {
     color: "white",
     fontWeight: "600",
-    fontSize: 12,
+    fontSize: DeviceInfo.isTablet() ? 18 : 12,
     fontFamily: "MuseoSlab-300",
     width: width * 0.35,
   },
   addView: {
-    width: 10,
-    height: 10,
+    width: DeviceInfo.isTablet() ? 18 : 10,
+    height: DeviceInfo.isTablet() ? 18 : 10,
     marginLeft: 6,
-    marginRight: 4,
+    marginRight: 6,
   },
 
   ///// shared/own album style
@@ -261,6 +261,7 @@ const styles = StyleSheet.create({
     padding: "3%",
     color: AppColor.colors.WHITE,
     fontFamily: "MuseoSlab-700",
+    fontSize: DeviceInfo.isTablet() ? 18 : 14
   },
   textMainTitle: {
     fontFamily: "MuseoSlab-700",
@@ -273,6 +274,7 @@ const styles = StyleSheet.create({
     fontFamily: "MuseoSlab-300",
     color: "#fff",
     textAlign: "center",
+    fontSize : DeviceInfo.isTablet () ? 16 : 14,
   },
   viewFlatListDropDown: {
     backgroundColor: "red",
