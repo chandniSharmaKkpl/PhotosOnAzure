@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
           : width * 0.41
         : DeviceInfo.isTablet()
         ? width * 0.43
-        : width * (0.41).toExponential,
+        : width * (0.41),
     marginHorizontal: width * 0.02,
     marginVertical: width * 0.02,
     height: height * 0.15,

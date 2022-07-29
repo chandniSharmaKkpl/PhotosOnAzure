@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   Pressable,
   Alert,
@@ -48,7 +48,7 @@ import Upload from "react-native-background-upload";
 import stylesAlbum from "../Album/style";
 import { CurrentDate } from "../../common";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
-import { removeCurrentUser } from "../../database/localDB";
+import { removeCurrentUser, setPagenationNumber } from "../../database/localDB";
 import { notifyMessage } from "../../Component/AlertView";
 import CalendarView from "../../Component/Calendar";
 import { cloneDeep } from "lodash";
@@ -92,6 +92,7 @@ const AlbumDetailScreen = (props) => {
   const [searchAlbumName, setSearchAlbumName] = useState(""); // Search bar text
   const [imageUpload, setImageUpload] = React.useState([]);
   const [title, setTitle] = React.useState("");
+  const [pageNumber, setPageNumber] = useState("");
 
   const { setUserData } = React.useContext(AuthContext);
   const flatListRef = useRef();
@@ -104,6 +105,11 @@ const AlbumDetailScreen = (props) => {
     setCurrentPage(1);
 
     callgetmedialistbyalbumApi(route.params.albumdetail.album_id, 1);
+
+    setPageNumber(route.params.pageNumber);
+
+    console.log("PageNumber ====>", route.params.pageNumber);
+
 
     const unsubscribe = props.navigation.addListener("focus", () => {
       BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -199,6 +205,7 @@ const AlbumDetailScreen = (props) => {
   );
 
   const callApiToDelete = (arrayDeleteItems) => {
+    // console.log("arrayDeleteItems  ===>, res ===>", arrayDeleteItems);
     setIsLongPress(false);
     setArrayCheckMarks([]);
     arrayCheckMarks.length = 0;
@@ -283,6 +290,7 @@ const AlbumDetailScreen = (props) => {
               size: data1.size,
               type: data1.mime,
             };
+            console.log("source =>", source);
             tempIMG.push(source);
             let dictImageToShow = {};
             let fileNameTemp = "";
@@ -409,16 +417,21 @@ const AlbumDetailScreen = (props) => {
     const params = new FormData();
     // let getfinalTitle = getTimeStemp(title);
 
+    console.log("413------->i am in callAPItoUploadImage=>", data);
+
     params.append("sessid", user.sessid);
     params.append("name", istitle);
     params.append("code_name", route.params.albumdetail.code_name);
     data.map((data1, index) => {
       params.append("album_media[" + index + "]", data1);
     });
+    console.log("420------->i am in callAPItoUploadImage=>", params);
     setTimeout(() => {
       dispatch(updateAlbumImageUpload(params));
     }, 100);
-    props.navigation.navigate("Home");
+    // setTimeout(() => {
+      props.navigation.navigate("Home");
+    // }, 4000);
   };
 
   // Initialy check
@@ -476,20 +489,26 @@ const AlbumDetailScreen = (props) => {
   const moveBack = () => {
     route.params.onReturn("Chandni ");
     props.navigation.goBack();
+    console.log("props.navigation.goBack --->", route);
+    console.log("============> Current Page Number", pageNumber);
+    props.navigation.navigate("Home");
   };
 
   const onClickUpdate = () => {
+    setPagenationNumber(pageNumber);
     // making empty no media or previous list so alert will not come again
     dispatch(getdMediaListByAlbumSuccess([]));
 
     if (arrayImages.length > 0) {
-      // We are uploading all data which we select from gallery to Azure
+      // We are uploading all data which we select from gallery 
       var isNewElementAdded = false;
+      console.log(" imageUpload ----", imageUpload);
       callAPItoUploadImage(imageUpload);
       arrayImages.forEach((element, index) => {
         let dateValue = arrayAllDates[index];
 
         let arrayImgOfDate = element[dateValue];
+        console.log("arrayImgOfDate =>", arrayImgOfDate);
         arrayImgOfDate.forEach((element1, index) => {
           if (element1.status === AppConstants.constant.NEW_ADDED) {
             isNewElementAdded = true;
@@ -497,6 +516,7 @@ const AlbumDetailScreen = (props) => {
         });
       });
       if (!isNewElementAdded) {
+        console.log("isNewElementAdded  ==============> ");
         moveBack();
       }
     } else {
