@@ -29,6 +29,7 @@ import NetInfo from "@react-native-community/netinfo";
 import * as globals from "./src/Utils/globals";
 import SplashScreen from 'react-native-splash-screen';
 import { IApController } from './src/Component/InAppPurchase/IAPController';
+import { navigationRef } from './src/Navigator/RootNavigation';
 
  console.disableYellowBox = true
 
@@ -97,7 +98,7 @@ const App = () => {
 		<Provider store={store}>
 			{/* <StatusBar backgroundColor="#FFF" translucent={false} style="auto" /> */}
 			<IApController>
-			<NavigationContainer>
+			<NavigationContainer ref={navigationRef}>
 				<PaperProvider theme={theme}>
 					 <NavigationSetup />
 				</PaperProvider>

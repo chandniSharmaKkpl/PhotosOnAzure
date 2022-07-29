@@ -110,6 +110,7 @@ import {
   REVOKE_SHARE_ALBUM,
   ALBUM_LIST_OF_USER,
 } from "../endPoints";
+import { navigate } from "../../Navigator/RootNavigation";
 
 function showAlert(title, msg) {
   if (Platform.OS === "android") {
@@ -397,6 +398,7 @@ export const updateAlbumImageUpload = (param) => (dispatch) => {
           type: UPDATE_ALB_UPLOAD_IMAGE_SUCCESS,
           payload: response.data,
         });
+        navigate("Home");
       })
       .catch((error) => {
         console.log("UPDATE_ALB_UPLOAD_IMAGE_FAILURE ===>", error);
