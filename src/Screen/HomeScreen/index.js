@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AZURE_BASE_URL } from "../../Redux-api/endPoints";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StatusBar,
   FlatList,
@@ -62,6 +63,7 @@ import SubscriptionError from "../../Component/SubscriptionError";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { useRoute, useNavigationState } from "@react-navigation/native";
 import { notifyMessage } from "../../Component/AlertView";
+import * as Appconstants from "../../Theme/AppConstant";
 
 export function HomeScreen(props) {
   var countPickerSelectedImage = 0; // How many images selected by image picker in 1 time open picker
@@ -108,9 +110,17 @@ export function HomeScreen(props) {
   const [pageCountLibrary, setPageCountLibrary] = React.useState(1); // Pagination library
   const [pageCountSharedAlbum, setPageCountSharedAlbum] = React.useState(1); // Pagination shared album
   const [isFetching, setIsFetching] = useState(false);
+  const [paginationNumber, setPaginationNumber] = useState();
 
   const route = useRoute();
   const routes = useNavigationState((state) => state.routes);
+
+  useEffect(() => {
+    console.log(
+      "route.params.updatePageNumber ===>",
+      route?.params?.pageNumber
+    );
+  }, [route?.params?.pageNumber]);
 
   const data = useSelector((state) => state); // Getting api response
   const dispatch = useDispatch(); // Calling api
@@ -131,14 +141,16 @@ export function HomeScreen(props) {
       alertShow(true, { message: AppConstants.constant.PLEASE_LOGIN });
       return;
     }
+
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
     const unsubscribe = props.navigation.addListener("focus", () => {
+
       removeEditMode();
       setSearchAlbumName("");
       setIsFetching(true);
       setIsAlbumDropDownOpen(false);
-      // setIsLibrary(true);
+      getPagenationNumber();
 
       if (isLibrary) {
         // Calling api to get library data.
@@ -247,16 +259,44 @@ export function HomeScreen(props) {
     return result;
   };
 
+  const getPagenationNumber = async () => {
+    const temp = await AsyncStorage.getItem(Appconstants.constant.PAGE_NUMBER);
+
+    let pageNumber;
+    if (temp) {
+      pageNumber = JSON.parse(temp);
+      console.log("::::::::=========:::::::", pageNumber);
+      callApiToGetOwnAlbumData("", "", pageNumber,"");
+      setPaginationNumber(pageNumber);
+      return pageNumber;
+    } else {
+    }
+    return pageNumber;
+  };
+
+
+  // Homepage Data Update
+  React.useEffect(() => {
+    if (data.HomeReducer?.updateAlbumUploadImg?.responseCode === 1) {
+      callApiToGetOwnAlbumData("", "", paginationNumber,"");
+      console.log("HomePage Data Update Successed with paginationNumber ==>", paginationNumber);
+    }
+  }, [
+    data.HomeReducer &&
+      data.HomeReducer.updateAlbumUploadImg &&
+      data.HomeReducer.updateAlbumUploadImg.responseCode,
+    paginationNumber,
+  ]);
+
   // For albumcounter
   React.useEffect(() => {
-    console.log("pageCountOwnAlbum ==> ", pageCountOwnAlbum);
     callApiToGetOwnAlbumData();
   }, [pageCountOwnAlbum]);
 
   // For Dashboard api update
-  React.useEffect(() => {
-    if (data.HomeReducer.updateAlbumUploadImg.data) callApiToGetOwnAlbumData();
-  }, [data.HomeReducer.updateAlbumUploadImg.data]);
+  // React.useEffect(() => {
+  //   if (data.HomeReducer.updateAlbumUploadImg.data) callApiToGetOwnAlbumData();
+  // }, [data.HomeReducer.updateAlbumUploadImg.data]);
 
   // For albumcounter
   React.useEffect(() => {
@@ -825,10 +865,16 @@ export function HomeScreen(props) {
     }
   };
 
-  const moveToAlbumDetail = (item) => {
+  const moveToAlbumDetail = (item, index) => {
+    console.log("moveToAlbumDetail ==>", item, index);
+    let pageNumber = 0;
+    try {
+      pageNumber = parseInt(index / 10) + 1;
+    } catch (error) {
+      pageNumber = 1;
+    }
     var itemAccess = "";
     dispatch(albumIdInDetailToGet(item.album_id));
-    // dispatch(albumIdInDetailToGet(item.album_id));
     if (isSharedAlbum) {
       itemAccess = item.access;
     } else {
@@ -839,6 +885,7 @@ export function HomeScreen(props) {
     props.navigation.navigate("AlbumDetailScreen", {
       albumdetail: item,
       access: itemAccess,
+      pageNumber: pageNumber,
       onReturn: () => {
         // refreshAlbumList(data);
       },
@@ -869,7 +916,7 @@ export function HomeScreen(props) {
           index={index}
           setArrayCheckMarks={setArrayCheckMarks}
           arrayCheckMarks={arrayCheckMarks}
-          moveToAlbumDetail={() => moveToAlbumDetail(item)}
+          moveToAlbumDetail={() => moveToAlbumDetail(item, index)}
         />
       );
     } else {
@@ -1075,6 +1122,7 @@ export function HomeScreen(props) {
     pageCount,
     textToSearch
   ) => {
+    console.log("pageCount --- pageCount ===>", pageCount);
     setIsApiCall(true);
     if (selectedDate && selectedDate.length > 0) {
       dispatch(
@@ -1116,8 +1164,10 @@ export function HomeScreen(props) {
     pageCount,
     textToSearch
   ) => {
+    console.log("callApiToGetOwnAlbumData ====>", pageCount);
     setIsApiCall(true);
     if (selectedDate && selectedDate.length > 0) {
+      console.log("callApiToGetOwnAlbumData 1 ====>");
       dispatch(
         listsOwnAlbum({
           sessid: user.sessid ? user.sessid : "",
@@ -1129,6 +1179,7 @@ export function HomeScreen(props) {
         })
       );
     } else if (pageCount) {
+      console.log("callApiToGetOwnAlbumData 2 ====>");
       dispatch(
         listsOwnAlbum({
           sessid: user.sessid ? user.sessid : "",
@@ -1139,6 +1190,7 @@ export function HomeScreen(props) {
         })
       );
     } else {
+      console.log("callApiToGetOwnAlbumData 3 ====>");
       dispatch(
         listsOwnAlbum({
           sessid: user.sessid ? user.sessid : "",

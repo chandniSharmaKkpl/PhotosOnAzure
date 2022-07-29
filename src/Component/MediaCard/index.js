@@ -113,6 +113,7 @@ export const MediaCard = (props) => {
               <VideoCard
                 videoUrl={item.uri ? item.uri : imageUrl}
                 volume={0}
+                muted={true}
               ></VideoCard>
             </View>
             {/* This button is added above on video card to implement click of video */}

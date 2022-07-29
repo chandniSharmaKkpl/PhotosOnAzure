@@ -378,6 +378,7 @@ export const uploadImgAddNewAlbum = (param) => (dispatch) => {
 
 export const updateAlbumImageUpload = (param) => (dispatch) => {
   {
+    console.log("UPDATE_ALB_UPLOAD_IMAGE_REQUEST ==>", param);
     dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_REQUEST, payload: {} });
     const headerObj = {
       Accept: "application/json",
@@ -391,16 +392,20 @@ export const updateAlbumImageUpload = (param) => (dispatch) => {
       data: param,
     })
       .then((response) => {
+        console.log("UPDATE_ALB_UPLOAD_IMAGE_SUCCESS ===>", response);
         dispatch({
           type: UPDATE_ALB_UPLOAD_IMAGE_SUCCESS,
           payload: response.data,
         });
       })
       .catch((error) => {
-        dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
+        console.log("UPDATE_ALB_UPLOAD_IMAGE_FAILURE ===>", error);
+        // dispatch({ type: UPDATE_ALB_UPLOAD_IMAGE_FAILURE, payload: error });
+        updateAlbumImageUpload(param)
       });
   }
 };
+
 
 //* Getting library Data  *//
 export const listAllMedia = (data) => (dispatch) => {

@@ -105,6 +105,7 @@ const VideoCard = (props) => {
         style={[styles.mediaPlayer,props.style]}
         volume={props.volume}
         onError={onError}
+        muted={props.muted}
       />
       <MediaControls
         duration={duration}

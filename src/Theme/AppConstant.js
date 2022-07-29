@@ -88,6 +88,7 @@ const constant = {
   NO_SUBSCRIPTION: "0",
   MONTHLY_PARAM: 1,
   YEARLY_PARAM: 2,
+  PAGE_NUMBER : 'pageNumber',
 
   //In App Purchase product Ids
   // Android 2Excel playstore a/c
