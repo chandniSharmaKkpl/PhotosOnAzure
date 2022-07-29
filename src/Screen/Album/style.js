@@ -10,6 +10,10 @@ import {
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
+  error: {
+    marginVertical: 10,
+    textAlign: "center",
+  },
   HeadingTitle: {
     marginLeft: "5%",
     marginTop: "5%",

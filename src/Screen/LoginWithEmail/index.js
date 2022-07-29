@@ -52,10 +52,10 @@ export const LoginWithEmail = (props) => {
     // password: "Pooja@2021 ",
 
     email: "test3@yopmail.com",
-    password: "Test@123     ",
+    password: "Test@123  ",
 
-    email: "",
-    password: "",
+    // email: "",
+    // password: "",
   });
 
   const [error, setError] = React.useState({
