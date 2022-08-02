@@ -1,40 +1,41 @@
 {
   "project_info": {
-    "project_number": "984625530687",
-    "project_id": "onlinefamilyvault",
-    "storage_bucket": "onlinefamilyvault.appspot.com"
+    "project_number": "57143668188",
+    "project_id": "onlinefamilywault",
+    "storage_bucket": "onlinefamilywault.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:984625530687:android:c0b33ff5b2c16eb8a3f58a",
+        "mobilesdk_app_id": "1:57143668188:android:05351c4678ac6bc65fb319",
         "android_client_info": {
-          "package_name": "com.onlinefamilyvault"
+          "package_name": "com.onlinephotos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "984625530687-0hjaajb671k3gnjufikj0k67h4veli0e.apps.googleusercontent.com",
+          "client_id": "57143668188-kbab6qejbkqfbrreaseud7t6pi4p38d3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBP-zAk8sHjX26o-khp0C6T2MAvRP2xNoM"
+          "current_key": "AIzaSyAwGX_naNX3PcVjmLh-pa3rvY3h1FU9DOU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "984625530687-0hjaajb671k3gnjufikj0k67h4veli0e.apps.googleusercontent.com",
+              "client_id": "57143668188-kbab6qejbkqfbrreaseud7t6pi4p38d3.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "984625530687-11ppirh03jckg9seifbphae2r54o8r5t.apps.googleusercontent.com",
+              "client_id": "57143668188-1qnq2asjsnhgfqm0mdekg5ui3go2cbaj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.onlinefamilyvault"
+                "bundle_id": "au.com.2excel.onlinephotos",
+                "app_store_id": "1234"
               }
             }
           ]

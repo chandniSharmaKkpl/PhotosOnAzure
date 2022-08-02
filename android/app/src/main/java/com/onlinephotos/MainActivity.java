@@ -1,4 +1,4 @@
-package com.onlinefamilyvault;
+package com.onlinephotos;
 
 import android.content.Intent;
 import android.content.res.Configuration;

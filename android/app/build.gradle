@@ -135,11 +135,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.onlinefamilyvault"
+        applicationId "com.onlinephotos"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         vectorDrawables.useSupportLibrary = true
-        versionCode 6
+        versionCode 7
         versionName "1.0"
         missingDimensionStrategy ('store', 'play')
         minSdkVersion 21
