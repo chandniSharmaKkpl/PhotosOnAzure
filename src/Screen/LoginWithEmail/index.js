@@ -52,7 +52,7 @@ export const LoginWithEmail = (props) => {
     // password: "Pooja@2021 ",
 
     email: "test3@yopmail.com",
-    password: "Test@123  ",
+    password: "Test@123",
 
     // email: "",
     // password: "",
@@ -65,7 +65,7 @@ export const LoginWithEmail = (props) => {
 
   const [formErr, setFormError] = React.useState("");
 
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(true);
 
   const [loading, setLoading] = React.useState(false);
 
@@ -87,13 +87,17 @@ export const LoginWithEmail = (props) => {
     // Whenever coming on this view need to clean complete data of this view.
     const unsubscribe = props.navigation.addListener("focus", () => {
       setError({ emailErr: "", passwordErr: "" });
-      if (!isUserAvailable) {
+      if (!isUserAvailable || !checked) {
         setUserTemp({ email: "", password: "" });
       }
       setFormError("");
     });
 
     return function cleanup() {
+      console.log(" unmount ---");
+      if (!isUserAvailable || !checked) {
+        setUserTemp({ email: "", password: "" });
+      }
       BackHandler.removeEventListener(
         "hardwareBackPress",
         handleBackButtonClick

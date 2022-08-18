@@ -92,53 +92,53 @@ const constant = {
 
   //In App Purchase product Ids
   //Android 2Excel playstore a/c
-  ONE_MONTH_STANDARD_PLAN: "com.onlinephotos.standard_plan",
-  YEAR_STANDARD_PLAN: "standard_yearly_plan",
-  ONE_MONTH_REGULAR_PLAN: "com.onlinephotos.regular_plan",
-  YEAR_REGULAR_PLAN: "regular_yearly_plan",
-  ONE_MONTH_PREMIUM_PLAN: "com.onlinephotos.premium_plan",
-  YEAR_PREMIUM_PLAN: "premium_yearly_plan",
-  BASIC_MONTHLY_PLAN:'com.ofv.basic_monthly',
-  BUSINESS_MONTHLY_PLAN:'com.ofv.business_monthly',
-  ADVANCED_MONTHLY_PLAN:'com.ofv.advanced_monthly',
-  PREMIER_MONTHLY_PLAN:'com.ofv.premier_monthly',
+  // ONE_MONTH_STANDARD_PLAN: "com.onlinephotos.standard_plan",
+  // YEAR_STANDARD_PLAN: "standard_yearly_plan",
+  // ONE_MONTH_REGULAR_PLAN: "com.onlinephotos.regular_plan",
+  // YEAR_REGULAR_PLAN: "regular_yearly_plan",
+  // ONE_MONTH_PREMIUM_PLAN: "com.onlinephotos.premium_plan",
+  // YEAR_PREMIUM_PLAN: "premium_yearly_plan",
+  // BASIC_MONTHLY_PLAN:'com.ofv.basic_monthly',
+  // BUSINESS_MONTHLY_PLAN:'com.ofv.business_monthly',
+  // ADVANCED_MONTHLY_PLAN:'com.ofv.advanced_monthly',
+  // PREMIER_MONTHLY_PLAN:'com.ofv.premier_monthly',
 
   // iOS
-  ONE_MONTH_STANDARD_PLAN_IOS: "com.onlinephotos.standard_plan.iOS",
-  YEAR_STANDARD_PLAN_IOS: "YEAR_STANDARD_PLAN_iOS",
-  ONE_MONTH_REGULAR_PLAN_IOS: "com.onlinephotos.regular_plan",
-  YEAR_REGULAR_PLAN_IOS: "YEAR_REGULAR_PLAN_iOS",
-  ONE_MONTH_PREMIUM_PLAN_IOS: "com.onlinephotos.premium_plan.iOS",
-  YEAR_PREMIUM_PLAN_IOS: "YEAR_PREMIUM_PLAN_iOS",
-  BASIC_MONTHLY_PLAN_IOS: "com.ofv.basic_monthly.iOS",
-  BUSINESS_MONTHLY_PLAN_IOS: "com.ofv.business_monthly.iOS",
-  ADVANCED_MONTHLY_PLAN_IOS: "com.ofv.advanced_monthly.iOS",
-  PREMIER_MONTHLY_PLAN_IOS: "com.ofv.premier_monthly.iOS",
-
-  // //* Android Live IAP productIds  */
-  // BASIC_MONTHLY_PLAN: "com.ofv.basic_monthly",
-  // ONE_MONTH_STANDARD_PLAN: "com.ofv.standard_monthly",
-  // BUSINESS_MONTHLY_PLAN: "com.ofv.business_monthly",
-  // ADVANCED_MONTHLY_PLAN: "com.ofv.advanced_monthly",
-  // ONE_MONTH_PREMIUM_PLAN: "com.ofv.premium_monthly",
-  // PREMIER_MONTHLY_PLAN: "com.ofv.premier_monthly",
-
-  // YEAR_STANDARD_PLAN: "com.ofv.standard_yearly",
-  // YEAR_REGULAR_PLAN: "com.ofv.regular_yearly",
-  // YEAR_PREMIUM_PLAN: "com.ofv.premium_yearly",
-  // ONE_MONTH_REGULAR_PLAN: "com.ofv.regular_monthly",
-
-  // //* iOS Live IAP productIds  *//
   // ONE_MONTH_STANDARD_PLAN_IOS: "com.onlinephotos.standard_plan.iOS",
   // YEAR_STANDARD_PLAN_IOS: "YEAR_STANDARD_PLAN_iOS",
   // ONE_MONTH_REGULAR_PLAN_IOS: "com.onlinephotos.regular_plan",
   // YEAR_REGULAR_PLAN_IOS: "YEAR_REGULAR_PLAN_iOS",
   // ONE_MONTH_PREMIUM_PLAN_IOS: "com.onlinephotos.premium_plan.iOS",
   // YEAR_PREMIUM_PLAN_IOS: "YEAR_PREMIUM_PLAN_iOS",
-  // BASIC_MONTHLY_PLAN_IOS:'com.ofv.basic_monthly.iOS',
-  // BUSINESS_MONTHLY_PLAN_IOS:'com.ofv.business_monthly.iOS',
-  // ADVANCED_MONTHLY_PLAN_IOS:'com.ofv.advanced_monthly.iOS',
-  // PREMIER_MONTHLY_PLAN_IOS:'com.ofv.premier_monthly.iOS',
+  // BASIC_MONTHLY_PLAN_IOS: "com.ofv.basic_monthly.iOS",
+  // BUSINESS_MONTHLY_PLAN_IOS: "com.ofv.business_monthly.iOS",
+  // ADVANCED_MONTHLY_PLAN_IOS: "com.ofv.advanced_monthly.iOS",
+  // PREMIER_MONTHLY_PLAN_IOS: "com.ofv.premier_monthly.iOS",
+
+  // //* Android Live IAP productIds  */
+  BASIC_MONTHLY_PLAN: "com.ofv.basic_monthly", //
+  ONE_MONTH_STANDARD_PLAN: "com.ofv.standard_monthly", //
+  BUSINESS_MONTHLY_PLAN: "com.ofv.business_monthly", //
+  ADVANCED_MONTHLY_PLAN: "com.ofv.advanced_monthly", //
+  ONE_MONTH_PREMIUM_PLAN: "com.ofv.premium_monthly", //
+  PREMIER_MONTHLY_PLAN: "com.ofv.premier_monthly",
+
+  YEAR_STANDARD_PLAN: "com.ofv.standard_yearly", //
+  YEAR_REGULAR_PLAN: "com.ofv.regular_yearly", ///
+  YEAR_PREMIUM_PLAN: "com.ofv.premium_yearly", //
+  ONE_MONTH_REGULAR_PLAN: "com.ofv.regular_monthly", //
+
+  // //* iOS Live IAP productIds  *//
+  ONE_MONTH_STANDARD_PLAN_IOS: "com.onlinephotos.standard_plan.iOS",
+  YEAR_STANDARD_PLAN_IOS: "YEAR_STANDARD_PLAN_iOS",
+  ONE_MONTH_REGULAR_PLAN_IOS: "com.onlinephotos.regular_plan",
+  YEAR_REGULAR_PLAN_IOS: "YEAR_REGULAR_PLAN_iOS",
+  ONE_MONTH_PREMIUM_PLAN_IOS: "com.onlinephotos.premium_plan.iOS",
+  YEAR_PREMIUM_PLAN_IOS: "YEAR_PREMIUM_PLAN_iOS",
+  BASIC_MONTHLY_PLAN_IOS:'com.ofv.basic_monthly.iOS',
+  BUSINESS_MONTHLY_PLAN_IOS:'com.ofv.business_monthly.iOS',
+  ADVANCED_MONTHLY_PLAN_IOS:'com.ofv.advanced_monthly.iOS',
+  PREMIER_MONTHLY_PLAN_IOS:'com.ofv.premier_monthly.iOS',
 
   // Alert
   ALERT: "Alert",
@@ -258,7 +258,7 @@ const constant = {
   ALREADY_ACTIVE_PLAN:
     "You already have an active plan, you can purchase new plan when the current plan will expire.",
   INVITE_CODE_SHARE:
-    "I am sharing my OnlineFamilyVault app invitation code with you. Please enter it in the invitation code section of the app and confirm it",
+    "I am sharing my OnlinePhotoVault app invitation code with you. Please enter it in the invitation code section of the app and confirm it",
   INVITE_CODE_EMPTY: "Invite code cannot be empty",
   ENTER_SHARED_INVITATION_CODE:
     "You are entering your own invitation code, please enter your shared invitation code",
