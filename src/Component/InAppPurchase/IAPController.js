@@ -20,16 +20,16 @@ const itemSkus = Platform.select({
     AppConstants.constant.ONE_MONTH_STANDARD_PLAN_IOS,
     AppConstants.constant.BUSINESS_MONTHLY_PLAN_IOS,
     AppConstants.constant.ADVANCED_MONTHLY_PLAN_IOS,
-    AppConstants.constant.ONE_MONTH_PREMIUM_PLAN_IOS,
     AppConstants.constant.PREMIER_MONTHLY_PLAN_IOS,
+    AppConstants.constant.PREMEIUM_MONTHLY_PLAN_IOS
   ],
   android: [
     AppConstants.constant.BASIC_MONTHLY_PLAN,
     AppConstants.constant.ONE_MONTH_STANDARD_PLAN,
     AppConstants.constant.BUSINESS_MONTHLY_PLAN,
     AppConstants.constant.ADVANCED_MONTHLY_PLAN,
-    AppConstants.constant.ONE_MONTH_PREMIUM_PLAN,
     AppConstants.constant.PREMIER_MONTHLY_PLAN,
+    AppConstants.constant.PREMEIUM_MONTHLY_PLAN
   ],
 });
 

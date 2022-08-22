@@ -120,8 +120,8 @@ const constant = {
   ONE_MONTH_STANDARD_PLAN: "com.ofv.standard_monthly", //
   BUSINESS_MONTHLY_PLAN: "com.ofv.business_monthly", //
   ADVANCED_MONTHLY_PLAN: "com.ofv.advanced_monthly", //
-  ONE_MONTH_PREMIUM_PLAN: "com.ofv.premium_monthly", //
   PREMIER_MONTHLY_PLAN: "com.ofv.premier_monthly",
+  PREMEIUM_MONTHLY_PLAN: "com.ofv.premium_monthly",
 
   YEAR_STANDARD_PLAN: "com.ofv.standard_yearly", //
   YEAR_REGULAR_PLAN: "com.ofv.regular_yearly", ///
@@ -129,16 +129,17 @@ const constant = {
   ONE_MONTH_REGULAR_PLAN: "com.ofv.regular_monthly", //
 
   // //* iOS Live IAP productIds  *//
-  ONE_MONTH_STANDARD_PLAN_IOS: "com.onlinephotos.standard_plan.iOS",
-  YEAR_STANDARD_PLAN_IOS: "YEAR_STANDARD_PLAN_iOS",
-  ONE_MONTH_REGULAR_PLAN_IOS: "com.onlinephotos.regular_plan",
-  YEAR_REGULAR_PLAN_IOS: "YEAR_REGULAR_PLAN_iOS",
-  ONE_MONTH_PREMIUM_PLAN_IOS: "com.onlinephotos.premium_plan.iOS",
-  YEAR_PREMIUM_PLAN_IOS: "YEAR_PREMIUM_PLAN_iOS",
   BASIC_MONTHLY_PLAN_IOS:'com.ofv.basic_monthly.iOS',
+  ONE_MONTH_STANDARD_PLAN_IOS: "com.ofv.standard_monthly.iOS",
   BUSINESS_MONTHLY_PLAN_IOS:'com.ofv.business_monthly.iOS',
   ADVANCED_MONTHLY_PLAN_IOS:'com.ofv.advanced_monthly.iOS',
   PREMIER_MONTHLY_PLAN_IOS:'com.ofv.premier_monthly.iOS',
+  PREMEIUM_MONTHLY_PLAN_IOS: "com.ofv.premium_monthly.iOS",
+
+  YEAR_STANDARD_PLAN_IOS: "YEAR_STANDARD_PLAN_iOS",
+  ONE_MONTH_REGULAR_PLAN_IOS: "com.ofv.regular_plan",
+  YEAR_REGULAR_PLAN_IOS: "YEAR_REGULAR_PLAN_iOS",
+  YEAR_PREMIUM_PLAN_IOS: "YEAR_PREMIUM_PLAN_iOS",
 
   // Alert
   ALERT: "Alert",
