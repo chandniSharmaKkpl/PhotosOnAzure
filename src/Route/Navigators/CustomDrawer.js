@@ -206,7 +206,7 @@ export default CustomDrawer = () => {
       >
         Logout
       </Button>
-      <Caption style={styles.appVersion}>App version 6.0</Caption>
+      <Caption style={styles.appVersion}>App version 1.4</Caption>
     </View>
   );
 };

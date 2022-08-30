@@ -28,7 +28,7 @@ import {
   BackHandler,
 } from "react-native";
 import styles from "./style";
-import stylesRegister from "../Register/style";
+// import stylesRegister from "../Register/style";
 import stylesAlbum from "../Album/style";
 import { Header } from "../../Component/Header";
 import TitleView from "../../Component/TitleView";
@@ -848,7 +848,7 @@ const AddNewAlbum = (props) => {
             {titleError ? (
               <Text
                 style={[
-                  stylesRegister.error,
+                  styles.error,
                   { color: theme.colors.accent, paddingLeft: wp("7%") },
                 ]}
               >
@@ -865,7 +865,7 @@ const AddNewAlbum = (props) => {
             {emptyMediaError ? (
               <Text
                 style={[
-                  stylesRegister.error,
+                  styles.error,
                   { color: theme.colors.accent, paddingLeft: wp("7%") },
                 ]}
               >

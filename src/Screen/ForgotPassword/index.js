@@ -123,17 +123,18 @@ export const ForgotPassword = (props) => {
             resizeMode="contain"
             source={require("../../assets/img/logo.png")}
           />
-          <Pressable onPress={() => navigation.goBack()} style={styles.back}>
-            <Image
-              style={
-                Platform.OS === "android"
-                  ? { height: 26, width: 26 }
-                  : { height: 28, width: 28 }
-              }
-              resizeMode="cover"
-              source={require("../../assets/icons/back.png")}
-            />
-          </Pressable>
+        </Pressable>
+        <Pressable onPress={() => navigation.goBack()} style={styles.back}>
+          <Image
+            style={
+              Platform.OS === "android"
+                ? { height: 26, width: 26 }
+                : { height: 25, width: 25, }
+            }
+            resizeMode="cover"
+            source={require("../../assets/icons/back.png")}
+            onPress={()=>navigation.goBack()}
+          />
         </Pressable>
       </View>
 
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
   },
   imageIcon: {
     height: 200,
-    width: "100%",
+    width: '100%',
     position: "absolute",
   },
   inputViewImage: {
@@ -248,9 +249,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   back: {
+    display: "flex",
+
     position: "absolute",
-    top: 25,
-    right: 10,
+    top: 50,
+    right: 9,
+    // width: 50,
+    height: 30,
+
+    // backgroundColor: "red",
   },
   forgotPassDescription: {
     color: "#FFF",

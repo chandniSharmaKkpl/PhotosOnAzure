@@ -162,6 +162,7 @@ export default Notifications = (props) => {
         );
       }
     }
+    
     if (
       data.HomeReducer &&
       data.HomeReducer.data &&

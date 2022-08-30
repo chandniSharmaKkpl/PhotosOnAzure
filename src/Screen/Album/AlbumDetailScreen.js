@@ -430,7 +430,11 @@ const AlbumDetailScreen = (props) => {
       dispatch(updateAlbumImageUpload(params));
     }, 100);
     // setTimeout(() => {
-      props.navigation.navigate("Home");
+      // if( data.HomeReducer.updateAlbumUploadImg &&
+      //   data.HomeReducer.updateAlbumUploadImg.status === 200) {
+          
+      //   }
+      // props.navigation.navigate("Home");
     // }, 4000);
   };
 
@@ -491,7 +495,6 @@ const AlbumDetailScreen = (props) => {
     props.navigation.goBack();
     console.log("props.navigation.goBack --->", route);
     console.log("============> Current Page Number", pageNumber);
-    props.navigation.navigate("Home");
   };
 
   const onClickUpdate = () => {
