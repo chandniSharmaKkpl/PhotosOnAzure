@@ -35,7 +35,7 @@ import TitleView from "../../Component/TitleView";
 import { Text, useTheme } from "react-native-paper";
 import Button from "../../Component/auth/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { useRoute } from "@react-navigation/core";
+import { useRoute, useFocusEffect } from "@react-navigation/core";
 import { removeCurrentUser } from "../../database/localDB";
 import { MediaCard } from "../../Component/MediaCard";
 import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIcons";
@@ -43,6 +43,8 @@ import moment from "moment";
 import { logOutUser } from "../../Redux-api/actions/LoginActions";
 import { notifyMessage } from "../../Component/AlertView";
 import { AppColor } from "../../Theme";
+import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 
 const AddNewAlbum = (props) => {
   const { user } = React.useContext(AuthContext);
@@ -104,6 +106,14 @@ const AddNewAlbum = (props) => {
       );
     };
   }, [props.navigation, route.params]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setTitleError(null);
+      // setArrayLibrary([]);
+      return () => {};
+    }, [])
+  );
 
   const handleBackButtonClick = () => {
     //props.navigation.goBack();

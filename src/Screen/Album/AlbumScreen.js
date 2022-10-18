@@ -929,7 +929,6 @@ const AlbumScreen = (props) => {
             backdropOpacity={1}
             transparent={true}
             animationType="slide"
-            transparent={true}
             isVisible={onopenmediaPicker}
             onRequestClose={() => {
               closemediaPicker(false);

@@ -45,14 +45,14 @@ export const LoginWithEmail = (props) => {
     // email: "pratik@mailinator.com",
     // password: "Test@1234",
 
-    // email: "winofv1@mailinator.com",
-    // password: "Test@1234 " ,
+    email: "winofv1@mailinator.com",
+    password: "Test@1234",
 
     // email: "poojakumari.aelius@mailnator.com",
     // password: "Pooja@2021 ",
 
-    email: "test3@yopmail.com",
-    password: "Test@123",
+    // email: "test3@yopmail.com",
+    // password: "Test@123",
 
     // email: "",
     // password: "",
