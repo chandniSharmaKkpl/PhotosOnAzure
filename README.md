@@ -15,7 +15,6 @@ node_modules => react-native => Libraries => Image => RCTImageLoader.mm
 do the same as above step with the file 
 
 FYI   Its keystore file password is  2excel@1234
-Message from  Chandni Sharma
 Client a.c Pwd:  ofv1234Keystorefile name is ofv1234 keystone file name is onlinePwd : 123456 - old pwd in 2excel a/cKey: key0 Password same for both in key section
-online1234 shayd pahle ki he 
+online1234 
 
