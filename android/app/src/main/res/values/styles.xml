@@ -1,0 +1,25 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">#000000</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="Splash" parent="Theme.AppCompat.Light.NoActionBar" android:theme="@style/Splash">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:windowDisablePreview">true</item> //
+
+    </style>
+
+    <!-- <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/launch_screen</item>
+    <item name="android:statusBarColor">@color/loader</item>
+</style> -->
+
+
+</resources>
+
+
